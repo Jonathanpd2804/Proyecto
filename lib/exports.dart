@@ -65,3 +65,5 @@ export 'package:david_perez/read_data/get_user_email.dart';
 export 'package:david_perez/read_data/get_user_name.dart';
 export 'package:david_perez/read_data/get_user_telefono.dart';
 export 'package:david_perez/read_data/get_user_horario.dart';
+export 'package:david_perez/read_data/get_user_is_boss.dart';
+export 'package:david_perez/read_data/get_user_is_worker.dart';

@@ -2,7 +2,7 @@
 import '../exports.dart';
 
 class CustomDrawer extends StatefulWidget {
-  final user = FirebaseAuth.instance.currentUser;
+  final CurrentUser = FirebaseAuth.instance.currentUser;
   CustomDrawer({super.key});
 
   @override
@@ -19,21 +19,19 @@ class _CustomDrawerState extends State<CustomDrawer> {
   @override
   void initState() {
     super.initState();
-    userIsBoss = UserIsBoss(widget.user);
+    userIsBoss = UserIsBoss(widget.CurrentUser);
     userIsBoss.getUser().then((_) {
       setState(() {
         isBoss = userIsBoss.isBoss;
       });
     });
-    userIsWorker = UserIsWorker(widget.user);
+    userIsWorker = UserIsWorker(widget.CurrentUser);
     userIsWorker.getUser().then((_) {
       setState(() {
         isWorker = userIsWorker.isWorker;
       });
     });
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -67,9 +65,9 @@ class _CustomDrawerState extends State<CustomDrawer> {
                     child: Align(
                       alignment: Alignment.center,
                       child: AutoSizeText(
-                        widget.user == null
+                        widget.CurrentUser == null
                             ? "Usuario invitado"
-                            : "${widget.user!.email}",
+                            : "${widget.CurrentUser!.email}",
                         style: const TextStyle(
                             fontWeight: FontWeight.bold, color: Colors.white),
                         maxLines: 1,
@@ -86,7 +84,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
               padding: const EdgeInsets.symmetric(horizontal: 25),
               child: Divider(color: Colors.grey[100]),
             ),
-            if (widget.user != null)
+            if (widget.CurrentUser != null)
               Padding(
                 padding: const EdgeInsets.only(left: 10.0),
                 child: ListTile(
@@ -100,13 +98,13 @@ class _CustomDrawerState extends State<CustomDrawer> {
                       context,
                       MaterialPageRoute(
                           builder: (context) => PerfilPage(
-                                userEmail: widget.user?.email,
+                                userEmail: widget.CurrentUser?.email,
                               )),
                     );
                   },
                 ),
               ),
-            if (widget.user != null)
+            if (widget.CurrentUser != null)
               Column(
                 children: [
                   Padding(
@@ -173,13 +171,13 @@ class _CustomDrawerState extends State<CustomDrawer> {
                       context,
                       MaterialPageRoute(
                           builder: (context) =>
-                              ListaTrabajadores(user: widget.user)),
+                              ListaTrabajadores(user: widget.CurrentUser)),
                     );
                   },
                 ),
               ),
           ]),
-          if (widget.user != null)
+          if (widget.CurrentUser != null)
             Padding(
               padding: const EdgeInsets.only(left: 60.0, bottom: 25),
               child: ListTile(
@@ -201,7 +199,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                 },
               ),
             ),
-          if (widget.user == null)
+          if (widget.CurrentUser == null)
             Padding(
               padding: const EdgeInsets.only(left: 15.0, bottom: 25),
               child: ListTile(

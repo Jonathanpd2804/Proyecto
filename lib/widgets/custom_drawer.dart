@@ -102,10 +102,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                   onTap: () async {
                     await Navigator.push(
                       context,
-                      MaterialPageRoute(
-                          builder: (context) => PerfilPage(
-                                userEmail: widget.CurrentUser?.email,
-                              )),
+                      MaterialPageRoute(builder: (context) => PerfilPage(userEmail: widget.CurrentUser?.email)),
                     );
                   },
                 ),

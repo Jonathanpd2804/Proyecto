@@ -1,8 +1,8 @@
-
 import '../exports.dart';
 
 class CustomDrawer extends StatefulWidget {
-  final CurrentUser = FirebaseAuth.instance.currentUser;
+  // ignore: non_constant_identifier_names
+  final CurrentUser = FirebaseAuth.instance.currentUser; // Usuario actual
   CustomDrawer({super.key});
 
   @override
@@ -10,21 +10,27 @@ class CustomDrawer extends StatefulWidget {
 }
 
 class _CustomDrawerState extends State<CustomDrawer> {
+  // Variables para saber si el usuario es trabajador o jefe
   bool isWorker = false;
   bool isBoss = false;
+
   String documentID = "";
+
+  // Instancias de las clases que nos permiten verificar si el usuario es jefe o trabajador
   late UserIsBoss userIsBoss;
   late UserIsWorker userIsWorker;
 
   @override
   void initState() {
     super.initState();
+    // Inicialización de la instancia de UserIsBoss y obtención del valor isBoss
     userIsBoss = UserIsBoss(widget.CurrentUser);
     userIsBoss.getUser().then((_) {
       setState(() {
         isBoss = userIsBoss.isBoss;
       });
     });
+    // Inicialización de la instancia de UserIsWorker y obtención del valor isWorker
     userIsWorker = UserIsWorker(widget.CurrentUser);
     userIsWorker.getUser().then((_) {
       setState(() {

@@ -102,7 +102,9 @@ class _CustomDrawerState extends State<CustomDrawer> {
                   onTap: () async {
                     await Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => PerfilPage(userEmail: widget.currentUser?.email)),
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              PerfilPage(userEmail: widget.currentUser?.email)),
                     );
                   },
                 ),
@@ -157,7 +159,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                   ),
                 ],
               ),
-            if (isBoss)
+            if (widget.currentUser != null && isBoss)
               Padding(
                 padding: const EdgeInsets.only(left: 10.0),
                 child: ListTile(

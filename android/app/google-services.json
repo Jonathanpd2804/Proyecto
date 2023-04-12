@@ -9,10 +9,18 @@
       "client_info": {
         "mobilesdk_app_id": "1:1050381474150:android:0543b6919c180114b550a7",
         "android_client_info": {
-          "package_name": "com.carpinteria-dp"
+          "package_name": "com.example.modernlogintute"
         }
       },
       "oauth_client": [
+        {
+          "client_id": "1050381474150-j30tjdmgu54tep2fsfkk0e866gqq8tnk.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.modernlogintute",
+            "certificate_hash": "9bfc2bd4e316c0dfb5ef9495a3bcdafb1de09d9a"
+          }
+        },
         {
           "client_id": "1050381474150-2m74j5oi37u835udmptdfta9msgnvl4v.apps.googleusercontent.com",
           "client_type": 3

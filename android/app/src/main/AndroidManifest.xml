@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.modernlogintute">
+    package="com.example.carpinteria-dp">
    <application
         android:label="David Perez"
         android:name="${applicationName}"

@@ -70,7 +70,7 @@ class DefaultFirebaseOptions {
     projectId: 'carpinteria-dp',
     storageBucket: 'carpinteria-dp.appspot.com',
     iosClientId: '1050381474150-gnj2m0hiishfj759al1c67bghr2gf6un.apps.googleusercontent.com',
-    iosBundleId: 'com.example.modernlogintute',
+    iosBundleId: 'com.example.carpinteria-dp',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
@@ -80,6 +80,6 @@ class DefaultFirebaseOptions {
     projectId: 'carpinteria-dp',
     storageBucket: 'carpinteria-dp.appspot.com',
     iosClientId: '1050381474150-gnj2m0hiishfj759al1c67bghr2gf6un.apps.googleusercontent.com',
-    iosBundleId: 'com.example.modernlogintute',
+    iosBundleId: 'com.example.carpinteria-dp',
   );
 }

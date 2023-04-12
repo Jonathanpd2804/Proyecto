@@ -46,8 +46,8 @@ export 'package:david_perez/widgets/square_tile.dart';
 export 'package:david_perez/widgets/custom_appbar.dart';
 export 'package:david_perez/widgets/custom_drawer.dart';
 export 'package:david_perez/widgets/card_image_widget.dart';
-export 'package:david_perez/widgets/listas/task_list_view.dart';
-export 'package:david_perez/widgets/listas/citas_list_view.dart';
+export 'package:david_perez/widgets/lists/task_list_view.dart';
+export 'package:david_perez/widgets/lists/citas_list_view.dart';
 
 //Pub dev
 export 'package:auto_size_text/auto_size_text.dart';

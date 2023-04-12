@@ -1,18 +1,17 @@
 import '../exports.dart';
 
-// ignore: must_be_immutable
 class CardImageWidget extends StatelessWidget {
-  final trabajo;
+  final job;
 
-  const CardImageWidget({Key? key, required this.trabajo}) : super(key: key);
+  const CardImageWidget({Key? key, required this.job}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return FlipCard(
       fill: Fill
-          .fillBack, // Fill the back side of the card to make in the same size as the front.
-      direction: FlipDirection.HORIZONTAL, // default
-      side: CardSide.FRONT, // The side to initially display.
+          .fillBack, 
+      direction: FlipDirection.HORIZONTAL, 
+      side: CardSide.FRONT,
       front: Card(
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
@@ -23,7 +22,7 @@ class CardImageWidget extends StatelessWidget {
                 topLeft: Radius.circular(10),
                 topRight: Radius.circular(10),
               ),
-              child: Image.network(trabajo['Image']),
+              child: Image.network(job['Image']),
             ),
             const Padding(
                 padding: EdgeInsets.all(18.0), child: Icon(Icons.ads_click))
@@ -49,7 +48,7 @@ class CardImageWidget extends StatelessWidget {
                             padding: const EdgeInsets.only(right: 8.0),
                             child: SingleChildScrollView(
                               child: Text(
-                                trabajo["Tittle"],
+                                job["Tittle"],
                                 style: const TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 20,
@@ -72,7 +71,7 @@ class CardImageWidget extends StatelessWidget {
                                 padding: const EdgeInsets.only(right: 8.0),
                                 child: SingleChildScrollView(
                                   child: Text(
-                                    trabajo["Description"],
+                                    job["Description"],
                                     style: const TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 15,

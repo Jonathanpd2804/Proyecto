@@ -79,7 +79,7 @@ class _HomePageState extends State<HomePage> {
                                   as Map<String, dynamic>;
                               return SizedBox(
                                   width: 150,
-                                  child: CardImageWidget(trabajo: job));
+                                  child: CardImageWidget(job: job));
                             },
                           );
                         },

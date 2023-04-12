@@ -9,7 +9,7 @@ class PerfilPage extends StatelessWidget {
       UserDeleteService(); // Instancia de la clase UserDeleteService
 
   // ignore: non_constant_identifier_names
-  final CurrentUser = FirebaseAuth.instance.currentUser; //Usuario actual
+  final currentUser = FirebaseAuth.instance.currentUser; //Usuario actual
   PerfilPage({super.key, this.userEmail});
 
   List<String> docIDs = [];
@@ -21,7 +21,7 @@ class PerfilPage extends StatelessWidget {
         .snapshots();
   }
 
-  void confirmarEliminacion(BuildContext context, String documentId) {
+  void confirmDeletion(BuildContext context, String documentId) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -132,7 +132,7 @@ class PerfilPage extends StatelessWidget {
                                     ListTile(
                                       title:
                                           GetUserName(documentId: documentId),
-                                      trailing: userEmail == CurrentUser?.email
+                                      trailing: userEmail == currentUser?.email
                                           ? IconButton(
                                               icon: const Icon(Icons.edit),
                                               onPressed: () {
@@ -145,7 +145,7 @@ class PerfilPage extends StatelessWidget {
                                     ListTile(
                                       title: GetUserLastName(
                                           documentId: documentId),
-                                      trailing: userEmail == CurrentUser?.email
+                                      trailing: userEmail == currentUser?.email
                                           ? IconButton(
                                               icon: const Icon(Icons.edit),
                                               onPressed: () {
@@ -158,7 +158,7 @@ class PerfilPage extends StatelessWidget {
                                     ListTile(
                                       title: GetUserTelefono(
                                           documentId: documentId),
-                                      trailing: userEmail == CurrentUser?.email
+                                      trailing: userEmail == currentUser?.email
                                           ? IconButton(
                                               icon: const Icon(Icons.edit),
                                               onPressed: () {
@@ -174,7 +174,7 @@ class PerfilPage extends StatelessWidget {
                                         title: GetUserTurno(
                                             documentId: documentId),
                                         trailing: userEmail !=
-                                                CurrentUser?.email
+                                                currentUser?.email
                                             ? IconButton(
                                                 icon: const Icon(Icons.edit),
                                                 onPressed: () {
@@ -184,14 +184,14 @@ class PerfilPage extends StatelessWidget {
                                               )
                                             : null,
                                       ),
-                                    if (CurrentUser?.email == userEmail)
+                                    if (currentUser?.email == userEmail)
                                       ElevatedButton(
                                         style: ButtonStyle(
                                             backgroundColor:
                                                 MaterialStateProperty.all(
                                                     Colors.red)),
                                         onPressed: () {
-                                          confirmarEliminacion(
+                                          confirmDeletion(
                                               context, documentId);
                                         },
                                         child: const Text('Eliminar'),

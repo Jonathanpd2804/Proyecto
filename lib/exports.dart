@@ -9,14 +9,16 @@ export 'package:david_perez/pages/register_page.dart';
 export 'package:david_perez/pages/forgot_pw_page.dart';
 export 'package:david_perez/pages/home_page.dart';
 export 'package:david_perez/pages/trabajadores_page.dart';
-export 'package:david_perez/pages/calendarios/calendario_trabajador_page.dart';
-export 'package:david_perez/pages/calendarios/calendario_cliente_page.dart';
-export 'package:david_perez/pages/calendarios/calendario_citas_page.dart';
-export 'package:david_perez/pages/calendarios/calendario_tarde.dart';
-export 'package:david_perez/pages/calendarios/calendario_manana.dart';
-export 'package:david_perez/pages/profile/profile_page.dart';
+
+    //Calendars
+    export 'package:david_perez/pages/calendars/calendario_trabajador_page.dart';
+    export 'package:david_perez/pages/calendars/calendario_cliente_page.dart';
+    export 'package:david_perez/pages/calendars/calendario_citas_page.dart';
+    export 'package:david_perez/pages/calendars/calendario_tarde.dart';
+    export 'package:david_perez/pages/calendars/calendario_manana.dart';
 
     //Profile
+    export 'package:david_perez/pages/profile/profile_page.dart';
     export 'package:david_perez/pages/profile/manage/delete_user.dart';
     export 'package:david_perez/pages/profile/manage/edit_user.dart';
 
@@ -52,7 +54,6 @@ export 'package:auto_size_text/auto_size_text.dart';
 export 'package:table_calendar/table_calendar.dart';
 export 'package:flip_card/flip_card.dart';
 export 'package:flutter_svg/flutter_svg.dart';
-
 
 //Auth
 export 'package:david_perez/auth/google_auth.dart';

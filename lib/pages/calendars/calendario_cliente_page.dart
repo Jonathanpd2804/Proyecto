@@ -1,4 +1,4 @@
-import 'package:david_perez/pages/calendarios/calendario_citas_page.dart';
+import 'package:david_perez/pages/calendars/calendario_citas_page.dart';
 
 import '../../exports.dart';
 

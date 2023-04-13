@@ -7,7 +7,7 @@ class UserDeleteService {
     // ignore: non_constant_identifier_names
     final CurrentUser = _auth.currentUser;
 
-    if (CurrentUser != null && CurrentUser?.email == email) {
+    if (CurrentUser != null && CurrentUser.email == email) {
       // Si el usuario actual es el que se quiere eliminar, se cierra su sesión primero
       await CurrentUser.delete();
     } else {

@@ -12,10 +12,8 @@ export 'package:david_perez/pages/trabajadores_page.dart';
 
     //Calendars
     export 'package:david_perez/pages/calendars/calendar_worker_page.dart';
-    export 'package:david_perez/pages/calendars/calendario_cliente_page.dart';
-    export 'package:david_perez/pages/calendars/calendario_citas_page.dart';
-    export 'package:david_perez/pages/calendars/calendar_afternoon.dart';
-    export 'package:david_perez/pages/calendars/calendar.dart';
+    export 'package:david_perez/pages/calendars/calendar_quotes_page.dart';
+    export 'package:david_perez/pages/calendars/calendar_ask_quote.dart';
 
       //Services
       export 'package:david_perez/pages/calendars/services/calendar_service.dart';

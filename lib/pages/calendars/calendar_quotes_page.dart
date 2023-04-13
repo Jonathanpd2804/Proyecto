@@ -26,7 +26,7 @@ class _CalendarioCitasPageState extends State<CalendarioCitasPage> {
                 padding: EdgeInsets.only(top: 30.0, bottom: 30),
               ),
               SingleChildScrollView(
-                  child: SizedBox(height: 400, child: Calendar())),
+                  child: SizedBox(height: 400, child: CalendarAskQuotes())),
             ]),
           ),
         ));

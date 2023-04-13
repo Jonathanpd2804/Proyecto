@@ -1,15 +1,15 @@
 import '../../exports.dart';
 import 'package:intl/intl.dart';
 
-class Calendar extends StatefulWidget {
+class CalendarAskQuotes extends StatefulWidget {
   final user = FirebaseAuth.instance.currentUser;
-  Calendar({Key? key}) : super(key: key);
+  CalendarAskQuotes({Key? key}) : super(key: key);
 
   @override
-  State<Calendar> createState() => _CalendarState();
+  State<CalendarAskQuotes> createState() => _CalendarAskQuotesState();
 }
 
-class _CalendarState extends State<Calendar> {
+class _CalendarAskQuotesState extends State<CalendarAskQuotes> {
   late CalendarFormat _calendarFormat;
   late DateTime _focusedDay;
   DateTime? _selectedDay;
@@ -27,13 +27,15 @@ class _CalendarState extends State<Calendar> {
     _focusedDay = DateTime.now();
   }
 
-  Future<bool> _isDaySelectable(DateTime day) async {
-    if (day.isBefore(DateTime.now()) ||
+  bool _isDaySelectable(DateTime day, List<String> citasOcupadas) {
+    if (day.isBefore(DateTime(
+            DateTime.now().year, DateTime.now().month, DateTime.now().day)) ||
         day.weekday == DateTime.saturday ||
         day.weekday == DateTime.sunday) {
       return false;
     }
-    return !(await _allCitasOcupadas(day));
+    final List<String> todasCitas = _getCitas(day, citasOcupadas);
+    return citasOcupadas.length != todasCitas.length;
   }
 
   Future<bool> _allCitasOcupadas(DateTime date) async {
@@ -205,15 +207,19 @@ class _CalendarState extends State<Calendar> {
         selectedDayPredicate: (day) {
           return isSameDay(_selectedDay, day);
         },
-        onDaySelected: (selectedDay, focusedDay) async {
-          if (await _isDaySelectable(selectedDay)) {
-            setState(() {
-              _selectedDay = selectedDay;
-              _focusedDay = DateTime(selectedDay.year, selectedDay.month, 1);
-            });
+        onDaySelected: (selectedDay, focusedDay) {
+          // Obtén las citas ocupadas en el día seleccionado
+          _getCitasOcupadas(selectedDay).then((citasOcupadas) {
+            // Verifica si el día es seleccionable antes de cambiar el estado y mostrar la lista de citas
+            if (_isDaySelectable(selectedDay, citasOcupadas)) {
+              setState(() {
+                _selectedDay = selectedDay;
+                _focusedDay = DateTime(selectedDay.year, selectedDay.month, 1);
+              });
 
-            _showCitasList(selectedDay);
-          }
+              _showCitasList(selectedDay);
+            }
+          });
         },
         calendarStyle: const CalendarStyle(
           outsideDaysVisible: false,

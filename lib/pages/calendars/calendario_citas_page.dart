@@ -19,26 +19,16 @@ class _CalendarioCitasPageState extends State<CalendarioCitasPage> {
         ),
         endDrawer: CustomDrawer(),
         body: SingleChildScrollView(
-          child: Column(children: [
-            const Padding(
-              padding: EdgeInsets.only(top: 30.0, bottom: 30),
-              child: Text(
-                "Turno de Mañana:",
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          child: Padding(
+            padding: const EdgeInsets.only(left: 30.0, right: 30),
+            child: Column(children: [
+              const Padding(
+                padding: EdgeInsets.only(top: 30.0, bottom: 30),
               ),
-            ),
-            SingleChildScrollView(
-                child: SizedBox(height: 400, child: CalendarioManana())),
-            const SizedBox(
-              height: 50,
-            ),
-            const Text(
-              "Turno de Tarde:",
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            ),
-            SingleChildScrollView(
-                child: SizedBox(height: 400, child: CalendarioTarde())),
-          ]),
+              SingleChildScrollView(
+                  child: SizedBox(height: 400, child: Calendar())),
+            ]),
+          ),
         ));
   }
 }

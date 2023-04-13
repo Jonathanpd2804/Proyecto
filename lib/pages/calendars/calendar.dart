@@ -1,42 +1,30 @@
 import '../../exports.dart';
 import 'package:intl/intl.dart';
 
-class CalendarioTarde extends StatefulWidget {
+class Calendar extends StatefulWidget {
   final user = FirebaseAuth.instance.currentUser;
-  CalendarioTarde({Key? key}) : super(key: key);
+  Calendar({Key? key}) : super(key: key);
 
   @override
-  State<CalendarioTarde> createState() => _CalendarioTardeState();
+  State<Calendar> createState() => _CalendarState();
 }
 
-class _CalendarioTardeState extends State<CalendarioTarde> {
+class _CalendarState extends State<Calendar> {
   late CalendarFormat _calendarFormat;
   late DateTime _focusedDay;
   DateTime? _selectedDay;
 
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
+  CalendarService calendarioService = CalendarService();
+
   @override
   void initState() {
     super.initState();
-    _eliminarCitasAntiguas(); // Añade esta línea para eliminar las citas antiguas al inicializar el widget
+    calendarioService
+        .eliminarCitasAntiguas(); // Eliminar las citas antiguas al inicializar el widget
     _calendarFormat = CalendarFormat.month;
     _focusedDay = DateTime.now();
-  }
-
-  Future<void> _eliminarCitasAntiguas() async {
-    final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-    final DateTime now = DateTime.now();
-    final DateTime startOfToday = DateTime(now.year, now.month, now.day);
-
-    final QuerySnapshot snapshot = await _firestore
-        .collection('citas')
-        .where('Fecha', isLessThan: startOfToday)
-        .get();
-
-    for (final doc in snapshot.docs) {
-      await _firestore.collection('citas').doc(doc.id).delete();
-    }
   }
 
   Future<bool> _isDaySelectable(DateTime day) async {
@@ -54,42 +42,34 @@ class _CalendarioTardeState extends State<CalendarioTarde> {
     return citasOcupadas.length == todasCitas.length;
   }
 
-  Future<QuerySnapshot<Object?>> getUserDataFuture() {
-    return FirebaseFirestore.instance
-        .collection('usuarios')
-        .where('Email', isEqualTo: widget.user?.email)
-        .get();
-  }
+  Future<void> _agregarCita(String cita, String direccion) async {
+    final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
-  Future<String?> getClienteUid() async {
-    QuerySnapshot<Object?> userDataQuery = await getUserDataFuture();
-
-    if (userDataQuery.docs.isNotEmpty) {
-      return userDataQuery.docs.first.id;
-    } else {
-      // Manejar el caso cuando no se encuentra el documento
-      return null;
-    }
-  }
-
-  Future<void> _agregarCita(String cita) async {
-    final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-
-    String? clienteUid = await getClienteUid();
+    String clienteUid = await calendarioService.getClienteUid();
 
     if (clienteUid != null) {
-      await _firestore
-          .collection('citas')
-          .add({'Fecha': DateTime.parse(cita), 'Cliente': clienteUid});
-    } else {
-      // Manejar el caso cuando no se encuentra el UID del cliente
+      DateTime citaDateTime = DateTime.parse(cita);
+      String turno = "";
+
+      if (citaDateTime.hour >= 8 && citaDateTime.hour < 17) {
+        turno = "Mañana";
+      } else if (citaDateTime.hour >= 17 && citaDateTime.hour < 20) {
+        turno = "Tarde";
+      }
+
+      await firestore.collection('citas').add({
+        'Fecha': citaDateTime,
+        'Cliente': clienteUid,
+        'Turno': turno,
+        'Dirección': direccion
+      });
     }
   }
 
   Future<List<String>> _getCitasOcupadas(DateTime date) async {
-    final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+    final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
-    final QuerySnapshot snapshot = await _firestore
+    final QuerySnapshot snapshot = await firestore
         .collection('citas')
         .where('Fecha',
             isGreaterThanOrEqualTo:
@@ -117,7 +97,7 @@ class _CalendarioTardeState extends State<CalendarioTarde> {
               return const Center(child: CircularProgressIndicator());
             }
 
-            final _citasOcupadas = snapshot.data!;
+            final citasOcupadas = snapshot.data!;
 
             return DraggableScrollableSheet(
               expand: false,
@@ -125,10 +105,10 @@ class _CalendarioTardeState extends State<CalendarioTarde> {
                   (BuildContext context, ScrollController scrollController) {
                 return ListView.builder(
                   controller: scrollController,
-                  itemCount: _getCitas(date, _citasOcupadas).length,
+                  itemCount: _getCitas(date, citasOcupadas).length,
                   itemBuilder: (BuildContext context, int index) {
-                    String cita = _getCitas(date, _citasOcupadas)[index];
-                    bool ocupada = _citasOcupadas.contains(cita);
+                    String cita = _getCitas(date, citasOcupadas)[index];
+                    bool ocupada = citasOcupadas.contains(cita);
 
                     return ListTile(
                       title: Text(cita),
@@ -138,14 +118,26 @@ class _CalendarioTardeState extends State<CalendarioTarde> {
                       ),
                       onTap: () async {
                         if (!ocupada) {
-                          // Muestra un diálogo para confirmar la cita
+                          String? direccion;
+                          // Muestra un diálogo para confirmar la cita y pedir la dirección
                           bool? confirmed = await showDialog<bool>(
                             context: context,
                             builder: (BuildContext context) {
                               return AlertDialog(
-                                title: const Text('Confirmar cita'),
-                                content: Text(
-                                    '¿Desea reservar la cita para las ${DateFormat('HH:mm').format(DateTime.parse(cita))}?'),
+                                title: const Text('Confirmar cita y dirección'),
+                                content: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Text(
+                                        '¿Desea reservar la cita para las ${DateFormat('HH:mm').format(DateTime.parse(cita))}?'),
+                                    SizedBox(height: 8),
+                                    TextField(
+                                      onChanged: (value) => direccion = value,
+                                      decoration: const InputDecoration(
+                                          hintText: "Dirección"),
+                                    ),
+                                  ],
+                                ),
                                 actions: [
                                   TextButton(
                                     onPressed: () =>
@@ -162,14 +154,13 @@ class _CalendarioTardeState extends State<CalendarioTarde> {
                             },
                           );
 
-                          if (confirmed == true) {
-                            // Agregar la cita ocupada a Firestore
-                            await _agregarCita(cita);
-                            // Actualizar la lista de citas ocupadas y cerrar el modal
+                          if (confirmed == true && direccion != null) {
+                            // Agregar la cita ocupada a Firestore con la dirección
+                            await _agregarCita(cita, direccion!);
+                            // Actualizar la lista de citas ocupadas
                             setState(() {
-                              _citasOcupadas.add(cita);
+                              citasOcupadas.add(cita);
                             });
-                            Navigator.of(context).pop();
                           }
                         }
                       },
@@ -187,7 +178,7 @@ class _CalendarioTardeState extends State<CalendarioTarde> {
   List<String> _getCitas(DateTime date, List<String> citasOcupadas) {
     final List<String> citas = [];
 
-    for (int i = 16; i < 20; i++) {
+    for (int i = 8; i < 21; i++) {
       DateTime citaTime = DateTime(date.year, date.month, date.day, i);
       String hora = DateFormat('yyyy-MM-dd HH:mm:ss').format(citaTime);
       citas.add(hora);

@@ -14,8 +14,11 @@ export 'package:david_perez/pages/trabajadores_page.dart';
     export 'package:david_perez/pages/calendars/calendar_worker_page.dart';
     export 'package:david_perez/pages/calendars/calendario_cliente_page.dart';
     export 'package:david_perez/pages/calendars/calendario_citas_page.dart';
-    export 'package:david_perez/pages/calendars/calendario_tarde.dart';
-    export 'package:david_perez/pages/calendars/calendario_manana.dart';
+    export 'package:david_perez/pages/calendars/calendar_afternoon.dart';
+    export 'package:david_perez/pages/calendars/calendar.dart';
+
+      //Services
+      export 'package:david_perez/pages/calendars/services/calendar_service.dart';
 
     //Profile
     export 'package:david_perez/pages/profile/profile_page.dart';

@@ -72,15 +72,18 @@ class _CalendarioMananaState extends State<CalendarioManana> {
     }
   }
 
-  Future<void> _agregarCita(String cita) async {
+  Future<void> _agregarCita(String cita, String direccion) async {
     final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
     String? clienteUid = await getClienteUid();
 
     if (clienteUid != null) {
-      await _firestore
-          .collection('citas')
-          .add({'Fecha': DateTime.parse(cita), 'Cliente': clienteUid});
+      await _firestore.collection('citas').add({
+        'Fecha': DateTime.parse(cita),
+        'Cliente': clienteUid,
+        'Turno': "Mañana",
+        'Dirección': direccion
+      });
     } else {
       // Manejar el caso cuando no se encuentra el UID del cliente
     }
@@ -104,7 +107,7 @@ class _CalendarioMananaState extends State<CalendarioManana> {
     }).toList();
   }
 
-  void _showCitasList(DateTime date) {
+    void _showCitasList(DateTime date) {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -117,7 +120,7 @@ class _CalendarioMananaState extends State<CalendarioManana> {
               return const Center(child: CircularProgressIndicator());
             }
 
-            final _citasOcupadas = snapshot.data!;
+            final citasOcupadas = snapshot.data!;
 
             return DraggableScrollableSheet(
               expand: false,
@@ -125,10 +128,10 @@ class _CalendarioMananaState extends State<CalendarioManana> {
                   (BuildContext context, ScrollController scrollController) {
                 return ListView.builder(
                   controller: scrollController,
-                  itemCount: _getCitas(date, _citasOcupadas).length,
+                  itemCount: _getCitas(date, citasOcupadas).length,
                   itemBuilder: (BuildContext context, int index) {
-                    String cita = _getCitas(date, _citasOcupadas)[index];
-                    bool ocupada = _citasOcupadas.contains(cita);
+                    String cita = _getCitas(date, citasOcupadas)[index];
+                    bool ocupada = citasOcupadas.contains(cita);
 
                     return ListTile(
                       title: Text(cita),
@@ -138,14 +141,26 @@ class _CalendarioMananaState extends State<CalendarioManana> {
                       ),
                       onTap: () async {
                         if (!ocupada) {
-                          // Muestra un diálogo para confirmar la cita
+                          String? direccion;
+                          // Muestra un diálogo para confirmar la cita y pedir la dirección
                           bool? confirmed = await showDialog<bool>(
                             context: context,
                             builder: (BuildContext context) {
                               return AlertDialog(
-                                title: const Text('Confirmar cita'),
-                                content: Text(
-                                    '¿Desea reservar la cita para las ${DateFormat('HH:mm').format(DateTime.parse(cita))}?'),
+                                title: const Text('Confirmar cita y dirección'),
+                                content: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Text(
+                                        '¿Desea reservar la cita para las ${DateFormat('HH:mm').format(DateTime.parse(cita))}?'),
+                                    SizedBox(height: 8),
+                                    TextField(
+                                      onChanged: (value) => direccion = value,
+                                      decoration: InputDecoration(
+                                          hintText: "Dirección"),
+                                    ),
+                                  ],
+                                ),
                                 actions: [
                                   TextButton(
                                     onPressed: () =>
@@ -162,14 +177,13 @@ class _CalendarioMananaState extends State<CalendarioManana> {
                             },
                           );
 
-                          if (confirmed == true) {
-                            // Agregar la cita ocupada a Firestore
-                            await _agregarCita(cita);
-                            // Actualizar la lista de citas ocupadas y cerrar el modal
+                          if (confirmed == true && direccion != null) {
+                            // Agregar la cita ocupada a Firestore con la dirección
+                            await _agregarCita(cita, direccion!);
+                            // Actualizar la lista de citas ocupadas
                             setState(() {
-                              _citasOcupadas.add(cita);
+                              citasOcupadas.add(cita);
                             });
-                            Navigator.of(context).pop();
                           }
                         }
                       },
@@ -183,6 +197,7 @@ class _CalendarioMananaState extends State<CalendarioManana> {
       },
     );
   }
+
 
   List<String> _getCitas(DateTime date, List<String> citasOcupadas) {
     final List<String> citas = [];

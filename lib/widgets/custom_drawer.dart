@@ -141,8 +141,8 @@ class _CustomDrawerState extends State<CustomDrawer> {
                         await Navigator.push(context,
                             MaterialPageRoute(builder: (context) {
                           if (isWorker) {
-                            return CalendarioTrabajador(
-                                trabajadorUid: documentID);
+                            return CalendarWorker(
+                                workerUid: documentID);
                           } else {
                             return CalendarioCliente(clienteUid: documentID);
                           }

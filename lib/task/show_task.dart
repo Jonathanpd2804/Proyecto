@@ -6,28 +6,28 @@ class ShowTaskDialog extends StatefulWidget {
   const ShowTaskDialog({Key? key, required this.task}) : super(key: key);
 
   @override
-  _ShowTaskDialogState createState() => _ShowTaskDialogState();
+  ShowTaskDialogState createState() => ShowTaskDialogState();
 }
 
-class _ShowTaskDialogState extends State<ShowTaskDialog> {
-  TextEditingController _titleController = TextEditingController();
-  TextEditingController _descriptionController = TextEditingController();
-  bool _isImportant = false;
-  bool _isDone = false;
+class ShowTaskDialogState extends State<ShowTaskDialog> {
+  TextEditingController titleController = TextEditingController();
+  TextEditingController descriptionController = TextEditingController();
+  bool isImportant = false;
+  bool isDone = false;
 
   @override
   void initState() {
     super.initState();
-    _titleController.text = widget.task['Título'];
-    _descriptionController.text = widget.task['Descripción'];
-    _isImportant = widget.task['Importante'];
-    _isDone = widget.task['Realizada'];
+    titleController.text = widget.task['Título'];
+    descriptionController.text = widget.task['Descripción'];
+    isImportant = widget.task['Importante'];
+    isDone = widget.task['Realizada'];
   }
 
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text('Tarea : ${_titleController.text}'),
+      title: Text('Tarea : ${titleController.text}'),
       content: SingleChildScrollView(
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -36,7 +36,7 @@ class _ShowTaskDialogState extends State<ShowTaskDialog> {
               children: [
                 Flexible(
                   child: Text(
-                    'Descripción: ${_descriptionController.text}',
+                    'Descripción: ${descriptionController.text}',
                     style: const TextStyle(fontSize: 16.0),
                     softWrap:
                         true, // Ajusta el texto automáticamente al ancho disponible

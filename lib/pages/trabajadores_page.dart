@@ -84,8 +84,8 @@ class ListaTrabajadores extends StatelessWidget {
                           await Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => CalendarioTrabajador(
-                                  trabajadorUid: trabajador.id,
+                                builder: (context) => CalendarWorker(
+                                  workerUid: trabajador.id,
                                     )),
                           );
                         },

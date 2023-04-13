@@ -5,8 +5,8 @@ class CreateTask {
   final TextEditingController descripcionController;
   final DateTime? fecha;
   final bool importante;
-  final String trabajador;
-  final String trabajadorEmail;
+  final String worker;
+  final String workerEmail;
   final String autorEmail;
 
   CreateTask({
@@ -14,8 +14,8 @@ class CreateTask {
     required this.descripcionController,
     required this.fecha,
     required this.importante,
-    required this.trabajador,
-    required this.trabajadorEmail,
+    required this.worker,
+    required this.workerEmail,
     required this.autorEmail,
   });
 
@@ -28,7 +28,7 @@ class CreateTask {
       throw Exception('Descripción inválida');
     }
 
-    bool asignada = autorEmail == trabajadorEmail;
+    bool asignada = autorEmail == workerEmail;
 
     await FirebaseFirestore.instance.collection('tareas').add({
       'Título': tituloController.text.trim(),
@@ -36,7 +36,7 @@ class CreateTask {
       'Fecha': fecha!.toUtc(),
       'Importante': importante,
       'Realizada': false,
-      'Trabajador': trabajador,
+      'worker': worker,
       'Asignada': !asignada,
     });
   }

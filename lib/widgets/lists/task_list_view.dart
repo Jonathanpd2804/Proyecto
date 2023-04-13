@@ -1,19 +1,19 @@
 import '../../exports.dart';
 
 class TaskListView extends StatelessWidget {
-  final String trabajadorUid;
-  final DateTime selectedDay;
-  final bool isAssigned;
-  final String? userEmail;
-  final String trabajadorEmail;
+  final String workerUid; //Trabajador a ver las tareas
+  final DateTime selectedDay; //Día seleccionado
+  final bool isAssigned; //Si la tarea está asignada
+  final String? userEmail; //Correo de el usuario actual
+  final String workerEmail; //Correo de el trabajador a ver las tareas
 
   const TaskListView({
     Key? key,
-    required this.trabajadorUid,
+    required this.workerUid,
     required this.selectedDay,
     required this.isAssigned,
     required this.userEmail,
-    required this.trabajadorEmail,
+    required this.workerEmail,
   }) : super(key: key);
 
   @override
@@ -21,7 +21,7 @@ class TaskListView extends StatelessWidget {
     return StreamBuilder<QuerySnapshot>(
       stream: FirebaseFirestore.instance
           .collection('tareas')
-          .where('Trabajador', isEqualTo: trabajadorUid)
+          .where('Trabajador', isEqualTo: workerUid)
           .where('Asignada', isEqualTo: isAssigned)
           .where('Fecha',
               isGreaterThanOrEqualTo: Timestamp.fromDate(selectedDay))
@@ -38,40 +38,40 @@ class TaskListView extends StatelessWidget {
               child: Text('Error al cargar la lista de tareas'));
         }
 
-        final tareas = snapshot.data!.docs;
+        final tasks = snapshot.data!.docs;
 
-        if (tareas.isEmpty) {
+        if (tasks.isEmpty) {
           return const Center(
             child: Text('No hay tareas para este día.'),
           );
         }
 
         return ListView.builder(
-          itemCount: tareas.length,
+          itemCount: tasks.length,
           itemBuilder: (context, index) {
-            final tarea = tareas[index];
+            final task = tasks[index];
             return ListTile(
               title: Expanded(
                 child: Container(
                   decoration: BoxDecoration(
-                    color: tarea['Realizada'] ? Colors.green : Colors.red,
+                    color: task['Realizada'] ? Colors.green : Colors.red,
                     borderRadius: BorderRadius.circular(10.0),
                   ),
                   child: Padding(
                     padding: const EdgeInsets.all(12.0),
                     child: Row(
                       children: [
-                        if (tarea['Importante'])
+                        if (task['Importante'])
                           const Icon(Icons.star, color: Colors.yellow),
                         Padding(
                           padding: const EdgeInsets.only(left: 8.0),
                           child: Text(
-                            tarea['Título'],
+                            task['Título'],
                             style: const TextStyle(fontSize: 16.0),
                           ),
                         ),
                         const Spacer(),
-                        if (!tarea["Asignada"] && trabajadorEmail == userEmail)
+                        if (!task["Asignada"] && workerEmail == userEmail)
                           Padding(
                             padding: const EdgeInsets.only(right: 10.0),
                             child: GestureDetector(
@@ -80,13 +80,13 @@ class TaskListView extends StatelessWidget {
                                 showDialog(
                                   context: context,
                                   builder: (BuildContext context) {
-                                    return EditTaskDialog(task: tarea);
+                                    return EditTaskDialog(task: task);
                                   },
                                 );
                               },
                             ),
                           ),
-                        if (tarea["Asignada"] && trabajadorEmail != userEmail)
+                        if (task["Asignada"] && workerEmail != userEmail)
                           Padding(
                             padding: const EdgeInsets.only(right: 10.0),
                             child: GestureDetector(
@@ -95,15 +95,15 @@ class TaskListView extends StatelessWidget {
                                 showDialog(
                                   context: context,
                                   builder: (BuildContext context) {
-                                    return EditTaskDialog(task: tarea);
+                                    return EditTaskDialog(task: task);
                                   },
                                 );
                               },
                             ),
                           ),
-                        if (tarea["Asignada"] &&
-                            !tarea["Realizada"] &&
-                            trabajadorEmail == userEmail)
+                        if (task["Asignada"] &&
+                            !task["Realizada"] &&
+                            workerEmail == userEmail)
                           Padding(
                             padding: const EdgeInsets.only(right: 10.0),
                             child: GestureDetector(
@@ -112,14 +112,14 @@ class TaskListView extends StatelessWidget {
                                 DocumentReference tareaRef = FirebaseFirestore
                                     .instance
                                     .collection('tareas')
-                                    .doc(tarea.id);
+                                    .doc(task.id);
                                 tareaRef.update({'Realizada': true});
                               },
                             ),
                           ),
-                        if (tarea["Asignada"] &&
-                            tarea["Realizada"] &&
-                            trabajadorEmail == userEmail)
+                        if (task["Asignada"] &&
+                            task["Realizada"] &&
+                            workerEmail == userEmail)
                           Padding(
                             padding: const EdgeInsets.only(right: 10.0),
                             child: GestureDetector(
@@ -128,7 +128,7 @@ class TaskListView extends StatelessWidget {
                                 DocumentReference tareaRef = FirebaseFirestore
                                     .instance
                                     .collection('tareas')
-                                    .doc(tarea.id);
+                                    .doc(task.id);
                                 tareaRef.update({'Realizada': false});
                               },
                             ),
@@ -139,7 +139,7 @@ class TaskListView extends StatelessWidget {
                             showDialog(
                               context: context,
                               builder: (BuildContext context) {
-                                return ShowTaskDialog(task: tarea);
+                                return ShowTaskDialog(task: task);
                               },
                             );
                           },

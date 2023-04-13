@@ -1,21 +1,21 @@
 
 import '../../exports.dart';
 
-class CalendarioTrabajador extends StatefulWidget {
-  final String trabajadorUid;
+class CalendarWorker extends StatefulWidget {
+  final String workerUid;
   final user = FirebaseAuth.instance.currentUser;
 
-  CalendarioTrabajador({
+  CalendarWorker({
     Key? key,
-    required this.trabajadorUid,
+    required this.workerUid,
   }) : super(key: key);
 
   @override
   // ignore: library_private_types_in_public_api
-  _CalendarioTrabajadorState createState() => _CalendarioTrabajadorState();
+  _CalendarWorkerState createState() => _CalendarWorkerState();
 }
 
-class _CalendarioTrabajadorState extends State<CalendarioTrabajador> {
+class _CalendarWorkerState extends State<CalendarWorker> {
   late CalendarFormat _calendarFormat;
   late DateTime _focusedDay;
   DateTime? _selectedDay;
@@ -28,7 +28,7 @@ class _CalendarioTrabajadorState extends State<CalendarioTrabajador> {
   Future<List<String>> _getEventsOfDay(DateTime day) async {
     final tasks = await FirebaseFirestore.instance
         .collection('tareas')
-        .where('Trabajador', isEqualTo: widget.trabajadorUid)
+        .where('Trabajador', isEqualTo: widget.workerUid)
         .where('Realizada', isEqualTo: false)
         .where('Fecha', isGreaterThanOrEqualTo: Timestamp.fromDate(day.toUtc()))
         .where('Fecha',
@@ -77,7 +77,7 @@ class _CalendarioTrabajadorState extends State<CalendarioTrabajador> {
               child: FutureBuilder<DocumentSnapshot>(
                 future: FirebaseFirestore.instance
                     .collection('usuarios')
-                    .doc(widget.trabajadorUid)
+                    .doc(widget.workerUid)
                     .get(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
@@ -179,8 +179,8 @@ class _CalendarioTrabajadorState extends State<CalendarioTrabajador> {
                                   MaterialPageRoute(
                                       builder: (context) => CreateTaskPage(
                                             user: widget.user,
-                                            trabajadorEmail: trabajadorEmail,
-                                            trabajadorUid: widget.trabajadorUid,
+                                            workerEmail: trabajadorEmail,
+                                            workerUid: widget.workerUid,
                                             selectedDay: _selectedDay,
                                           )),
                                 );
@@ -193,11 +193,11 @@ class _CalendarioTrabajadorState extends State<CalendarioTrabajador> {
               const SizedBox(height: 10),
               Expanded(
                 child: TaskListView(
-                    trabajadorUid: widget.trabajadorUid,
+                    workerUid: widget.workerUid,
                     selectedDay: _selectedDay!,
                     isAssigned: false,
                     userEmail: widget.user!.email,
-                    trabajadorEmail: trabajadorEmail),
+                    workerEmail: trabajadorEmail),
               ),
             ] else
               const Expanded(
@@ -221,11 +221,11 @@ class _CalendarioTrabajadorState extends State<CalendarioTrabajador> {
               const SizedBox(height: 10),
               Expanded(
                 child: TaskListView(
-                  trabajadorUid: widget.trabajadorUid,
+                  workerUid: widget.workerUid,
                   selectedDay: _selectedDay!,
                   isAssigned: true,
                   userEmail: widget.user!.email,
-                  trabajadorEmail: trabajadorEmail,
+                  workerEmail: trabajadorEmail,
                 ),
               ),
             ] else

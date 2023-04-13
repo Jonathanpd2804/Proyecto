@@ -1,16 +1,16 @@
 import '../exports.dart';
 
 class CreateTaskPage extends StatefulWidget {
-  final String trabajadorUid;
+  final String workerUid;
   final dynamic user;
-  final String trabajadorEmail;
+  final String workerEmail;
   final DateTime? selectedDay;
 
   CreateTaskPage({
     required this.user,
-    required this.trabajadorUid,
+    required this.workerUid,
     this.selectedDay,
-    required this.trabajadorEmail,
+    required this.workerEmail,
   });
 
   @override
@@ -88,8 +88,8 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
                   descripcionController: descripcionController,
                   fecha: widget.selectedDay,
                   importante: _esImportante,
-                  trabajador: widget.trabajadorUid,
-                  trabajadorEmail: widget.trabajadorEmail,
+                  worker: widget.workerUid,
+                  workerEmail: widget.workerEmail,
                   autorEmail: widget.user.email,
                 );
 

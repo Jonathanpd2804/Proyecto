@@ -39,6 +39,7 @@ export 'package:firebase_auth/firebase_auth.dart';
 export 'firebase_options.dart';
 export 'package:cloud_firestore/cloud_firestore.dart';
 
+
 //Widgets
 export 'package:david_perez/widgets/my_button.dart';
 export 'package:david_perez/widgets/my_textfield.dart';
@@ -71,3 +72,4 @@ export 'package:david_perez/read_data/get_user_telefono.dart';
 export 'package:david_perez/read_data/get_user_horario.dart';
 export 'package:david_perez/read_data/get_user_is_boss.dart';
 export 'package:david_perez/read_data/get_user_is_worker.dart';
+export 'package:david_perez/read_data/get_user_document_id.dart';

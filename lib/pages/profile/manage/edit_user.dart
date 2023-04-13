@@ -83,8 +83,8 @@ class UserEditor {
     );
   }
 
-  static void editUserTelefono(BuildContext context, String documentId) {
-    TextEditingController telefonoController = TextEditingController();
+  static void editUserPhone(BuildContext context, String documentId) {
+    TextEditingController phoneController = TextEditingController();
 
     showDialog(
       context: context,
@@ -92,7 +92,7 @@ class UserEditor {
         return AlertDialog(
           title: const Text('Editar telefono'),
           content: TextField(
-            controller: telefonoController,
+            controller: phoneController,
             decoration: const InputDecoration(
               labelText: 'Nuevo telefono',
             ),
@@ -106,12 +106,12 @@ class UserEditor {
             ),
             TextButton(
               onPressed: () async {
-                String newTelefono = telefonoController.text;
-                if (newTelefono.isNotEmpty) {
+                String newPhone = phoneController.text;
+                if (newPhone.isNotEmpty) {
                   await FirebaseFirestore.instance
                       .collection('usuarios')
                       .doc(documentId)
-                      .update({'Telefono': newTelefono});
+                      .update({'Telefono': newPhone});
                 }
                 // ignore: use_build_context_synchronously
                 Navigator.pop(context);
@@ -124,8 +124,8 @@ class UserEditor {
     );
   }
 
-  static void editUserTurno(BuildContext context, String documentId) {
-    String? newTurno;
+  static void editUserTurn(BuildContext context, String documentId) {
+    String? newTurn;
 
     showDialog(
       context: context,
@@ -133,7 +133,7 @@ class UserEditor {
         return AlertDialog(
           title: const Text('Editar turno'),
           content: DropdownButton<String>(
-            value: newTurno,
+            value: newTurn,
             hint: const Text('Selecciona un turno'),
             items: <String>['Mañana', 'Tarde'].map<DropdownMenuItem<String>>(
               (String value) {
@@ -144,7 +144,7 @@ class UserEditor {
               },
             ).toList(),
             onChanged: (String? newValue) {
-              newTurno = newValue;
+              newTurn = newValue;
             },
           ),
           actions: [
@@ -156,11 +156,11 @@ class UserEditor {
             ),
             TextButton(
               onPressed: () async {
-                if (newTurno != null) {
+                if (newTurn != null) {
                   await FirebaseFirestore.instance
                       .collection('usuarios')
                       .doc(documentId)
-                      .update({'Turno': newTurno});
+                      .update({'Turno': newTurn});
                 }
                 // ignore: use_build_context_synchronously
                 Navigator.pop(context);

@@ -162,14 +162,13 @@ class PerfilPage extends StatelessWidget {
                                           ? IconButton(
                                               icon: const Icon(Icons.edit),
                                               onPressed: () {
-                                                UserEditor.editUserTelefono(
+                                                UserEditor.editUserPhone(
                                                     context, documentId);
                                               },
                                             )
                                           : null,
                                     ),
-                                    if (user["Medidor"] == true ||
-                                        user["Medidor"] != null)
+                                    if (user["Medidor"] == true)
                                       ListTile(
                                         title: GetUserTurno(
                                             documentId: documentId),
@@ -178,7 +177,7 @@ class PerfilPage extends StatelessWidget {
                                             ? IconButton(
                                                 icon: const Icon(Icons.edit),
                                                 onPressed: () {
-                                                  UserEditor.editUserTurno(
+                                                  UserEditor.editUserTurn(
                                                       context, documentId);
                                                 },
                                               )

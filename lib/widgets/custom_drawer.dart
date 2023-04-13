@@ -13,16 +13,30 @@ class _CustomDrawerState extends State<CustomDrawer> {
   // Variables para saber si el usuario es trabajador o jefe
   bool isWorker = false;
   bool isBoss = false;
-
   String documentID = "";
 
   // Instancias de las clases que nos permiten verificar si el usuario es jefe o trabajador
   late UserIsBoss userIsBoss;
   late UserIsWorker userIsWorker;
+  late UserDocumentID userDocumentID;
+  
+  
+
 
   @override
   void initState() {
     super.initState();
+// Inicialización de la instancia de UserDocumentID y obtención del documentID
+    if (widget.currentUser != null) {
+      userDocumentID = UserDocumentID(widget.currentUser!);
+      userDocumentID.getUserDocumentID().then((_) {
+        setState(() {
+          documentID = userDocumentID.documentID;
+        });
+      });
+    }
+
+
     // Inicialización de la instancia de UserIsBoss y obtención del valor isBoss
     userIsBoss = UserIsBoss(widget.currentUser);
     userIsBoss.getUser().then((_) {

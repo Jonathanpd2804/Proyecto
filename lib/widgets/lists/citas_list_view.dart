@@ -48,7 +48,7 @@ class CitasListView extends StatelessWidget {
           );
         }
 
-        if (selectedDay == null) {
+        if (citas.isEmpty && selectedDay == null) {
           return const Center(
             child: Text('No tienes ninguna cita'),
           );

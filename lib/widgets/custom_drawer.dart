@@ -19,9 +19,6 @@ class _CustomDrawerState extends State<CustomDrawer> {
   late UserIsBoss userIsBoss;
   late UserIsWorker userIsWorker;
   late UserDocumentID userDocumentID;
-  
-  
-
 
   @override
   void initState() {
@@ -35,7 +32,6 @@ class _CustomDrawerState extends State<CustomDrawer> {
         });
       });
     }
-
 
     // Inicialización de la instancia de UserIsBoss y obtención del valor isBoss
     userIsBoss = UserIsBoss(widget.currentUser);
@@ -123,9 +119,8 @@ class _CustomDrawerState extends State<CustomDrawer> {
                   },
                 ),
               ),
-            if (widget.currentUser != null)
-              Column(
-                children: [
+            if (widget.currentUser != null && isWorker)
+              
                   Padding(
                     padding: const EdgeInsets.only(left: 10.0),
                     child: ListTile(
@@ -140,12 +135,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                       onTap: () async {
                         await Navigator.push(context,
                             MaterialPageRoute(builder: (context) {
-                          if (isWorker) {
-                            return CalendarWorker(
-                                workerUid: documentID);
-                          } else {
-                            return CalendarioCliente(clienteUid: documentID);
-                          }
+                          return CalendarWorker(workerUid: documentID);
                         }));
                       },
                     ),
@@ -158,7 +148,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                         color: Colors.white,
                       ),
                       title: const Text(
-                        'Pedir Citas',
+                        'Pedir Cita',
                         style: TextStyle(color: Colors.white),
                       ),
                       onTap: () async {
@@ -171,8 +161,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                       },
                     ),
                   ),
-                ],
-              ),
+                              
             if (widget.currentUser != null && isBoss)
               Padding(
                 padding: const EdgeInsets.only(left: 10.0),

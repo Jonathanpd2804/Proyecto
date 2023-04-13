@@ -61,7 +61,8 @@ class _CalendarState extends State<Calendar> {
         'Fecha': citaDateTime,
         'Cliente': clienteUid,
         'Turno': turno,
-        'Dirección': direccion
+        'Dirección': direccion,
+        'Realizada': false
       });
     }
   }

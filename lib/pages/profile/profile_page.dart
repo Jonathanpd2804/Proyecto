@@ -1,23 +1,45 @@
 import '../../exports.dart';
 
 // ignore: must_be_immutable
-class PerfilPage extends StatelessWidget {
+class PerfilPage extends StatefulWidget {
   // ignore: prefer_typing_uninitialized_variables
-  final userEmail; //Correo de el usuario a ver
+  final userEmail;
 
-  final UserDeleteService userDeleteService =
-      UserDeleteService(); // Instancia de la clase UserDeleteService
+  const PerfilPage({Key? key, this.userEmail}) : super(key: key);
 
-  // ignore: non_constant_identifier_names
-  final currentUser = FirebaseAuth.instance.currentUser; //Usuario actual
-  PerfilPage({super.key, this.userEmail});
+  @override
+  State<PerfilPage> createState() => _PerfilPageState();
+}
 
+class _PerfilPageState extends State<PerfilPage> {
+  //Correo del usuario a ver
+  final UserDeleteService userDeleteService = UserDeleteService();
+  // Instancia de la clase UserDeleteService
+  final currentUser = FirebaseAuth.instance.currentUser;
   List<String> docIDs = [];
+
+  String documentID = "";
+
+  late UserDocumentID userDocumentID;
+
+  @override
+  void initState() {
+    super.initState();
+// Inicialización de la instancia de UserDocumentID y obtención del documentID
+    if (currentUser != null) {
+      userDocumentID = UserDocumentID(currentUser!);
+      userDocumentID.getUserDocumentID().then((_) {
+        setState(() {
+          documentID = userDocumentID.documentID;
+        });
+      });
+    }
+  }
 
   Stream<QuerySnapshot> getDocsStream() {
     return FirebaseFirestore.instance
         .collection('usuarios')
-        .where('Email', isEqualTo: userEmail)
+        .where('Email', isEqualTo: widget.userEmail)
         .snapshots();
   }
 
@@ -57,8 +79,8 @@ class PerfilPage extends StatelessWidget {
                       .doc(documentId)
                       .delete();
                 }).then((_) {
-                  userDeleteService.deleteUserByEmail(
-                      userEmail); // Llama al método deleteUserByEmail de UserDeleteService
+                  userDeleteService.deleteUserByEmail(widget
+                      .userEmail); // Llama al método deleteUserByEmail de UserDeleteService
                 }).then((_) {
                   // Regresar a la página de autenticación
                   Navigator.pushReplacement(
@@ -132,47 +154,50 @@ class PerfilPage extends StatelessWidget {
                                     ListTile(
                                       title:
                                           GetUserName(documentId: documentId),
-                                      trailing: userEmail == currentUser?.email
-                                          ? IconButton(
-                                              icon: const Icon(Icons.edit),
-                                              onPressed: () {
-                                                UserEditor.editUserName(
-                                                    context, documentId);
-                                              },
-                                            )
-                                          : null,
+                                      trailing:
+                                          widget.userEmail == currentUser?.email
+                                              ? IconButton(
+                                                  icon: const Icon(Icons.edit),
+                                                  onPressed: () {
+                                                    UserEditor.editUserName(
+                                                        context, documentId);
+                                                  },
+                                                )
+                                              : null,
                                     ),
                                     ListTile(
                                       title: GetUserLastName(
                                           documentId: documentId),
-                                      trailing: userEmail == currentUser?.email
-                                          ? IconButton(
-                                              icon: const Icon(Icons.edit),
-                                              onPressed: () {
-                                                UserEditor.editUserLastName(
-                                                    context, documentId);
-                                              },
-                                            )
-                                          : null,
+                                      trailing:
+                                          widget.userEmail == currentUser?.email
+                                              ? IconButton(
+                                                  icon: const Icon(Icons.edit),
+                                                  onPressed: () {
+                                                    UserEditor.editUserLastName(
+                                                        context, documentId);
+                                                  },
+                                                )
+                                              : null,
                                     ),
                                     ListTile(
                                       title: GetUserTelefono(
                                           documentId: documentId),
-                                      trailing: userEmail == currentUser?.email
-                                          ? IconButton(
-                                              icon: const Icon(Icons.edit),
-                                              onPressed: () {
-                                                UserEditor.editUserPhone(
-                                                    context, documentId);
-                                              },
-                                            )
-                                          : null,
+                                      trailing:
+                                          widget.userEmail == currentUser?.email
+                                              ? IconButton(
+                                                  icon: const Icon(Icons.edit),
+                                                  onPressed: () {
+                                                    UserEditor.editUserPhone(
+                                                        context, documentId);
+                                                  },
+                                                )
+                                              : null,
                                     ),
                                     if (user["Medidor"] == true)
                                       ListTile(
                                         title: GetUserTurno(
                                             documentId: documentId),
-                                        trailing: userEmail !=
+                                        trailing: widget.userEmail !=
                                                 currentUser?.email
                                             ? IconButton(
                                                 icon: const Icon(Icons.edit),
@@ -183,15 +208,14 @@ class PerfilPage extends StatelessWidget {
                                               )
                                             : null,
                                       ),
-                                    if (currentUser?.email == userEmail)
+                                    if (currentUser?.email == widget.userEmail)
                                       ElevatedButton(
                                         style: ButtonStyle(
                                             backgroundColor:
                                                 MaterialStateProperty.all(
                                                     Colors.red)),
                                         onPressed: () {
-                                          confirmDeletion(
-                                              context, documentId);
+                                          confirmDeletion(context, documentId);
                                         },
                                         child: const Text('Eliminar'),
                                       ),
@@ -213,6 +237,17 @@ class PerfilPage extends StatelessWidget {
                 ),
               ),
             ),
+            const Padding(
+              padding: EdgeInsets.only(top: 30.0, bottom: 15),
+              child: Text("Mis Citas",
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25)),
+            ),
+            Expanded(
+                child: CitasListView(
+              clienteEmail: currentUser?.email,
+              clienteUid: documentID,
+              userEmail: currentUser?.email,
+            )),
           ],
         ),
       ),

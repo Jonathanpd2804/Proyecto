@@ -1,31 +1,37 @@
 import '../../exports.dart';
+import 'package:intl/intl.dart';
 
 class CitasListView extends StatelessWidget {
-  final String clienteUid;
-  final DateTime selectedDay;
+  final String? clienteUid;
+  final DateTime? selectedDay;
   final String? userEmail;
-  final String clienteEmail;
+  final String? clienteEmail;
 
   const CitasListView({
     Key? key,
     required this.clienteUid,
-    required this.selectedDay,
+    this.selectedDay,
     required this.userEmail,
     required this.clienteEmail,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    Query citasQuery = FirebaseFirestore.instance
+        .collection('citas')
+        .where('Cliente', isEqualTo: clienteUid);
+
+    if (selectedDay != null) {
+      citasQuery = citasQuery
+          .where('Fecha',
+              isGreaterThanOrEqualTo: Timestamp.fromDate(selectedDay!))
+          .where('Fecha',
+              isLessThan: Timestamp.fromDate(DateTime(selectedDay!.year,
+                  selectedDay!.month, selectedDay!.day + 1)));
+    }
+
     return StreamBuilder<QuerySnapshot>(
-      stream: FirebaseFirestore.instance
-          .collection('citas')
-          .where('Cliente', isEqualTo: clienteUid)
-          .where('Fecha',
-              isGreaterThanOrEqualTo: Timestamp.fromDate(selectedDay))
-          .where('Fecha',
-              isLessThan: Timestamp.fromDate(DateTime(
-                  selectedDay.year, selectedDay.month, selectedDay.day + 1)))
-          .snapshots(),
+      stream: citasQuery.snapshots(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
@@ -36,9 +42,15 @@ class CitasListView extends StatelessWidget {
 
         final citas = snapshot.data!.docs;
 
-        if (citas.isEmpty) {
+        if (citas.isEmpty && selectedDay != null) {
           return const Center(
             child: Text('No hay citas para este día.'),
+          );
+        }
+
+        if (selectedDay == null) {
+          return const Center(
+            child: Text('No tienes ninguna cita'),
           );
         }
 
@@ -60,7 +72,8 @@ class CitasListView extends StatelessWidget {
                         Padding(
                           padding: const EdgeInsets.only(left: 8.0),
                           child: Text(
-                            tarea['Título'],
+                            DateFormat('dd/MM/yyyy').format(tarea['Fecha']
+                                .toDate()), // Formatea la fecha como un String
                             style: const TextStyle(fontSize: 16.0),
                           ),
                         ),

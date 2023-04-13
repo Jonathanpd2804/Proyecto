@@ -140,6 +140,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                       },
                     ),
                   ),
+                  if (widget.currentUser != null)
                   Padding(
                     padding: const EdgeInsets.only(left: 10.0),
                     child: ListTile(

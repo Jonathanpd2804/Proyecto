@@ -1,18 +1,18 @@
 import '../../exports.dart';
 
 class TaskListView extends StatelessWidget {
-  final String workerUid; //Trabajador a ver las tareas
-  final DateTime selectedDay; //Día seleccionado
-  final bool isAssigned; //Si la tarea está asignada
+  final String? workerUid; //Trabajador a ver las tareas
+  final DateTime? selectedDay; //Día seleccionado
+  final bool? isAssigned; //Si la tarea está asignada
   final String? userEmail; //Correo de el usuario actual
   final String workerEmail; //Correo de el trabajador a ver las tareas
 
   const TaskListView({
     Key? key,
-    required this.workerUid,
-    required this.selectedDay,
-    required this.isAssigned,
-    required this.userEmail,
+    this.workerUid,
+    this.selectedDay,
+    this.isAssigned,
+    this.userEmail,
     required this.workerEmail,
   }) : super(key: key);
 
@@ -24,10 +24,17 @@ class TaskListView extends StatelessWidget {
           .where('Trabajador', isEqualTo: workerUid)
           .where('Asignada', isEqualTo: isAssigned)
           .where('Fecha',
-              isGreaterThanOrEqualTo: Timestamp.fromDate(selectedDay))
+              isGreaterThanOrEqualTo: selectedDay != null
+                  ? Timestamp.fromDate(DateTime(
+                      selectedDay!.year, selectedDay!.month, selectedDay!.day))
+                  : Timestamp.fromDate(DateTime(
+                      2000, 1, 1))) // fecha de comodín si selectedDay es nulo
           .where('Fecha',
-              isLessThan: Timestamp.fromDate(DateTime(
-                  selectedDay.year, selectedDay.month, selectedDay.day + 1)))
+              isLessThan: selectedDay != null
+                  ? Timestamp.fromDate(DateTime(selectedDay!.year,
+                      selectedDay!.month, selectedDay!.day + 1))
+                  : Timestamp.fromDate(DateTime(
+                      2100, 1, 1))) // fecha de comodín si selectedDay es nulo
           .snapshots(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
@@ -40,9 +47,15 @@ class TaskListView extends StatelessWidget {
 
         final tasks = snapshot.data!.docs;
 
-        if (tasks.isEmpty) {
+        if (tasks.isEmpty && selectedDay != null) {
           return const Center(
             child: Text('No hay tareas para este día.'),
+          );
+        }
+
+        if (tasks.isEmpty && selectedDay == null) {
+          return const Center(
+            child: Text('No tiene tareas asignadas.'),
           );
         }
 

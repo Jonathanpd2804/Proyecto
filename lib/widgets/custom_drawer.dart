@@ -25,7 +25,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
     super.initState();
 // Inicialización de la instancia de UserDocumentID y obtención del documentID
     if (widget.currentUser != null) {
-      userDocumentID = UserDocumentID(widget.currentUser!);
+      userDocumentID = UserDocumentID(widget.currentUser!.email);
       userDocumentID.getUserDocumentID().then((_) {
         setState(() {
           documentID = userDocumentID.documentID;

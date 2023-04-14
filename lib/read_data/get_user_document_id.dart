@@ -2,15 +2,15 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class UserDocumentID {
-  final User user;
+  final String? userEmail;
   String documentID = "";
 
-  UserDocumentID(this.user);
+  UserDocumentID(this.userEmail);
 
   Future<void> getUserDocumentID() async {
     final querySnapshot = await FirebaseFirestore.instance
         .collection('usuarios')
-        .where('Email', isEqualTo: user.email)
+        .where('Email', isEqualTo: userEmail)
         .get();
 
     if (querySnapshot.docs.isEmpty) {

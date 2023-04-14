@@ -3,7 +3,7 @@ import '../../exports.dart';
 // ignore: must_be_immutable
 class PerfilPage extends StatefulWidget {
   // ignore: prefer_typing_uninitialized_variables
-  final userEmail;
+  final userEmail; //Email de el usuario a ver
 
   const PerfilPage({Key? key, this.userEmail}) : super(key: key);
 
@@ -12,7 +12,6 @@ class PerfilPage extends StatefulWidget {
 }
 
 class _PerfilPageState extends State<PerfilPage> {
-  //Correo del usuario a ver
   final UserDeleteService userDeleteService = UserDeleteService();
   // Instancia de la clase UserDeleteService
   final currentUser = FirebaseAuth.instance.currentUser;
@@ -27,7 +26,7 @@ class _PerfilPageState extends State<PerfilPage> {
     super.initState();
 // Inicialización de la instancia de UserDocumentID y obtención del documentID
     if (currentUser != null) {
-      userDocumentID = UserDocumentID(currentUser!);
+      userDocumentID = UserDocumentID(widget.userEmail);
       userDocumentID.getUserDocumentID().then((_) {
         setState(() {
           documentID = userDocumentID.documentID;
@@ -237,17 +236,24 @@ class _PerfilPageState extends State<PerfilPage> {
                 ),
               ),
             ),
-            const Padding(
-              padding: EdgeInsets.only(top: 30.0, bottom: 15),
-              child: Text("Mis Citas",
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25)),
+            Padding(
+              padding: const EdgeInsets.only(top: 30.0, bottom: 15),
+              child: Text(
+                  widget.userEmail == currentUser?.email
+                      ? "Mis Citas:"
+                      : "Sus Tareas Asignadas:",
+                  style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 25)),
             ),
             Expanded(
-                child: CitasListView(
-              clienteEmail: currentUser?.email,
-              clienteUid: documentID,
-              userEmail: currentUser?.email,
-            )),
+              child: widget.userEmail == currentUser?.email
+                  ? CitasListView(
+                      clienteEmail: currentUser?.email,
+                      clienteUid: documentID,
+                      userEmail: currentUser?.email,
+                    )
+                  : TaskListView(
+                      workerEmail: widget.userEmail, isAssigned: true),
+            ),
           ],
         ),
       ),

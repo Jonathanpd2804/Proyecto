@@ -1,4 +1,3 @@
-
 import '../../../exports.dart';
 
 class CalendarService {
@@ -38,5 +37,21 @@ class CalendarService {
     }
   }
 
-  
+  Future<QuerySnapshot<Object?>> getWorkerTurn(turn) {
+    return FirebaseFirestore.instance
+        .collection('usuarios')
+        .where('Turno', isEqualTo: turn)
+        .get();
+  }
+
+  Future<String> getWorkerUid(turn) async {
+    QuerySnapshot<Object?> userDataQuery = await getWorkerTurn(turn);
+
+    if (userDataQuery.docs.isNotEmpty) {
+      return userDataQuery.docs.first.id;
+    } else {
+      // Manejar el caso cuando no se encuentra el documento
+      return "";
+    }
+  }
 }

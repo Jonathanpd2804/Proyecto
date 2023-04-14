@@ -51,20 +51,35 @@ class _CalendarAskQuotesState extends State<CalendarAskQuotes> {
 
     if (clienteUid != null) {
       DateTime citaDateTime = DateTime.parse(cita);
-      String turno = "";
+      String turn = "";
 
       if (citaDateTime.hour >= 8 && citaDateTime.hour < 17) {
-        turno = "Mañana";
+        turn = "Mañana";
       } else if (citaDateTime.hour >= 17 && citaDateTime.hour < 20) {
-        turno = "Tarde";
+        turn = "Tarde";
       }
 
       await firestore.collection('citas').add({
         'Fecha': citaDateTime,
         'Cliente': clienteUid,
-        'Turno': turno,
+        'Turno': turn,
         'Dirección': direccion,
         'Realizada': false
+      });
+
+      //Agregarla a tareas de el trabajador que tenga ese turno
+
+      //Obtener el trabajador con el turno de la cita
+      String workerID = await calendarioService.getWorkerUid(turn);
+
+      await firestore.collection('tareas').add({
+        'Fecha': citaDateTime,
+        'Trabajador': workerID,
+        'Realizada': false,
+        'Asignada': true,
+        'Descripción': "Medición en: $direccion",
+        'Importante': true,
+        'Título': "Medición"
       });
     }
   }

@@ -195,7 +195,7 @@ class _PerfilPageState extends State<PerfilPage> {
                                     if (user["Medidor"] == true)
                                       ListTile(
                                         title: GetUserTurno(
-                                            documentId: documentId),
+                                            workerDocumentId: documentId),
                                         trailing: widget.userEmail !=
                                                 currentUser?.email
                                             ? IconButton(

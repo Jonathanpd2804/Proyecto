@@ -2,9 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class GetUserTurno extends StatelessWidget {
-  final String documentId;
+  final String workerDocumentId; //Id de el trabajador
 
-  const GetUserTurno({super.key, required this.documentId});
+  const GetUserTurno({super.key, required this.workerDocumentId});
 
 
   @override
@@ -13,7 +13,7 @@ class GetUserTurno extends StatelessWidget {
         FirebaseFirestore.instance.collection('usuarios');
 
     return FutureBuilder<DocumentSnapshot>(
-      future: users.doc(documentId).get(),
+      future: users.doc(workerDocumentId).get(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           Map<String, dynamic> data =

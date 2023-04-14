@@ -6,15 +6,17 @@ class TaskListView extends StatelessWidget {
   final bool? isAssigned; //Si la tarea está asignada
   final String? userEmail; //Correo de el usuario actual
   final String workerEmail; //Correo de el trabajador a ver las tareas
+  final bool? edit;
 
-  const TaskListView({
-    Key? key,
-    this.workerUid,
-    this.selectedDay,
-    this.isAssigned,
-    this.userEmail,
-    required this.workerEmail,
-  }) : super(key: key);
+  const TaskListView(
+      {Key? key,
+      this.workerUid,
+      this.selectedDay,
+      this.isAssigned,
+      this.userEmail,
+      required this.workerEmail,
+      this.edit})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -99,7 +101,9 @@ class TaskListView extends StatelessWidget {
                               },
                             ),
                           ),
-                        if (task["Asignada"] && workerEmail != userEmail)
+                        if (task["Asignada"] &&
+                            workerEmail != userEmail &&
+                            edit == null)
                           Padding(
                             padding: const EdgeInsets.only(right: 10.0),
                             child: GestureDetector(

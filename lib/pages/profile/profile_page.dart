@@ -252,7 +252,7 @@ class _PerfilPageState extends State<PerfilPage> {
                       userEmail: currentUser?.email,
                     )
                   : TaskListView(
-                      workerEmail: widget.userEmail, isAssigned: true),
+                      workerEmail: widget.userEmail, isAssigned: true, edit: false),
             ),
           ],
         ),

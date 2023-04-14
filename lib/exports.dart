@@ -31,6 +31,7 @@ export 'package:david_perez/task/show_task.dart';
 
 //Quotes
 export 'package:david_perez/quotes/show_quote.dart';
+export 'package:david_perez/quotes/delete_quote.dart';
 
 //Citas
 export 'package:david_perez/citas/create_cita.dart';

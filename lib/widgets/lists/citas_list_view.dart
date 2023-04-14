@@ -1,3 +1,4 @@
+
 import '../../exports.dart';
 import 'package:intl/intl.dart';
 
@@ -78,6 +79,20 @@ class CitasListView extends StatelessWidget {
                           ),
                         ),
                         const Spacer(),
+                        Padding(
+                          padding: const EdgeInsets.only(right: 10.0),
+                          child: GestureDetector(
+                            child: const Icon(Icons.delete),
+                            onTap: () {
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return DeleteQuoteDialog(quote: quote);
+                                },
+                              );
+                            },
+                          ),
+                        ),
                         if (!quote["Realizada"] && clienteEmail != userEmail)
                           Padding(
                             padding: const EdgeInsets.only(right: 10.0),

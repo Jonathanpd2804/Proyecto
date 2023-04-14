@@ -58,12 +58,20 @@ class _CustomDrawerState extends State<CustomDrawer> {
         children: [
           Column(children: [
             DrawerHeader(
-              child: Padding(
-                padding: const EdgeInsets.only(top: 60.0, bottom: 60),
-                child: Transform.scale(
-                  scale: 7,
-                  child: Image.asset(
-                    'lib/images/logo.png',
+              child: InkWell(
+                onTap: () async {
+                  await Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const HomePage()),
+                  );
+                },
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 60.0, bottom: 60),
+                  child: Transform.scale(
+                    scale: 7,
+                    child: Image.asset(
+                      'lib/images/logo.png',
+                    ),
                   ),
                 ),
               ),
@@ -120,49 +128,47 @@ class _CustomDrawerState extends State<CustomDrawer> {
                 ),
               ),
             if (widget.currentUser != null && isWorker)
-              
-                  Padding(
-                    padding: const EdgeInsets.only(left: 10.0),
-                    child: ListTile(
-                      leading: const Icon(
-                        Icons.edit_calendar,
-                        color: Colors.white,
-                      ),
-                      title: const Text(
-                        'Mi Calendario',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                      onTap: () async {
-                        await Navigator.push(context,
-                            MaterialPageRoute(builder: (context) {
-                          return CalendarWorker(workerUid: documentID);
-                        }));
-                      },
-                    ),
+              Padding(
+                padding: const EdgeInsets.only(left: 10.0),
+                child: ListTile(
+                  leading: const Icon(
+                    Icons.edit_calendar,
+                    color: Colors.white,
                   ),
-                  if (widget.currentUser != null)
-                  Padding(
-                    padding: const EdgeInsets.only(left: 10.0),
-                    child: ListTile(
-                      leading: const Icon(
-                        Icons.calendar_month,
-                        color: Colors.white,
-                      ),
-                      title: const Text(
-                        'Pedir Cita',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                      onTap: () async {
-                        await Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const CalendarioCitasPage(),
-                          ),
-                        );
-                      },
-                    ),
+                  title: const Text(
+                    'Mi Calendario',
+                    style: TextStyle(color: Colors.white),
                   ),
-                              
+                  onTap: () async {
+                    await Navigator.push(context,
+                        MaterialPageRoute(builder: (context) {
+                      return CalendarWorker(workerUid: documentID);
+                    }));
+                  },
+                ),
+              ),
+            if (widget.currentUser != null)
+              Padding(
+                padding: const EdgeInsets.only(left: 10.0),
+                child: ListTile(
+                  leading: const Icon(
+                    Icons.calendar_month,
+                    color: Colors.white,
+                  ),
+                  title: const Text(
+                    'Pedir Cita',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  onTap: () async {
+                    await Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const CalendarioCitasPage(),
+                      ),
+                    );
+                  },
+                ),
+              ),
             if (widget.currentUser != null && isBoss)
               Padding(
                 padding: const EdgeInsets.only(left: 10.0),

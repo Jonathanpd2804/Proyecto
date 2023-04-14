@@ -40,29 +40,29 @@ class CitasListView extends StatelessWidget {
           return const Center(child: Text('Error al cargar la lista de citas'));
         }
 
-        final citas = snapshot.data!.docs;
+        final quotes = snapshot.data!.docs;
 
-        if (citas.isEmpty && selectedDay != null) {
+        if (quotes.isEmpty && selectedDay != null) {
           return const Center(
             child: Text('No hay citas para este día.'),
           );
         }
 
-        if (citas.isEmpty && selectedDay == null) {
+        if (quotes.isEmpty && selectedDay == null) {
           return const Center(
             child: Text('No tienes ninguna cita'),
           );
         }
 
         return ListView.builder(
-          itemCount: citas.length,
+          itemCount: quotes.length,
           itemBuilder: (context, index) {
-            final tarea = citas[index];
+            final quote = quotes[index];
             return ListTile(
               title: Expanded(
                 child: Container(
                   decoration: BoxDecoration(
-                    color: tarea['Realizada'] ? Colors.green : Colors.red,
+                    color: Colors.grey,
                     borderRadius: BorderRadius.circular(10.0),
                   ),
                   child: Padding(
@@ -72,27 +72,13 @@ class CitasListView extends StatelessWidget {
                         Padding(
                           padding: const EdgeInsets.only(left: 8.0),
                           child: Text(
-                            DateFormat('dd/MM/yyyy').format(tarea['Fecha']
+                            DateFormat('dd/MM/yyyy').format(quote['Fecha']
                                 .toDate()), // Formatea la fecha como un String
                             style: const TextStyle(fontSize: 16.0),
                           ),
                         ),
                         const Spacer(),
-                        Padding(
-                          padding: const EdgeInsets.only(right: 10.0),
-                          child: GestureDetector(
-                            child: const Icon(Icons.edit),
-                            onTap: () {
-                              showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return EditTaskDialog(task: tarea);
-                                },
-                              );
-                            },
-                          ),
-                        ),
-                        if (!tarea["Realizada"] && clienteEmail != userEmail)
+                        if (!quote["Realizada"] && clienteEmail != userEmail)
                           Padding(
                             padding: const EdgeInsets.only(right: 10.0),
                             child: GestureDetector(
@@ -101,7 +87,7 @@ class CitasListView extends StatelessWidget {
                                 DocumentReference tareaRef = FirebaseFirestore
                                     .instance
                                     .collection('citas')
-                                    .doc(tarea.id);
+                                    .doc(quote.id);
                                 tareaRef.update({'Realizada': true});
                               },
                             ),
@@ -112,7 +98,7 @@ class CitasListView extends StatelessWidget {
                             showDialog(
                               context: context,
                               builder: (BuildContext context) {
-                                return ShowTaskDialog(task: tarea);
+                                return ShowQuoteDialog(quote: quote);
                               },
                             );
                           },

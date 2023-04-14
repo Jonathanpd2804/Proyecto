@@ -36,7 +36,7 @@ class CreateTask {
       'Fecha': fecha!.toUtc(),
       'Importante': importante,
       'Realizada': false,
-      'worker': worker,
+      'Trabajador': worker,
       'Asignada': !asignada,
     });
   }

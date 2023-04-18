@@ -57,12 +57,6 @@ class TaskListView extends StatelessWidget {
             );
           }
 
-          if (tasks.isEmpty && selectedDay == null) {
-            return const Center(
-              child: Text('No tiene tareas asignadas.'),
-            );
-          }
-
           return ListView.builder(
             itemCount: tasks.length,
             itemBuilder: (context, index) {

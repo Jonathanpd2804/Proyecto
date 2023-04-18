@@ -54,6 +54,7 @@ export 'package:auto_size_text/auto_size_text.dart';
 export 'package:table_calendar/table_calendar.dart';
 export 'package:flip_card/flip_card.dart';
 export 'package:flutter_svg/flutter_svg.dart';
+export 'package:url_launcher/url_launcher.dart';
 
 //Auth
 export 'package:david_perez/auth/google_auth.dart';

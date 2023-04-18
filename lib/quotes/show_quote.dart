@@ -12,7 +12,7 @@ class ShowQuoteDialog extends StatefulWidget {
 }
 
 class ShowQuoteDialogState extends State<ShowQuoteDialog> {
-  TextEditingController addresController = TextEditingController();
+  TextEditingController addressController = TextEditingController();
   TextEditingController dateController = TextEditingController();
   bool isImportant = false;
   bool isDone = false;
@@ -20,12 +20,14 @@ class ShowQuoteDialogState extends State<ShowQuoteDialog> {
   @override
   void initState() {
     super.initState();
-    addresController.text = widget.quote['Dirección'];
+    addressController.text = widget.quote['Dirección'];
     final dateTimestamp = widget.quote['Fecha'] as Timestamp;
     final dateDateTime = dateTimestamp.toDate();
     final dateString = DateFormat('dd/MM/yyyy').format(dateDateTime);
     dateController.text = dateString;
   }
+
+ 
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +41,7 @@ class ShowQuoteDialogState extends State<ShowQuoteDialog> {
               children: [
                 Flexible(
                   child: Text(
-                    'Dirección: ${addresController.text}',
+                    'Dirección: ${addressController.text}',
                     style: const TextStyle(fontSize: 16.0),
                     softWrap:
                         true, // Ajusta el texto automáticamente al ancho disponible
@@ -51,6 +53,18 @@ class ShowQuoteDialogState extends State<ShowQuoteDialog> {
         ),
       ),
       actions: [
+        TextButton(
+          onPressed: () async {
+    String address = addressController.text;
+    String url = 'https://www.google.com/maps/search/?api=1&query=$address';
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      // Handle error here
+    }
+  },
+  child: const Text('Ver dirección'),
+),
         TextButton(
           onPressed: () {
             Navigator.pop(context);

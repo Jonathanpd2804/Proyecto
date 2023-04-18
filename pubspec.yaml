@@ -48,6 +48,9 @@ dependencies:
   firebase_admin: ^0.2.0
   flip_card: ^0.7.0
   flutter_svg: ^2.0.4
+  google_maps_flutter: ^2.2.5
+  geocoding: ^2.1.0
+  url_launcher: ^6.1.10
 
 
 dev_dependencies:

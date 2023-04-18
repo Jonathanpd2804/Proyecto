@@ -31,6 +31,23 @@ class DeleteQuoteDialogState extends State<DeleteQuoteDialog> {
     widget.quote.reference.delete();
   }
 
+  void deleteTask() async {
+    final citaId = widget.quote.id; //Obtener el id de la cita
+
+    //Obtener una referencia a la colección "tareas" y filtrar por el IdCita:
+    final tasksCollection = FirebaseFirestore.instance.collection('tareas');
+    final tasksQuery = tasksCollection.where('IdCita', isEqualTo: citaId);
+
+    //Borrar todas las tareas que coincidan con la consulta anterior:
+    final tasks = await tasksQuery.get();
+    final batch = FirebaseFirestore.instance.batch();
+    tasks.docs.forEach((doc) {
+      batch.delete(doc.reference);
+    });
+    await batch.commit();
+    widget.quote.reference.delete();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,6 +68,7 @@ class DeleteQuoteDialogState extends State<DeleteQuoteDialog> {
             child: const Text("Borrar"),
             onPressed: () {
               deleteQuote();
+              deleteTask();
               Navigator.of(context).pop();
             },
           ),

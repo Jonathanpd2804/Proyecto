@@ -43,8 +43,9 @@ class ShowTaskDialogState extends State<ShowTaskDialog> {
           mainAxisSize: MainAxisSize.min,
           children: [
             Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Flexible(
+                Expanded(
                   child: Text(
                     'Descripción: ${descriptionController.text}',
                     style: const TextStyle(fontSize: 16.0),
@@ -52,15 +53,23 @@ class ShowTaskDialogState extends State<ShowTaskDialog> {
                         true, // Ajusta el texto automáticamente al ancho disponible
                   ),
                 ),
-                Flexible(
-                  child: Text(
-                    'Fecha: ${dateController.text}',
-                    style: const TextStyle(fontSize: 16.0),
-                    softWrap:
-                        true, // Ajusta el texto automáticamente al ancho disponible
-                  ),
-                ),
               ],
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 15.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    child: Text(
+                      'Fecha: ${dateController.text}',
+                      style: const TextStyle(fontSize: 16.0),
+                      softWrap:
+                          true, // Ajusta el texto automáticamente al ancho disponible
+                    ),
+                  ),
+                ],
+              ),
             ),
           ],
         ),

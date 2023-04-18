@@ -59,7 +59,7 @@ class _CalendarAskQuotesState extends State<CalendarAskQuotes> {
         turn = "Tarde";
       }
 
-      await firestore.collection('citas').add({
+      final citaRef = await firestore.collection('citas').add({
         'Fecha': citaDateTime,
         'Cliente': clienteUid,
         'Turno': turn,
@@ -72,14 +72,15 @@ class _CalendarAskQuotesState extends State<CalendarAskQuotes> {
       //Obtener el trabajador con el turno de la cita
       String workerID = await calendarioService.getWorkerUid(turn);
 
-      await firestore.collection('tareas').add({
+      final tareaRef = await firestore.collection('tareas').add({
         'Fecha': citaDateTime,
         'Trabajador': workerID,
         'Realizada': false,
         'Asignada': true,
         'Descripción': "Medición en: $direccion",
         'Importante': true,
-        'Título': "Medición"
+        'Título': "Medición",
+        'IdCita': citaRef.id,
       });
     }
   }

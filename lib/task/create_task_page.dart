@@ -133,8 +133,8 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
                   widget.selectedDay!.year,
                   widget.selectedDay!.month,
                   widget.selectedDay!.day,
-                  selectedTime!.hour,
-                  selectedTime!.minute,
+                  selectedTime.hour,
+                  selectedTime.minute,
                 );
 
                 CreateTask task = CreateTask(

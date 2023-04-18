@@ -9,6 +9,14 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
+  List<String> phonePrefixes = [
+    '+1',
+    '+52',
+    '+34',
+    '+44'
+  ]; //ejemplo de prefijos de teléfono
+  String selectedPrefix = '+34'; //valor predeterminado
+
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
@@ -69,10 +77,42 @@ class _RegisterPageState extends State<RegisterPage> {
                 const SizedBox(height: 10),
 
                 // telefono textfield
-                MyTextField(
-                  controller: _phoneController,
-                  hintText: 'Telefono',
-                  obscureText: false,
+                Row(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(left: 25.0),
+                      child: SizedBox(
+                        width:
+                            100, // Puedes ajustar esta anchura según tus necesidades
+                        child: DropdownButtonFormField<String>(
+                          decoration: const InputDecoration(
+                            labelText: 'Prefijo',
+                            prefixIcon: Icon(Icons.phone),
+                          ),
+                          value: selectedPrefix,
+                          items: phonePrefixes.map((prefix) {
+                            return DropdownMenuItem(
+                              value: prefix,
+                              child: Text(prefix),
+                            );
+                          }).toList(),
+                          onChanged: (newValue) {
+                            setState(() {
+                              selectedPrefix = newValue!;
+                            });
+                          },
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: MyTextField(
+                        controller: _phoneController,
+                        hintText: 'Telefono',
+                        obscureText: false,
+                      ),
+                    ),
+                  ],
                 ),
 
                 const SizedBox(height: 10),

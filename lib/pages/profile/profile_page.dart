@@ -17,7 +17,7 @@ class _PerfilPageState extends State<PerfilPage> {
   final currentUser = FirebaseAuth.instance.currentUser;
   List<String> docIDs = [];
 
-  String documentID = "";
+  String userID = "";
 
   late UserDocumentID userDocumentID;
 
@@ -29,7 +29,7 @@ class _PerfilPageState extends State<PerfilPage> {
       userDocumentID = UserDocumentID(widget.userEmail);
       userDocumentID.getUserDocumentID().then((_) {
         setState(() {
-          documentID = userDocumentID.documentID;
+          userID = userDocumentID.documentID;
         });
       });
     }
@@ -242,17 +242,22 @@ class _PerfilPageState extends State<PerfilPage> {
                   widget.userEmail == currentUser?.email
                       ? "Mis Citas:"
                       : "Sus Tareas Asignadas:",
-                  style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 25)),
+                  style: const TextStyle(
+                      fontWeight: FontWeight.bold, fontSize: 25)),
             ),
             Expanded(
               child: widget.userEmail == currentUser?.email
                   ? CitasListView(
                       clienteEmail: currentUser?.email,
-                      clienteUid: documentID,
+                      clienteUid: userID,
                       userEmail: currentUser?.email,
                     )
                   : TaskListView(
-                      workerEmail: widget.userEmail, isAssigned: true, edit: false),
+                      workerUid: userID,
+                      workerEmail: widget.userEmail,
+                      isAssigned: true,
+                      edit: false,
+                    ),
             ),
           ],
         ),

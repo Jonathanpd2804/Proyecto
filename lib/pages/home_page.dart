@@ -1,10 +1,14 @@
 // Importación del archivo de exportación
+import 'package:david_perez/pages/add_job.dart';
+
 import '../exports.dart';
 
 // Clase HomePage que extiende StatefulWidget
 class HomePage extends StatefulWidget {
+  final currentUser = FirebaseAuth.instance.currentUser; // Usuario actual
+
   // Constructor HomePage
-  const HomePage({Key? key}) : super(key: key);
+  HomePage({Key? key}) : super(key: key);
 
   // Método createState() que devuelve el estado de la página principal
   @override
@@ -21,12 +25,29 @@ class _HomePageState extends State<HomePage> {
     return database.collection('jobs').snapshots();
   }
 
+  bool isBoss = false;
+
+  late UserIsBoss userIsBoss;
+  @override
+  void initState() {
+    super.initState();
+    // Inicialización de la instancia de UserIsBoss y obtención del valor isBoss
+    userIsBoss = UserIsBoss(widget.currentUser);
+    userIsBoss.getUser().then((_) {
+      setState(() {
+        isBoss = userIsBoss.isBoss;
+      });
+    });
+  }
+
   // Método build() que construye la estructura de la página principal
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         // Barra de navegación personalizada
-        appBar: CustomAppBar(showBackArrow: false,),
+        appBar: CustomAppBar(
+          showBackArrow: false,
+        ),
         // Cajón lateral personalizado
         endDrawer: CustomDrawer(),
         // Cuerpo de la página principal
@@ -75,11 +96,10 @@ class _HomePageState extends State<HomePage> {
                             itemCount: jobs.length,
                             // Constructor de cada tarjeta de imagen de trabajo
                             itemBuilder: (BuildContext context, int index) {
-                              final job = jobs[index].data()
-                                  as Map<String, dynamic>;
+                              final job =
+                                  jobs[index].data() as Map<String, dynamic>;
                               return SizedBox(
-                                  width: 150,
-                                  child: CardImageWidget(job: job));
+                                  width: 150, child: CardImageWidget(job: job));
                             },
                           );
                         },
@@ -90,6 +110,30 @@ class _HomePageState extends State<HomePage> {
               ],
             ),
           ),
+          if (isBoss)
+            Padding(
+              padding: EdgeInsets.only(top: 15.0, left: 250),
+              child: Row(
+                children: [
+                  const Text(
+                    "Añadir trabajo",
+                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => JobForm()),
+                      );
+                    },
+                    child: const Padding(
+                      padding: EdgeInsets.only(left: 12.0),
+                      child: Icon(Icons.add),
+                    ),
+                  )
+                ],
+              ),
+            )
         ]));
   }
 }

@@ -38,6 +38,9 @@ export 'package:firebase_core/firebase_core.dart';
 export 'package:firebase_auth/firebase_auth.dart';
 export 'firebase_options.dart';
 export 'package:cloud_firestore/cloud_firestore.dart';
+export 'package:image_picker/image_picker.dart';
+export 'package:firebase_storage/firebase_storage.dart';
+export 'package:firebase_database/firebase_database.dart' hide Query, Transaction, TransactionHandler;
 
 //Widgets
 export 'package:david_perez/widgets/my_button.dart';

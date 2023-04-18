@@ -62,7 +62,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                 onTap: () async {
                   await Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => const HomePage()),
+                    MaterialPageRoute(builder: (context) => HomePage()),
                   );
                 },
                 child: Padding(

@@ -40,7 +40,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       color: myColor, // Color personalizado para la aplicación
       debugShowCheckedModeBanner: false, // Desactivación del banner de depuración
       home: HomePage(),

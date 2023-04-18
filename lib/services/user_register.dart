@@ -26,7 +26,6 @@ class UserRegister {
   bool esJefe = false;
   bool esMedidor = false;
 
-
   Future<bool> isCodeValid(String code) async {
     // Inicializar Firebase
     await Firebase.initializeApp();

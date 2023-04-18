@@ -29,7 +29,6 @@ class DeleteQuoteDialogState extends State<DeleteQuoteDialog> {
 
   void deleteQuote() {
     widget.quote.reference.delete();
-    Navigator.pop(context);
   }
 
   @override
@@ -40,45 +39,20 @@ class DeleteQuoteDialogState extends State<DeleteQuoteDialog> {
       ),
       endDrawer: CustomDrawer(),
       body: AlertDialog(
-        title: const Text('Editar Tarea'),
+        title: const Text("¿Estás seguro de que quieres borrar esta cita?"),
         actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 60.0, bottom: 10),
-            child: IconButton(
-              onPressed: () {
-                showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return AlertDialog(
-                      title: const Text(
-                          "¿Estás seguro de que quieres borrar esta cita?"),
-                      actions: [
-                        TextButton(
-                          child: const Text("Cancelar"),
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                        ),
-                        TextButton(
-                          child: const Text("Borrar"),
-                          onPressed: () {
-                            deleteQuote();
-                            Navigator.of(context).pop();
-                          },
-                        ),
-                      ],
-                    );
-                  },
-                );
-              },
-              icon: const Icon(Icons.delete),
-            ),
+          TextButton(
+            child: const Text("Cancelar"),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
           ),
           TextButton(
+            child: const Text("Borrar"),
             onPressed: () {
-              Navigator.pop(context);
+              deleteQuote();
+              Navigator.of(context).pop();
             },
-            child: const Text('Cancelar'),
           ),
         ],
       ),

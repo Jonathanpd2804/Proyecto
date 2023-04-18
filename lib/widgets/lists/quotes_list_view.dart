@@ -1,4 +1,3 @@
-
 import '../../exports.dart';
 import 'package:intl/intl.dart';
 
@@ -73,8 +72,9 @@ class CitasListView extends StatelessWidget {
                         Padding(
                           padding: const EdgeInsets.only(left: 8.0),
                           child: Text(
-                            DateFormat('dd/MM/yyyy').format(quote['Fecha']
-                                .toDate()), // Formatea la fecha como un String
+                            DateFormat('dd/MM/yyyy - hh:mm:ss a').format(quote[
+                                    'Fecha']
+                                .toDate()), // Formatea la fecha y hora como un String
                             style: const TextStyle(fontSize: 16.0),
                           ),
                         ),

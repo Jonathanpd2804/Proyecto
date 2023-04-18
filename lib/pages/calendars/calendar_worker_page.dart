@@ -1,4 +1,3 @@
-
 import '../../exports.dart';
 
 class CalendarWorker extends StatefulWidget {
@@ -68,7 +67,9 @@ class _CalendarWorkerState extends State<CalendarWorker> {
         }
       }
       return Scaffold(
-        appBar: CustomAppBar(showBackArrow: true,),
+        appBar: CustomAppBar(
+          showBackArrow: true,
+        ),
         endDrawer: CustomDrawer(),
         body: Column(
           children: [
@@ -211,9 +212,12 @@ class _CalendarWorkerState extends State<CalendarWorker> {
                 padding: EdgeInsets.only(left: 8.0, right: 8.0),
                 child: Row(
                   children: [
-                    Text(
-                      "Tareas asignadas:",
-                      style: TextStyle(fontSize: 20),
+                    Padding(
+                      padding: EdgeInsets.only(top: 10.0),
+                      child: Text(
+                        "Tareas asignadas:",
+                        style: TextStyle(fontSize: 20),
+                      ),
                     ),
                   ],
                 ),

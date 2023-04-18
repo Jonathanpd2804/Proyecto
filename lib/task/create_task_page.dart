@@ -1,4 +1,5 @@
 import '../exports.dart';
+import 'package:intl/intl.dart';
 
 class CreateTaskPage extends StatefulWidget {
   final String workerUid;
@@ -20,12 +21,34 @@ class CreateTaskPage extends StatefulWidget {
 class _CreateTaskPageState extends State<CreateTaskPage> {
   final tituloController = TextEditingController();
   final descripcionController = TextEditingController();
+  late TimeOfDay selectedTime;
+
   bool _esImportante = false;
+
+  @override
+  void initState() {
+    super.initState();
+    selectedTime = TimeOfDay.now();
+  }
+
+  Future<void> selectTime(BuildContext context) async {
+    final TimeOfDay? picked = await showTimePicker(
+      context: context,
+      initialTime: TimeOfDay.now(),
+    );
+    if (picked != null) {
+      setState(() {
+        selectedTime = picked;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: CustomAppBar(showBackArrow: true,),
+      appBar: CustomAppBar(
+        showBackArrow: true,
+      ),
       endDrawer: CustomDrawer(),
       body: Column(
         children: [
@@ -52,19 +75,42 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
               obscureText: false),
           Padding(
             padding: const EdgeInsets.only(top: 20.0),
-            child: Container(
-              width: 340,
-              height: 60,
-              decoration: BoxDecoration(
-                  color: Colors.grey[200],
-                  borderRadius: BorderRadius.circular(5)),
-              child: Padding(
-                padding: const EdgeInsets.only(left: 12.0, top: 20),
-                child: Text(
-                  "Fecha: ${widget.selectedDay}",
-                  style: TextStyle(color: Colors.grey[500], fontSize: 16),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: <Widget>[
+                Container(
+                  width: 150,
+                  height: 60,
+                  decoration: BoxDecoration(
+                      color: Colors.grey[200],
+                      borderRadius: BorderRadius.circular(5)),
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 12.0, top: 20),
+                    child: Text(
+                      "Fecha: ${DateFormat.yMd().format(widget.selectedDay!).replaceAll('/', '-')}",
+                      style: TextStyle(color: Colors.grey[500], fontSize: 16),
+                    ),
+                  ),
                 ),
-              ),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    ElevatedButton(
+                      onPressed: () => selectTime(context),
+                      style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStateProperty.all<Color>(Colors.red),
+                      ),
+                      child: const Text('Seleccionar Hora'),
+                    ),
+                    const SizedBox(height: 20),
+                    Text(
+                      'Hora seleccionada: ${DateFormat.Hm().format(DateTime(2023, 4, 19, selectedTime.hour, selectedTime.minute))}',
+                      style: const TextStyle(fontSize: 16.0),
+                    ),
+                  ],
+                ),
+              ],
             ),
           ),
           CheckboxListTile(
@@ -83,15 +129,24 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
             padding: const EdgeInsets.only(top: 28.0),
             child: ElevatedButton(
               onPressed: () async {
+                DateTime fechaHora = DateTime(
+                  widget.selectedDay!.year,
+                  widget.selectedDay!.month,
+                  widget.selectedDay!.day,
+                  selectedTime!.hour,
+                  selectedTime!.minute,
+                );
+
                 CreateTask task = CreateTask(
                   tituloController: tituloController,
                   descripcionController: descripcionController,
-                  fecha: widget.selectedDay,
+                  fecha: fechaHora,
                   importante: _esImportante,
                   worker: widget.workerUid,
                   workerEmail: widget.workerEmail,
                   autorEmail: widget.user.email,
                 );
+
 
                 try {
                   await task.addTaskToDatabase();

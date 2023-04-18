@@ -15,8 +15,8 @@ export 'package:david_perez/pages/trabajadores_page.dart';
     export 'package:david_perez/pages/calendars/calendar_quotes_page.dart';
     export 'package:david_perez/pages/calendars/calendar_ask_quote.dart';
 
-      //Services
-      export 'package:david_perez/pages/calendars/services/calendar_service.dart';
+    //Services
+    export 'package:david_perez/pages/calendars/services/calendar_service.dart';
 
     //Profile
     export 'package:david_perez/pages/profile/profile_page.dart';
@@ -33,17 +33,11 @@ export 'package:david_perez/task/show_task.dart';
 export 'package:david_perez/quotes/show_quote.dart';
 export 'package:david_perez/quotes/delete_quote.dart';
 
-//Citas
-export 'package:david_perez/citas/create_cita.dart';
-export 'package:david_perez/citas/create_cita_page.dart';
-
-
 //Firebase
 export 'package:firebase_core/firebase_core.dart';
 export 'package:firebase_auth/firebase_auth.dart';
 export 'firebase_options.dart';
 export 'package:cloud_firestore/cloud_firestore.dart';
-
 
 //Widgets
 export 'package:david_perez/widgets/my_button.dart';
@@ -53,7 +47,7 @@ export 'package:david_perez/widgets/custom_appbar.dart';
 export 'package:david_perez/widgets/custom_drawer.dart';
 export 'package:david_perez/widgets/card_image_widget.dart';
 export 'package:david_perez/widgets/lists/task_list_view.dart';
-export 'package:david_perez/widgets/lists/citas_list_view.dart';
+export 'package:david_perez/widgets/lists/quotes_list_view.dart';
 
 //Pub dev
 export 'package:auto_size_text/auto_size_text.dart';

@@ -1,3 +1,6 @@
+import 'package:david_perez/task/delete_task.dart';
+import 'package:intl/intl.dart';
+
 import '../exports.dart';
 
 class EditTaskDialog extends StatefulWidget {
@@ -6,22 +9,36 @@ class EditTaskDialog extends StatefulWidget {
   const EditTaskDialog({Key? key, required this.task}) : super(key: key);
 
   @override
-  _EditTaskDialogState createState() => _EditTaskDialogState();
+  EditTaskDialogState createState() => EditTaskDialogState();
 }
 
-class _EditTaskDialogState extends State<EditTaskDialog> {
-  TextEditingController _titleController = TextEditingController();
-  TextEditingController _descriptionController = TextEditingController();
-  bool _isImportant = false;
-  bool _isDone = false;
+class EditTaskDialogState extends State<EditTaskDialog> {
+  TextEditingController titleController = TextEditingController();
+  TextEditingController descriptionController = TextEditingController();
+  TextEditingController dateController = TextEditingController();
+  late TimeOfDay selectedTime;
+
+  bool isImportant = false;
+  bool isDone = false;
 
   @override
   void initState() {
     super.initState();
-    _titleController.text = widget.task['Título'];
-    _descriptionController.text = widget.task['Descripción'];
-    _isImportant = widget.task['Importante'];
-    _isDone = widget.task['Realizada'];
+    titleController.text = widget.task['Título'];
+    descriptionController.text = widget.task['Descripción'];
+    isImportant = widget.task['Importante'];
+    isDone = widget.task['Realizada'];
+    final dateTimestamp = widget.task['Fecha'] as Timestamp;
+    final dateDateTime = dateTimestamp.toDate();
+    final dateString = DateFormat('dd/MM/yyyy').format(dateDateTime);
+    dateController.text = dateString;
+
+    // Obtiene la hora guardada de la tarea
+    final hour = dateDateTime.hour;
+    final minute = dateDateTime.minute;
+
+    // Establece la hora seleccionada en función de la hora guardada
+    selectedTime = TimeOfDay(hour: hour, minute: minute);
   }
 
   void _deleteTask() {
@@ -29,10 +46,24 @@ class _EditTaskDialogState extends State<EditTaskDialog> {
     Navigator.pop(context);
   }
 
+  Future<void> selectTime(BuildContext context) async {
+    final TimeOfDay? picked = await showTimePicker(
+      context: context,
+      initialTime: TimeOfDay.now(),
+    );
+    if (picked != null) {
+      setState(() {
+        selectedTime = picked;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: CustomAppBar(showBackArrow: true,),
+      appBar: CustomAppBar(
+        showBackArrow: true,
+      ),
       endDrawer: CustomDrawer(),
       body: AlertDialog(
         title: const Text('Editar Tarea'),
@@ -47,15 +78,47 @@ class _EditTaskDialogState extends State<EditTaskDialog> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   TextField(
-                    controller: _titleController,
+                    controller: titleController,
                     decoration: const InputDecoration(
                       labelText: 'Título',
                     ),
                   ),
                   TextField(
-                    controller: _descriptionController,
+                    controller: descriptionController,
                     decoration: const InputDecoration(
                       labelText: 'Descripción',
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 20.0),
+                    child: Column(
+                      children: [
+                        TextField(
+                          controller: dateController,
+                          decoration: const InputDecoration(
+                            labelText: 'Fecha',
+                          ),
+                        ),
+                        const SizedBox(height: 20),
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            ElevatedButton(
+                              onPressed: () => selectTime(context),
+                              style: ButtonStyle(
+                                backgroundColor:
+                                    MaterialStateProperty.all<Color>(myColor),
+                              ),
+                              child: const Text('Seleccionar Hora'),
+                            ),
+                            const SizedBox(height: 20),
+                            Text(
+                              'Hora seleccionada: ${DateFormat.Hm().format(DateTime(2023, 4, 19, selectedTime.hour, selectedTime.minute))}',
+                              style: const TextStyle(fontSize: 16.0),
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
                   ),
                   Row(
@@ -63,10 +126,10 @@ class _EditTaskDialogState extends State<EditTaskDialog> {
                     children: [
                       Text('Importante'),
                       Switch(
-                        value: _isImportant,
+                        value: isImportant,
                         onChanged: (value) {
                           setState(() {
-                            _isImportant = value;
+                            isImportant = value;
                           });
                         },
                       ),
@@ -77,10 +140,10 @@ class _EditTaskDialogState extends State<EditTaskDialog> {
                     children: [
                       Text('Realizada'),
                       Switch(
-                        value: _isDone,
+                        value: isDone,
                         onChanged: (value) {
                           setState(() {
-                            _isDone = value;
+                            isDone = value;
                           });
                         },
                       ),
@@ -96,7 +159,12 @@ class _EditTaskDialogState extends State<EditTaskDialog> {
             padding: const EdgeInsets.only(right: 60.0, bottom: 10),
             child: IconButton(
                 onPressed: () {
-                  _deleteTask();
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return DeleteTaskDialog(task: widget.task);
+                    },
+                  );
                 },
                 icon: const Icon(Icons.delete)),
           ),
@@ -108,12 +176,28 @@ class _EditTaskDialogState extends State<EditTaskDialog> {
           ),
           TextButton(
             onPressed: () {
+              DateTime selectedDate =
+                  DateFormat('dd/MM/yyyy').parse(dateController.text);
+              DateTime selectedDateTime = DateTime(
+                selectedDate.year,
+                selectedDate.month,
+                selectedDate.day,
+                selectedTime.hour,
+                selectedTime.minute,
+              );
+
+              String selectedDateTimeString =
+                  DateFormat('yyyy-MM-dd H:mm').format(selectedDateTime);
+
               widget.task.reference.update({
-                'Título': _titleController.text,
-                'Descripción': _descriptionController.text,
-                'Importante': _isImportant,
-                'Realizada': _isDone,
+                'Título': titleController.text,
+                'Descripción': descriptionController.text,
+                'Fecha':
+                    Timestamp.fromDate(DateTime.parse(selectedDateTimeString)),
+                'Importante': isImportant,
+                'Realizada': isDone,
               });
+
               Navigator.pop(context);
             },
             child: const Text('Guardar'),

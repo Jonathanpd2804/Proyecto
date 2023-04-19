@@ -3,7 +3,10 @@ import 'dart:io';
 import '../exports.dart';
 
 class JobForm extends StatefulWidget {
+  const JobForm({super.key});
+
   @override
+  // ignore: library_private_types_in_public_api
   _JobFormState createState() => _JobFormState();
 }
 
@@ -67,6 +70,7 @@ class _JobFormState extends State<JobForm> {
         _isSubmitting = false;
       });
 
+      // ignore: use_build_context_synchronously
       Navigator.pop(context);
     }
   }
@@ -123,7 +127,7 @@ class _JobFormState extends State<JobForm> {
                 if (_imageError != null)
                   Text(
                     _imageError!,
-                    style: TextStyle(color: Colors.red),
+                    style: const TextStyle(color: Colors.red),
                   ),
                 const SizedBox(height: 16.0),
                 TextFormField(

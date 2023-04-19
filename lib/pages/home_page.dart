@@ -1,5 +1,4 @@
-// Importación del archivo de exportación
-import 'package:david_perez/pages/add_job.dart';
+
 
 import '../exports.dart';
 
@@ -51,89 +50,118 @@ class _HomePageState extends State<HomePage> {
         // Cajón lateral personalizado
         endDrawer: CustomDrawer(),
         // Cuerpo de la página principal
-        body: Column(children: [
-          // Encabezado de la página
-          const Padding(
-            padding: EdgeInsets.only(top: 60.0),
-            child: Text(
-              "Algunos trabajos realizados:",
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+        body: SingleChildScrollView(
+          child: Column(children: [
+            // Encabezado de la página
+            SizedBox(
+              width: 300,
+              child: Image.asset(
+                'lib/images/banner.png',
+                fit: BoxFit.cover,
+              ),
             ),
-          ),
-          // Lista horizontal de trabajos
-          Padding(
-            padding: const EdgeInsets.only(top: 68.0),
-            child: Row(
-              children: [
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 60.0),
-                    child: SizedBox(
-                      height: 260,
-                      child: StreamBuilder(
-                        // Stream de QuerySnapshot de la colección "jobs"
-                        stream: fetchJobsStream(),
-                        // Constructor de la lista horizontal de trabajos
-                        builder: (BuildContext context,
-                            AsyncSnapshot<QuerySnapshot> snapshot) {
-                          // Si el estado de conexión es de espera, muestra un indicador de progreso
-                          if (snapshot.connectionState ==
-                              ConnectionState.waiting) {
-                            return const Center(
-                                child: CircularProgressIndicator());
-                          }
 
-                          // Si hay un error al cargar los trabajos, muestra un mensaje de error
-                          if (snapshot.hasError) {
-                            return const Center(
-                                child: Text('Error al cargar los trabajos'));
-                          }
+            Padding(
+              padding: const EdgeInsets.only(top: 50.0),
+              // Lista horizontal de trabajos
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 40.0),
+                      child: SizedBox(
+                        height: 260,
+                        child: StreamBuilder(
+                          // Stream de QuerySnapshot de la colección "jobs"
+                          stream: fetchJobsStream(),
+                          // Constructor de la lista horizontal de trabajos
+                          builder: (BuildContext context,
+                              AsyncSnapshot<QuerySnapshot> snapshot) {
+                            // Si el estado de conexión es de espera, muestra un indicador de progreso
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return const Center(
+                                  child: CircularProgressIndicator());
+                            }
 
-                          // Lista de trabajos
-                          List<DocumentSnapshot> jobs = snapshot.data!.docs;
-                          return ListView.builder(
-                            scrollDirection: Axis.horizontal,
-                            itemCount: jobs.length,
-                            // Constructor de cada tarjeta de imagen de trabajo
-                            itemBuilder: (BuildContext context, int index) {
-                              final job =
-                                  jobs[index].data() as Map<String, dynamic>;
-                              return SizedBox(
-                                  width: 150, child: CardImageWidget(job: job));
-                            },
-                          );
-                        },
+                            // Si hay un error al cargar los trabajos, muestra un mensaje de error
+                            if (snapshot.hasError) {
+                              return const Center(
+                                  child: Text('Error al cargar los trabajos'));
+                            }
+
+                            // Lista de trabajos
+                            List<DocumentSnapshot> jobs = snapshot.data!.docs;
+                            return ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              itemCount: jobs.length,
+                              // Constructor de cada tarjeta de imagen de trabajo
+                              itemBuilder: (BuildContext context, int index) {
+                                final job =
+                                    jobs[index].data() as Map<String, dynamic>;
+                                return SizedBox(
+                                    width: 150,
+                                    child: CardImageWidget(job: job));
+                              },
+                            );
+                          },
+                        ),
                       ),
                     ),
                   ),
+                ],
+              ),
+            ),
+            if (isBoss)
+              Padding(
+                padding: const EdgeInsets.only(top: 15.0, left: 250),
+                child: Row(
+                  children: [
+                    const Text(
+                      "Añadir trabajo",
+                      style:
+                          TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const JobForm()),
+                        );
+                      },
+                      child: const Padding(
+                        padding: EdgeInsets.only(left: 12.0),
+                        child: Icon(Icons.add),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            Column(
+              children: [
+                const Padding(
+                  padding: EdgeInsets.only(top: 40.0, right: 150),
+                  child: Text(
+                    "Consejos y tutoriales",
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 40.0),
+                  child: Container(
+                    width: 400,
+                    height: 200,
+                    decoration: const BoxDecoration(color: Colors.grey),
+                  ),
+                ),
+                const Padding(
+                  padding: EdgeInsets.only(top: 40.0),
+                  child: CircleIconsWidget(),
                 ),
               ],
             ),
-          ),
-          if (isBoss)
-            Padding(
-              padding: EdgeInsets.only(top: 15.0, left: 250),
-              child: Row(
-                children: [
-                  const Text(
-                    "Añadir trabajo",
-                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => JobForm()),
-                      );
-                    },
-                    child: const Padding(
-                      padding: EdgeInsets.only(left: 12.0),
-                      child: Icon(Icons.add),
-                    ),
-                  )
-                ],
-              ),
-            )
-        ]));
+          ]),
+        ));
   }
 }

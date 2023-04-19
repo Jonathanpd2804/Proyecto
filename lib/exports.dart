@@ -9,6 +9,7 @@ export 'package:david_perez/pages/register_page.dart';
 export 'package:david_perez/pages/forgot_pw_page.dart';
 export 'package:david_perez/pages/home_page.dart';
 export 'package:david_perez/pages/workers_page.dart';
+export 'package:david_perez/pages/add_job.dart';
 
     //Calendars
     export 'package:david_perez/pages/calendars/calendar_worker_page.dart';
@@ -51,6 +52,8 @@ export 'package:david_perez/widgets/custom_drawer.dart';
 export 'package:david_perez/widgets/card_image_widget.dart';
 export 'package:david_perez/widgets/lists/task_list_view.dart';
 export 'package:david_perez/widgets/lists/quotes_list_view.dart';
+export 'package:david_perez/widgets/icons.dart';
+
 
 //Pub dev
 export 'package:auto_size_text/auto_size_text.dart';

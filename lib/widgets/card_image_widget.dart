@@ -1,6 +1,7 @@
 import '../exports.dart';
 
 class CardImageWidget extends StatelessWidget {
+  // ignore: prefer_typing_uninitialized_variables
   final job;
 
   const CardImageWidget({Key? key, required this.job}) : super(key: key);
@@ -8,9 +9,8 @@ class CardImageWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FlipCard(
-      fill: Fill
-          .fillBack, 
-      direction: FlipDirection.HORIZONTAL, 
+      fill: Fill.fillBack,
+      direction: FlipDirection.HORIZONTAL,
       side: CardSide.FRONT,
       front: Card(
           shape:
@@ -22,7 +22,34 @@ class CardImageWidget extends StatelessWidget {
                 topLeft: Radius.circular(10),
                 topRight: Radius.circular(10),
               ),
-              child: Image.network(job['Image']),
+              child: Stack(
+                children: [
+                  // Image.network(
+                  //   job['Image'],
+                  //   fit: BoxFit.cover,
+                  //   width: 150,
+                  //   height: 150,
+                  // ),
+                  Image.asset(
+                    'lib/images/logo.png',
+                  ),
+                  Container(
+                    width: 150,
+                    height: 150,
+                    color: Colors.black.withOpacity(0.5),
+                    child: const Center(
+                      child: Text(
+                        'Error al cargar la imagen',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
             const Padding(
                 padding: EdgeInsets.all(18.0), child: Icon(Icons.ads_click))

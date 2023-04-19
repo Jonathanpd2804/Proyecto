@@ -1,4 +1,4 @@
-
+import 'package:david_perez/widgets/comentarios.dart';
 
 import '../exports.dart';
 
@@ -138,24 +138,24 @@ class _HomePageState extends State<HomePage> {
                   ],
                 ),
               ),
-            Column(
+            const Column(
               children: [
-                const Padding(
+                Padding(
                   padding: EdgeInsets.only(top: 40.0, right: 150),
                   child: Text(
-                    "Consejos y tutoriales",
+                    "Opiniones",
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(top: 40.0),
-                  child: Container(
+                  padding: EdgeInsets.only(top: 40.0),
+                  child: SizedBox(
                     width: 400,
                     height: 200,
-                    decoration: const BoxDecoration(color: Colors.grey),
+                    child: ComentariosYPuntuacion(),
                   ),
                 ),
-                const Padding(
+                Padding(
                   padding: EdgeInsets.only(top: 40.0),
                   child: CircleIconsWidget(),
                 ),

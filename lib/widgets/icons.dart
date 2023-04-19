@@ -26,9 +26,10 @@ class CircleIconsWidget extends StatelessWidget {
                 shape: BoxShape.circle,
                 color: Colors.green,
               ),
-              child: const Icon(
-                Icons.chat,
-                size: 25,
+              child: Image.asset(
+                'lib/images/whatssap.png',
+                width: 25,
+                height: 25,
                 color: Colors.white,
               ),
             ),
@@ -62,12 +63,11 @@ class CircleIconsWidget extends StatelessWidget {
               height: 50,
               decoration: const BoxDecoration(
                 shape: BoxShape.circle,
-                color: myColor,
               ),
-              child: const Icon(
-                Icons.camera_alt,
-                size: 25,
-                color: Colors.white,
+              child: Image.asset(
+                'lib/images/instagram.png',
+                width: 25,
+                height: 25,
               ),
             ),
           ),

@@ -1,3 +1,5 @@
+import 'package:google_sign_in/google_sign_in.dart';
+
 import '../exports.dart';
 
 class CustomDrawer extends StatefulWidget {
@@ -205,7 +207,12 @@ class _CustomDrawerState extends State<CustomDrawer> {
                   style: TextStyle(color: Colors.white),
                 ),
                 onTap: () async {
+                  // Sign out from Firebase
                   await FirebaseAuth.instance.signOut();
+
+                  // Sign out from Google
+                  await GoogleSignIn().signOut();
+
                   // ignore: use_build_context_synchronously
                   Navigator.pushReplacement(
                     context,

@@ -5,8 +5,8 @@ import 'package:google_sign_in/google_sign_in.dart';
 import '../exports.dart';
 
 class UserAuth {
-  final TextEditingController emailController; //Email
-  final TextEditingController passwordController; //Contraseña
+  final TextEditingController emailController; // Email
+  final TextEditingController passwordController; // Contraseña
   final BuildContext context;
 
   UserAuth({
@@ -18,9 +18,9 @@ class UserAuth {
   final FirebaseAuth auth = FirebaseAuth.instance;
   final GoogleSignIn _googleSignIn = GoogleSignIn();
 
-  // sign user in method
+  // Sign user in method
   Future<void> signUserIn() async {
-    //Mostrar el círculo de carga
+    // Mostrar el círculo de carga
     showDialog(
       context: context,
       builder: (context) {
@@ -30,11 +30,11 @@ class UserAuth {
       },
     );
 
-    // try sign in
     try {
       UserCredential? userCredential;
+
+      // If user signed in with Google, get the Google credentials and sign in
       if (await _googleSignIn.isSignedIn()) {
-        // If user signed in with Google, get the Google credentials and sign in
         final GoogleSignInAccount? googleUser = await _googleSignIn.signInSilently();
         if (googleUser != null) {
           final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
@@ -52,10 +52,11 @@ class UserAuth {
         );
       }
 
-      // pop the loading circle
+      // Pop the loading circle
       Navigator.pop(context);
 
       if (userCredential != null) {
+        // Navega a HomePage después de iniciar sesión correctamente
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => HomePage()),
@@ -63,20 +64,22 @@ class UserAuth {
       }
 
     } on FirebaseAuthException catch (e) {
+      // Pop the loading circle
       Navigator.pop(context);
-      //Email incorrecto
+
+      // Email incorrecto
       if (e.code == 'user-not-found') {
         wrongEmailMessage();
       }
 
-      //Contraseña incorrecta
+      // Contraseña incorrecta
       else if (e.code == 'wrong-password') {
         wrongPasswordMessage();
       }
     }
   }
 
-  //Dialogo de Email incorrecto
+  // Dialogo de Email incorrecto
   Future<void> wrongEmailMessage() async {
     showDialog(
       context: context,
@@ -94,7 +97,7 @@ class UserAuth {
     );
   }
 
-  //Dialogo de contraseña incorrecta
+  // Dialogo de contraseña incorrecta
   Future<void> wrongPasswordMessage() async {
     showDialog(
       context: context,
@@ -110,5 +113,10 @@ class UserAuth {
         );
       },
     );
+  }
+
+  // Sign out from Google
+  Future<void> signOutGoogle() async {
+    await _googleSignIn.signOut();
   }
 }

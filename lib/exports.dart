@@ -44,7 +44,7 @@ export 'package:firebase_database/firebase_database.dart' hide Query, Transactio
 
 
 //Google
-import 'package:google_sign_in/google_sign_in.dart';
+export 'package:google_sign_in/google_sign_in.dart';
 
 //Widgets
 export 'package:david_perez/widgets/my_button.dart';

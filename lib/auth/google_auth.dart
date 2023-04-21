@@ -1,8 +1,6 @@
 import 'dart:async';
 
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-import 'package:flutter/material.dart';
+
 
 import '../exports.dart';
 
@@ -27,16 +25,17 @@ class GoogleAuth {
       final googleCredential = GoogleAuthProvider.credential(
           accessToken: gAuth.accessToken, idToken: gAuth.idToken);
 
-      final signInMethods = await _auth.fetchSignInMethodsForEmail(gUser.email!);
+      final signInMethods = await _auth.fetchSignInMethodsForEmail(gUser.email);
 
       if (signInMethods.contains('password')) {
   // Muestra un cuadro de diálogo para solicitar la contraseña al usuario
+  // ignore: use_build_context_synchronously
   final password = await _showPasswordDialog(context);
   if (password != null) {
     try {
       // Intenta iniciar sesión con el correo electrónico y la contraseña proporcionados
       UserCredential emailUserCredential =
-          await _auth.signInWithEmailAndPassword(email: gUser.email!, password: password);
+          await _auth.signInWithEmailAndPassword(email: gUser.email, password: password);
           
       // Verifica si la cuenta de Google ya está vinculada a la cuenta de correo electrónico/contraseña
       if (!signInMethods.contains('google.com')) {
@@ -49,6 +48,7 @@ class GoogleAuth {
 
       if (user != null) {
         // Navega a HomePage después de iniciar sesión correctamente
+        // ignore: use_build_context_synchronously
         Navigator.push(
           context,
           MaterialPageRoute(
@@ -61,12 +61,14 @@ class GoogleAuth {
     } on FirebaseAuthException catch (e) {
       // Muestra un mensaje de error si la contraseña es incorrecta
       if (e.code == 'wrong-password') {
+        // ignore: use_build_context_synchronously
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
+          const SnackBar(
             content: Text('Error: Contraseña incorrecta'),
           ),
         );
       } else {
+        // ignore: use_build_context_synchronously
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Error: ${e.message}'),
@@ -84,6 +86,7 @@ class GoogleAuth {
 
         if (user != null) {
           // Navega a HomePage después de iniciar sesión correctamente
+          // ignore: use_build_context_synchronously
           Navigator.push(
             context,
             MaterialPageRoute(
@@ -95,8 +98,9 @@ class GoogleAuth {
         return userCredential;
       } else {
         // Si el correo electrónico no está registrado, muestra un mensaje de error
+        // ignore: use_build_context_synchronously
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
+          const SnackBar(
             content: Text('Error: La cuenta no existe'),
           ),
         );
@@ -114,7 +118,7 @@ class GoogleAuth {
             barrierDismissible: false, // El usuario debe tocar el botón
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Ingrese su contraseña'),
+          title: const Text('Ingrese su contraseña'),
           content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
@@ -123,7 +127,7 @@ class GoogleAuth {
                   onChanged: (value) {
                     password = value;
                   },
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     labelText: 'Contraseña',
                   ),
                 ),
@@ -138,7 +142,7 @@ class GoogleAuth {
               },
             ),
             TextButton(
-              child: Text('Aceptar'),
+              child: const Text('Aceptar'),
               onPressed: () {
                 Navigator.of(context).pop(password);
               },

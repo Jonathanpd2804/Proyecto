@@ -1,15 +1,15 @@
 import '../exports.dart';
 
 class UserRegister {
-  final TextEditingController emailController;
-  final TextEditingController passwordController;
-  final TextEditingController confirmPasswordController;
-  final TextEditingController nameController;
-  final TextEditingController lastNameController;
-  final TextEditingController phoneController;
-  final TextEditingController codigoTrabajador;
+  final TextEditingController emailController; //Email
+  final TextEditingController passwordController; //Contraseña
+  final TextEditingController confirmPasswordController; //Contrasela de confirmación
+  final TextEditingController nameController; //Nombre
+  final TextEditingController lastNameController; //Apellidos
+  final TextEditingController phoneController; // Teléfono
+  final TextEditingController code; //Código tipo de trabajador
   final BuildContext context;
-  final bool esTrabajador;
+  final bool isWorker; // Es trabajador
 
   UserRegister({
     required this.emailController,
@@ -18,13 +18,13 @@ class UserRegister {
     required this.nameController,
     required this.lastNameController,
     required this.phoneController,
-    required this.codigoTrabajador,
+    required this.code,
     required this.context,
-    required this.esTrabajador,
+    required this.isWorker,
   });
 
-  bool esJefe = false;
-  bool esMedidor = false;
+  bool isBoss = false; //Es Jefe
+  bool isMeasurer = false; //Es Medidor
 
   Future<bool> isCodeValid(String code) async {
     // Inicializar Firebase
@@ -38,13 +38,11 @@ class UserRegister {
     QuerySnapshot querySnapshot =
         await codesRef.where('Código', isEqualTo: code).get();
 
-    bool esValido = querySnapshot.docs.isNotEmpty;
-
     if (querySnapshot.docs.isNotEmpty) {
       Map<String, dynamic> data =
           querySnapshot.docs.first.data() as Map<String, dynamic>;
-      esJefe = data['Jefe'] ?? false;
-      esMedidor = data['Medidor'] ?? false;
+      isBoss = data['Jefe'] ?? false; //Cambia el valor de es Jefe
+      isMeasurer = data['Medidor'] ?? false; //Cambia el valor de es Medidor
     }
 
     // Si la consulta devuelve documentos, entonces el código existe
@@ -78,10 +76,10 @@ class UserRegister {
 
     try {
       bool emailStatus =
-          await checkEmailInUse(); // <-- Verificar si el correo está en uso
+          await checkEmailInUse(); //Verificar si el correo está en uso
       if (emailStatus == true) {
         wrongMessage(
-            'El correo electrónico ya está en uso'); // <-- Mostrar mensaje de error si el correo está en uso
+            'El correo electrónico ya está en uso'); //Mostrar mensaje de error si el correo está en uso
         return;
       }
     } catch (e) {
@@ -89,8 +87,8 @@ class UserRegister {
       return;
     }
 
-    if (esTrabajador && !await isCodeValid(codigoTrabajador.text.trim())) {
-      wrongMessage('Código incorrecto: ${codigoTrabajador.text.trim()}');
+    if (isWorker && !await isCodeValid(code.text.trim())) {
+      wrongMessage('Código incorrecto: ${code.text.trim()}');
       return;
     }
 
@@ -106,9 +104,9 @@ class UserRegister {
           lastNameController.text.trim(),
           int.parse(phoneController.text.trim()),
           emailController.text.trim(),
-          esTrabajador,
-          esJefe,
-          esMedidor);
+          isWorker,
+          isBoss,
+          isMeasurer);
 
       // ignore: usebuildcontextsynchronously
       // ignore: use_build_context_synchronously
@@ -119,32 +117,36 @@ class UserRegister {
     } on FirebaseAuthException catch (e) {
       if (e.code == 'email-already-in-use') {
         wrongMessage(
-            'El correo electrónico ya está en uso'); // <-- Mensaje personalizado para correo en uso
+            'El correo electrónico ya está en uso'); //Mensaje personalizado para correo en uso
       } else {
-        wrongMessage("Error: ${e.toString()}"); // <-- Mostrar otros errores
+        wrongMessage("Error: ${e.toString()}"); //Mostrar otros errores
       }
     } catch (e) {
       wrongMessage(
-          "Error: ${e.toString()}"); // <-- Mostrar errores no relacionados con FirebaseAuth
+          "Error: ${e.toString()}"); //Mostrar errores no relacionados con FirebaseAuth
     }
   }
 
+  //Verificar que el correo es valido
   bool isEmailValid() {
     String email = emailController.text.trim();
     RegExp emailRegExp = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
     return emailRegExp.hasMatch(email);
   }
 
+  //Verificar que el Número de telefono es valido
   bool isPhoneNumberValid() {
     String phone = phoneController.text.trim();
     RegExp phoneRegExp = RegExp(r'^[67]\d{8}$');
     return phoneRegExp.hasMatch(phone);
   }
 
+  //Verificar que la contraseña tenga más de 6 dígitos
   bool isPasswordStrongEnough() {
     return passwordController.text.trim().length >= 6;
   }
 
+  //Verificar que el Email no está en uso
   Future<bool> checkEmailInUse() async {
     try {
       await FirebaseAuth.instance
@@ -159,20 +161,7 @@ class UserRegister {
     }
   }
 
-  Future<bool?> emailAlreadyInUse() async {
-    try {
-      await FirebaseAuth.instance
-          .fetchSignInMethodsForEmail(emailController.text.trim());
-      return false;
-    } on FirebaseAuthException catch (e) {
-      if (e.code == 'user-not-found') {
-        return true;
-      } else {
-        return null;
-      }
-    }
-  }
-
+  //Diálogo de mensaje de error
   void wrongMessage(message) {
     showDialog(
       context: context,
@@ -190,6 +179,7 @@ class UserRegister {
     );
   }
 
+  //Añadir usuario a Firebase
   Future addUserDetails(String name, String lastname, int phone, String email,
       bool esTrabajador, bool esJefe, bool esMedidor) async {
     await FirebaseFirestore.instance.collection('usuarios').add({
@@ -204,6 +194,7 @@ class UserRegister {
     });
   }
 
+  //Comprobar que la contraseña está verificada
   bool passwordConfirmed() {
     if (passwordController.text.trim() ==
         confirmPasswordController.text.trim()) {

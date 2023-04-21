@@ -9,15 +9,15 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
-  final _emailController = TextEditingController();
-  final _passwordController = TextEditingController();
-  final _confirmPasswordController = TextEditingController();
-  final _nameController = TextEditingController();
-  final _lastNameController = TextEditingController();
-  final _phoneController = TextEditingController();
+  final emailController = TextEditingController(); //Email
+  final passwordController = TextEditingController(); //Contraseña
+  final confirmPasswordController = TextEditingController(); //Contraseña confirmada
+  final nameController = TextEditingController(); //Nombre
+  final lastNameController = TextEditingController(); //Apellidos
+  final phoneController = TextEditingController(); //Teléfono
 
-  bool _esTrabajador = false;
-  final _codigoTrabajador = TextEditingController();
+  bool isWorker = false; //Es trabajagor
+  final code = TextEditingController(); //Código
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +31,6 @@ class _RegisterPageState extends State<RegisterPage> {
               children: [
                 const SizedBox(height: 50),
 
-                // logo
                 Image.asset(
                   'lib/images/logo2.png',
                   height: 150,
@@ -39,7 +38,6 @@ class _RegisterPageState extends State<RegisterPage> {
 
                 const SizedBox(height: 50),
 
-                // welcome back, you've been missed!
                 Text(
                   '!Bienvenido!',
                   style: TextStyle(
@@ -50,76 +48,79 @@ class _RegisterPageState extends State<RegisterPage> {
 
                 const SizedBox(height: 25),
 
-                //nombre textfield
+                //Input de nombre
                 MyTextField(
-                  controller: _nameController,
+                  controller: nameController,
                   hintText: 'Nombre',
                   obscureText: false,
                 ),
 
                 const SizedBox(height: 10),
 
-                // apellidos textfield
+                //Input de Apellidos
                 MyTextField(
-                  controller: _lastNameController,
+                  controller: lastNameController,
                   hintText: 'Apellidos',
                   obscureText: false,
                 ),
 
                 const SizedBox(height: 10),
 
-                // telefono textfield
+                //Input de telefono
                 MyTextField(
-                  controller: _phoneController,
+                  controller: phoneController,
                   hintText: 'Telefono',
                   obscureText: false,
                 ),
 
                 const SizedBox(height: 10),
 
-                // email textfield
+                //Input de email
                 MyTextField(
-                  controller: _emailController,
+                  controller: emailController,
                   hintText: 'Email',
                   obscureText: false,
                 ),
 
                 const SizedBox(height: 10),
 
-                // password textfield
+                //Input de contraseña
                 MyTextField(
-                  controller: _passwordController,
+                  controller: passwordController,
                   hintText: 'Contraseña',
                   obscureText: true,
                 ),
 
                 const SizedBox(height: 10),
 
-                // confirmar contraseña textfield
+                //Input de confirma contraseña
                 MyTextField(
-                  controller: _confirmPasswordController,
+                  controller: confirmPasswordController,
                   hintText: 'Confirmar Contraseña',
                   obscureText: true,
                 ),
 
                 const SizedBox(height: 10),
 
+                //Checkbox de si es trabajador
                 CheckboxListTile(
                   title: const Padding(
                     padding: EdgeInsets.only(left: 12.0),
                     child: Text("Trabajador"),
                   ),
-                  value: _esTrabajador,
+                  value: isWorker,
                   onChanged: (bool? value) {
                     setState(() {
-                      _esTrabajador = value!;
+                      isWorker = value!;
                     });
                   },
                 ),
+
+                //Input de código
                 Visibility(
-                  visible: _esTrabajador,
+                  visible: isWorker,
                   child: MyTextField(
-                    controller: _codigoTrabajador,
+                    controller: code,
                     hintText: 'Código',
                     obscureText: false,
                   ),
@@ -127,26 +128,26 @@ class _RegisterPageState extends State<RegisterPage> {
 
                 const SizedBox(height: 25),
 
-                // sign in button
+                // Botón de iniciar sesión
                 MyButton(
                     text: 'Sign In',
                     onTap: UserRegister(
-                      emailController: _emailController,
-                      passwordController: _passwordController,
-                      confirmPasswordController: _confirmPasswordController,
-                      nameController: _nameController,
-                      lastNameController: _lastNameController,
-                      phoneController: _phoneController,
-                      codigoTrabajador: _codigoTrabajador,
+                      emailController: emailController,
+                      passwordController: passwordController,
+                      confirmPasswordController: confirmPasswordController,
+                      nameController: nameController,
+                      lastNameController: lastNameController,
+                      phoneController: phoneController,
+                      code: code,
                       context: context,
-                      esTrabajador: _esTrabajador,
+                      isWorker: isWorker,
                     ).signUp),
 
                 const SizedBox(height: 25),
 
                 const SizedBox(height: 50),
 
-                // not a member? register now
+                // Texto de Ya tiene cuenta
                 Padding(
                   padding: const EdgeInsets.only(bottom: 20.0),
                   child: Row(

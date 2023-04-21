@@ -9,12 +9,10 @@ class HomePage extends StatefulWidget {
   // Constructor HomePage
   HomePage({Key? key}) : super(key: key);
 
-  // Método createState() que devuelve el estado de la página principal
   @override
   State<HomePage> createState() => _HomePageState();
 }
 
-// Clase _HomePageState que maneja el estado de la página principal
 class _HomePageState extends State<HomePage> {
   // Instancia de la base de datos de Firestore
   final FirebaseFirestore database = FirebaseFirestore.instance;

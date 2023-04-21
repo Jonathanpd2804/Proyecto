@@ -14,7 +14,6 @@ export 'package:david_perez/pages/add_job.dart';
     //Calendars
     export 'package:david_perez/pages/calendars/calendar_worker_page.dart';
     export 'package:david_perez/pages/calendars/calendar_quotes_page.dart';
-    export 'package:david_perez/pages/calendars/calendar_ask_quote.dart';
 
     //Services
     export 'package:david_perez/pages/calendars/services/calendar_service.dart';
@@ -42,6 +41,10 @@ export 'package:cloud_firestore/cloud_firestore.dart';
 export 'package:image_picker/image_picker.dart';
 export 'package:firebase_storage/firebase_storage.dart';
 export 'package:firebase_database/firebase_database.dart' hide Query, Transaction, TransactionHandler;
+
+
+//Google
+import 'package:google_sign_in/google_sign_in.dart';
 
 //Widgets
 export 'package:david_perez/widgets/my_button.dart';

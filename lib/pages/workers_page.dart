@@ -1,9 +1,9 @@
 import '../exports.dart';
 
-class ListaTrabajadores extends StatelessWidget {
+class ListWorkers extends StatelessWidget {
   // ignore: prefer_typing_uninitialized_variables
   final user;
-  const ListaTrabajadores({
+  const ListWorkers({
     super.key,
     required this.user,
   });
@@ -47,13 +47,12 @@ class ListaTrabajadores extends StatelessWidget {
                             Text('Error al cargar la lista de trabajadores'));
                   }
 
-                  final trabajadores = snapshot.data!.docs;
+                  final workers = snapshot.data!.docs;
 
                   return ListView.builder(
-                    itemCount: trabajadores.length,
+                    itemCount: workers.length,
                     itemBuilder: (context, index) {
-                      final trabajador = trabajadores[index];
-                      final esMedidor = trabajador["Medidor"];
+                      final worker = workers[index];
                       return Padding(
                         padding: const EdgeInsets.all(20.0),
                         child: Card(
@@ -72,7 +71,7 @@ class ListaTrabajadores extends StatelessWidget {
                                 ListTile(
                                   contentPadding: const EdgeInsets.symmetric(
                                       horizontal: 16.0, vertical: 8.0),
-                                  title: Text(trabajador['Nombre']),
+                                  title: Text(worker['Nombre']),
                                 ),
                                 const Divider(
                                   height: 10,
@@ -85,7 +84,7 @@ class ListaTrabajadores extends StatelessWidget {
                                       context,
                                       MaterialPageRoute(
                                         builder: (context) => PerfilPage(
-                                          userEmail: trabajador["Email"],
+                                          userEmail: worker["Email"],
                                         ),
                                       ),
                                     );
@@ -102,7 +101,7 @@ class ListaTrabajadores extends StatelessWidget {
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) => CalendarWorker(
-                                                workerUid: trabajador.id,
+                                                workerUid: worker.id,
                                               )),
                                     );
                                   },

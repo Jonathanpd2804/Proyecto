@@ -1,12 +1,14 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-import '../pages/home_page.dart';
+import '../exports.dart';
 
 class GoogleAuth {
   final GoogleSignIn _googleSignIn = GoogleSignIn();
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   Future<void> signOut() async {
     await _googleSignIn.signOut();
@@ -22,43 +24,43 @@ class GoogleAuth {
 
       final GoogleSignInAuthentication gAuth = await gUser.authentication;
 
-      final googleCredential = GoogleAuthProvider.credential(
-          accessToken: gAuth.accessToken, idToken: gAuth.idToken);
+      // Comprueba si el usuario existe en la colección de usuarios en Firestore
+      final QuerySnapshot userQuery = await _firestore
+          .collection('usuarios')
+          .where('Email', isEqualTo: gUser.email)
+          .get();
 
-      final UserCredential userCredential = await _auth.signInWithCredential(googleCredential);
-      final User? user = userCredential.user;
+      if (userQuery.docs.isNotEmpty) {
+        // El usuario existe en Firestore, realiza la autenticación
+        final googleCredential = GoogleAuthProvider.credential(
+            accessToken: gAuth.accessToken, idToken: gAuth.idToken);
 
-      if (user != null) {
-        final User? existingUser = (await _auth.fetchSignInMethodsForEmail(user.email!)).isNotEmpty
-            ? _auth.currentUser
-            : null;
+        final UserCredential userCredential =
+            await _auth.signInWithCredential(googleCredential);
+        final User? user = userCredential.user;
 
+        if (user != null) {
           // Navega a HomePage después de iniciar sesión correctamente
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => HomePage(),
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => HomePage(),
+            ),
+          );
+        }
+
+        return userCredential;
+      } else {
+        // Si el usuario no existe, muestra un mensaje de error y no realiza la autenticación
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error: La cuenta no existe'),
           ),
         );
-
-        if (existingUser == null) {
-          // Vincula la cuenta de Google con la cuenta de Email/Password
-          final emailCredential = EmailAuthProvider.credential(
-            email: user.email!,
-            password: 'yourPassword', // La contraseña de la cuenta de Email/Password existente
-          );
-                    await user.linkWithCredential(emailCredential);
-        } else {
-          // Si ya existe una cuenta vinculada, actualiza la información del usuario
-          await user.updateDisplayName(existingUser.displayName);
-          await user.updatePhotoURL(existingUser.photoURL);
-        }
+        return null;
       }
-
-      return userCredential;
     } catch (e) {
-      print('Error al iniciar sesión con Google: $e');
       return null; // Devuelve null si se produce un error
     }
-  }  
+  }
 }

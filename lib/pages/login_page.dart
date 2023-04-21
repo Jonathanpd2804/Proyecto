@@ -9,8 +9,8 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final emailController = TextEditingController();
-  final passwordController = TextEditingController();
+  final emailController = TextEditingController(); //Email
+  final passwordController = TextEditingController(); //Contraseña
 
   @override
   Widget build(BuildContext context) {
@@ -146,11 +146,10 @@ class _LoginPageState extends State<LoginPage> {
 
                 const SizedBox(height: 50),
 
-                // google sign in button
+                // Botón de Google
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    // google button
                     SquareTile(
                       onTap: () => GoogleAuth().signInWithGoogle(context),
                       imagePath: 'lib/images/google.png',
@@ -160,7 +159,7 @@ class _LoginPageState extends State<LoginPage> {
 
                 const SizedBox(height: 50),
 
-                // not a member? register now
+                // Texto de crear cuenta
                 Padding(
                   padding: const EdgeInsets.only(bottom: 20.0),
                   child: Row(

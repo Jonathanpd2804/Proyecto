@@ -1,8 +1,8 @@
 import '../exports.dart';
 
 class UserAuth {
-  final TextEditingController emailController;
-  final TextEditingController passwordController;
+  final TextEditingController emailController; //Email
+  final TextEditingController passwordController; //Contraseña
   final BuildContext context;
 
   UserAuth({
@@ -15,7 +15,7 @@ class UserAuth {
 
   // sign user in method
   Future<void> signUserIn() async {
-    // show loading circle
+    //Mostrar el círculo de carga
     showDialog(
       context: context,
       builder: (context) {
@@ -40,23 +40,20 @@ class UserAuth {
         MaterialPageRoute(builder: (context) => HomePage()),
       );
     } on FirebaseAuthException catch (e) {
-      // pop the loading circle
       Navigator.pop(context);
-      // WRONG EMAIL
+      //Email incorrecto
       if (e.code == 'user-not-found') {
-        // show error to user
         wrongEmailMessage();
       }
 
-      // WRONG PASSWORD
+      //Contraseña incorrecta
       else if (e.code == 'wrong-password') {
-        // show error to user
         wrongPasswordMessage();
       }
     }
   }
 
-  // wrong email message popup
+  //Dialogo de Email incorrecto
   Future<void> wrongEmailMessage() async {
     showDialog(
       context: context,
@@ -74,7 +71,7 @@ class UserAuth {
     );
   }
 
-  // wrong password message popup
+  //Dialogo de contraseña incorrecta
   Future<void> wrongPasswordMessage() async {
     showDialog(
       context: context,

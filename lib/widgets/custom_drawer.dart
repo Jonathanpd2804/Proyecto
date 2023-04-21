@@ -163,7 +163,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                     await Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const CalendarioCitasPage(),
+                        builder: (context) => CalendarQuotesPage(),
                       ),
                     );
                   },
@@ -186,7 +186,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                       context,
                       MaterialPageRoute(
                           builder: (context) =>
-                              ListaTrabajadores(user: widget.currentUser)),
+                              ListWorkers(user: widget.currentUser)),
                     );
                   },
                 ),

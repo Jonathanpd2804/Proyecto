@@ -14,6 +14,7 @@ export 'package:david_perez/pages/add_job.dart';
     //Calendars
     export 'package:david_perez/pages/calendars/calendar_worker_page.dart';
     export 'package:david_perez/pages/calendars/calendar_quotes_page.dart';
+    export 'package:david_perez/pages/calendars/calendar_ask_quote.dart';
 
     //Services
     export 'package:david_perez/pages/calendars/services/calendar_service.dart';

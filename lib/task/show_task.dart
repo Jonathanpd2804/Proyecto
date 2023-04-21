@@ -14,6 +14,7 @@ class ShowTaskDialog extends StatefulWidget {
 class ShowTaskDialogState extends State<ShowTaskDialog> {
   TextEditingController titleController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
+  TextEditingController addressController = TextEditingController();
   TextEditingController dateController = TextEditingController();
 
   bool isImportant = false;
@@ -22,13 +23,16 @@ class ShowTaskDialogState extends State<ShowTaskDialog> {
   @override
   void initState() {
     super.initState();
-    titleController.text = widget.task['Título'];
-    descriptionController.text = widget.task['Descripción'];
-    isImportant = widget.task['Importante'];
-    isDone = widget.task['Realizada'];
+    // Obtiene los datos de la tarea y los asigna a las variables correspondientes
+    Map<String, dynamic>? data = widget.task.data() as Map<String, dynamic>?;
+    titleController.text = data?['Título'] ?? '';
+    descriptionController.text = data?['Descripción'] ?? '';
+    isImportant = data?['Importante'] ?? false;
+    isDone = data?['Realizada'] ?? false;
+    addressController.text = data?['Dirección'] ?? '';
 
-    //Convertir la fecha en String
-    final dateTimestamp = widget.task['Fecha'] as Timestamp;
+    // Convertir la fecha en String
+    final dateTimestamp = data?['Fecha'] as Timestamp;
     final dateDateTime = dateTimestamp.toDate();
     final dateString = DateFormat('dd/MM/yyyy').format(dateDateTime);
     dateController.text = dateString;
@@ -42,19 +46,20 @@ class ShowTaskDialogState extends State<ShowTaskDialog> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Expanded(
-                  child: Text(
-                    'Descripción: ${descriptionController.text}',
-                    style: const TextStyle(fontSize: 16.0),
-                    softWrap:
-                        true, // Ajusta el texto automáticamente al ancho disponible
+            if (descriptionController.text.isNotEmpty)
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    child: Text(
+                      'Descripción: ${descriptionController.text}',
+                      style: const TextStyle(fontSize: 16.0),
+                      softWrap:
+                          true,
+                    ),
                   ),
-                ),
-              ],
-            ),
+                ],
+              ),
             Padding(
               padding: const EdgeInsets.only(top: 15.0),
               child: Row(
@@ -65,16 +70,46 @@ class ShowTaskDialogState extends State<ShowTaskDialog> {
                       'Fecha: ${dateController.text}',
                       style: const TextStyle(fontSize: 16.0),
                       softWrap:
-                          true, // Ajusta el texto automáticamente al ancho disponible
+                          true, 
                     ),
                   ),
                 ],
               ),
             ),
+            if (addressController.text.isNotEmpty)
+              Padding(
+                padding: const EdgeInsets.only(top: 15.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      child: Text(
+                        'Dirección: ${addressController.text}',
+                        style: const TextStyle(fontSize: 16.0),
+                        softWrap:
+                            true, 
+                      ),
+                    ),
+                  ],
+                ),
+              ),
           ],
         ),
       ),
       actions: [
+        if (addressController.text.isNotEmpty) ...[
+          TextButton(
+            onPressed: () async {
+              String address = addressController.text;
+              String url =
+                  'https://www.google.com/maps/search/?api=1&query=$address';
+              if (await canLaunch(url)) {
+                await launch(url);
+              } 
+            },
+            child: const Text('Ver dirección'),
+          ),
+        ],
         TextButton(
           onPressed: () {
             Navigator.pop(context);

@@ -165,7 +165,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                     await Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => CalendarQuotesPage(),
+                        builder: (context) => const CalendarioCitasPage(),
                       ),
                     );
                   },
@@ -209,9 +209,6 @@ class _CustomDrawerState extends State<CustomDrawer> {
                 onTap: () async {
                   // Sign out from Firebase
                   await FirebaseAuth.instance.signOut();
-
-                  // Sign out from Google
-                  await GoogleSignIn().signOut();
 
                   // ignore: use_build_context_synchronously
                   Navigator.pushReplacement(

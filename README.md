@@ -15,6 +15,8 @@ Esta aplicación ofrece una solución práctica para que los clientes puedan sol
 
 En el enlace de la [Apk](https://github.com/Jonathanpd2804/Proyecto/blob/main/david_perez.apk) deberá hacer click en "Download" e instalar el archivo apk en su dispositivo móvil.
 
-### Compatibilidad
+<ul>
+    <li><h3>Compatibilidad</h3></li>
+    <p style="list-style-type: none; margin-top: 0;">Esta app solo está disponible para Android</p>
+</ul>
 
-Esta app solo está disponible para Android

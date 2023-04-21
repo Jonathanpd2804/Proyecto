@@ -1,3 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+
 import '../exports.dart';
 
 class UserAuth {
@@ -12,6 +16,7 @@ class UserAuth {
   });
 
   final FirebaseAuth auth = FirebaseAuth.instance;
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
 
   // sign user in method
   Future<void> signUserIn() async {
@@ -27,18 +32,36 @@ class UserAuth {
 
     // try sign in
     try {
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: emailController.text,
-        password: passwordController.text,
-      );
+      UserCredential? userCredential;
+      if (await _googleSignIn.isSignedIn()) {
+        // If user signed in with Google, get the Google credentials and sign in
+        final GoogleSignInAccount? googleUser = await _googleSignIn.signInSilently();
+        if (googleUser != null) {
+          final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+          final credential = GoogleAuthProvider.credential(
+            accessToken: googleAuth.accessToken,
+            idToken: googleAuth.idToken,
+          );
+          userCredential = await auth.signInWithCredential(credential);
+        }
+      } else {
+        // Otherwise, sign in with email and password
+        userCredential = await auth.signInWithEmailAndPassword(
+          email: emailController.text,
+          password: passwordController.text,
+        );
+      }
+
       // pop the loading circle
-      // ignore: use_build_context_synchronously
       Navigator.pop(context);
-      // ignore: use_build_context_synchronously
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => HomePage()),
-      );
+
+      if (userCredential != null) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => HomePage()),
+        );
+      }
+
     } on FirebaseAuthException catch (e) {
       Navigator.pop(context);
       //Email incorrecto

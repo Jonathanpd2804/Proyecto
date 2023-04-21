@@ -1,14 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../exports.dart';
 
 class GoogleAuth {
   final GoogleSignIn _googleSignIn = GoogleSignIn();
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   Future<void> signOut() async {
     await _googleSignIn.signOut();
@@ -24,17 +22,13 @@ class GoogleAuth {
 
       final GoogleSignInAuthentication gAuth = await gUser.authentication;
 
-      // Comprueba si el usuario existe en la colección de usuarios en Firestore
-      final QuerySnapshot userQuery = await _firestore
-          .collection('usuarios')
-          .where('Email', isEqualTo: gUser.email)
-          .get();
+      final googleCredential = GoogleAuthProvider.credential(
+          accessToken: gAuth.accessToken, idToken: gAuth.idToken);
 
-      if (userQuery.docs.isNotEmpty) {
-        // El usuario existe en Firestore, realiza la autenticación
-        final googleCredential = GoogleAuthProvider.credential(
-            accessToken: gAuth.accessToken, idToken: gAuth.idToken);
+      final signInMethods = await _auth.fetchSignInMethodsForEmail(gUser.email!);
 
+      // Si el correo electrónico ya está registrado, permite el inicio de sesión con Google
+      if (signInMethods.contains('password') || signInMethods.contains('google.com')) {
         final UserCredential userCredential =
             await _auth.signInWithCredential(googleCredential);
         final User? user = userCredential.user;
@@ -51,7 +45,7 @@ class GoogleAuth {
 
         return userCredential;
       } else {
-        // Si el usuario no existe, muestra un mensaje de error y no realiza la autenticación
+        // Si el correo electrónico no está registrado, muestra un mensaje de error
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Error: La cuenta no existe'),

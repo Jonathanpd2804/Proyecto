@@ -14,6 +14,6 @@
 
 <ul>
     <li><h3>Compatibilidad</h3></li>
-    <li style="list-style-type: none; margin-top: 0;">Esta app solo está disponible para Android</li>
+    <p style="list-style-type: none; margin-top: 0;">Esta app solo está disponible para Android</p>
 </ul>
 

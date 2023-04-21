@@ -1,5 +1,5 @@
 <h1 align="center" style="color:blue"> David Perez - Gestión de empresa de carpintería </h1>
-![Logo de la empresa](lib/images/logo2.png)
+![Logo de la empresa](https://github.com/Jonathanpd2804/Proyecto/blob/main/lib/images/logo2.png?raw=true)
 
 <p>Esta aplicación ofrece una solución práctica para que los clientes puedan solicitar citas con medidores de la empresa y reciban asesoramiento experto sobre sus proyectos. Además, la aplicación proporciona seguimiento en tiempo real del estado del proyecto a través de fotografías, y ofrece una plataforma de calendario para los trabajadores, lo que les permite programar y visualizar eventos creados por el jefe. En resumen, esta aplicación es una herramienta innovadora y fácil de usar para aquellos que buscan una solución de carpintería confiable y eficiente.</p>
 

@@ -25,7 +25,7 @@ class CardImageWidget extends StatelessWidget {
               child: Stack(
                 children: [
                   // Image.network(
-                  //   job['Image'],
+                  //   job['ImagenURL'],
                   //   fit: BoxFit.cover,
                   //   width: 150,
                   //   height: 150,
@@ -75,7 +75,7 @@ class CardImageWidget extends StatelessWidget {
                             padding: const EdgeInsets.only(right: 8.0),
                             child: SingleChildScrollView(
                               child: Text(
-                                job["Tittle"],
+                                job["Título"],
                                 style: const TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 20,
@@ -98,7 +98,7 @@ class CardImageWidget extends StatelessWidget {
                                 padding: const EdgeInsets.only(right: 8.0),
                                 child: SingleChildScrollView(
                                   child: Text(
-                                    job["Description"],
+                                    job["Descripción"],
                                     style: const TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 15,

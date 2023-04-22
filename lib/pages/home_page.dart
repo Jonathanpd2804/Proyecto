@@ -19,7 +19,7 @@ class _HomePageState extends State<HomePage> {
 
   // Función que devuelve un Stream de QuerySnapshot de la colección "jobs"
   Stream<QuerySnapshot> fetchJobsStream() {
-    return database.collection('jobs').snapshots();
+    return database.collection('trabajos').snapshots();
   }
 
   bool isBoss = false;

@@ -31,17 +31,26 @@ class _ComentariosYPuntuacionState extends State<ComentariosYPuntuacion> {
                 return const CircularProgressIndicator();
               }
 
-              return ListView(
-                children: snapshot.data!.docs.map((DocumentSnapshot document) {
-                  return Card(
-                    child: ListTile(
-                      leading: CircleAvatar(
-                        child: Text('${document['puntuacion']}'),
+              return Padding(
+                padding: const EdgeInsets.all(15.0),
+                child: snapshot.data!.docs.isEmpty
+                    ? Container(
+                        alignment: Alignment.center,
+                        child: const Text('No hay comentarios'),
+                      )
+                    : ListView(
+                        children: snapshot.data!.docs
+                            .map((DocumentSnapshot document) {
+                          return Card(
+                            child: ListTile(
+                              leading: CircleAvatar(
+                                child: Text('${document['Puntuación']}'),
+                              ),
+                              title: Text(document['Comentario']),
+                            ),
+                          );
+                        }).toList(),
                       ),
-                      title: Text(document['comentario']),
-                    ),
-                  );
-                }).toList(),
               );
             },
           ),
@@ -90,8 +99,8 @@ class _ComentariosYPuntuacionState extends State<ComentariosYPuntuacion> {
                   ),
                   onRatingUpdate: (double value) async {
                     await _comentariosYPuntuaciones.add({
-                      'comentario': _comentarioController.text,
-                      'puntuacion': value,
+                      'Comentario': _comentarioController.text,
+                      'Puntuación': value,
                     });
                     _comentarioController.clear();
                     // ignore: use_build_context_synchronously

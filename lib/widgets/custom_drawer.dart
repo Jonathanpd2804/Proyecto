@@ -191,6 +191,30 @@ class _CustomDrawerState extends State<CustomDrawer> {
                   },
                 ),
               ),
+            Padding(
+              padding: const EdgeInsets.only(left: 15.0, bottom: 25),
+              child: ListTile(
+                leading: const Icon(
+                  Icons.logout,
+                  color: Colors.white,
+                ),
+                title: const AutoSizeText(
+                  'Iniciar Sesión / Crear Cuenta',
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
+                  maxLines: 1,
+                ),
+                onTap: () async {
+                  await FirebaseAuth.instance.signOut();
+                  // ignore: use_build_context_synchronously
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => const AuthPage()),
+                  );
+                },
+              ),
+            ),
           ]),
           if (widget.currentUser != null)
             Padding(

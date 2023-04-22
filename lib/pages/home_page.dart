@@ -56,6 +56,7 @@ class _HomePageState extends State<HomePage> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
+                  //Fila de Iconos sobre los servicios que se realizan
                   IconsHome(
                     iconURL: 'lib/images/servicios.png',
                     text: 'Servicios',
@@ -150,13 +151,6 @@ class _HomePageState extends State<HomePage> {
               ),
             const Column(
               children: [
-                Padding(
-                  padding: EdgeInsets.only(top: 40.0, right: 150),
-                  child: Text(
-                    "Opiniones",
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
-                ),
                 Padding(
                   padding: EdgeInsets.only(top: 40.0),
                   child: SizedBox(

@@ -52,7 +52,7 @@ class CardImageWidget extends StatelessWidget {
               ),
             ),
             const Padding(
-                padding: EdgeInsets.all(18.0), child: Icon(Icons.ads_click))
+                padding: EdgeInsets.all(18.0), child: Icon(Icons.touch_app))
           ])),
       back: Card(
           shape:

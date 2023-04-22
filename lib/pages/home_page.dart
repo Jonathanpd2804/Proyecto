@@ -1,4 +1,5 @@
 import 'package:david_perez/widgets/comentarios.dart';
+import 'package:david_perez/widgets/icons_home.dart';
 
 import '../exports.dart';
 
@@ -50,15 +51,26 @@ class _HomePageState extends State<HomePage> {
         // Cuerpo de la página principal
         body: SingleChildScrollView(
           child: Column(children: [
-            // Encabezado de la página
-            SizedBox(
-              width: 300,
-              child: Image.asset(
-                'lib/images/banner.png',
-                fit: BoxFit.cover,
+            const Padding(
+              padding: EdgeInsets.only(top: 40.0, left: 20),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  IconsHome(
+                    iconURL: 'lib/images/servicios.png',
+                    text: 'Servicios',
+                  ),
+                  IconsHome(
+                    iconURL: 'lib/images/mantenimientos.png',
+                    text: 'Mantenimientos',
+                  ),
+                  IconsHome(
+                    iconURL: 'lib/images/instalaciones.png',
+                    text: 'Instalaciones',
+                  )
+                ],
               ),
             ),
-
             Padding(
               padding: const EdgeInsets.only(top: 50.0),
               // Lista horizontal de trabajos

@@ -40,6 +40,7 @@ class GoogleAuth {
       // Verifica si la cuenta de Google ya está vinculada a la cuenta de correo electrónico/contraseña
       if (!signInMethods.contains('google.com')) {
         // Vincula la cuenta de Google con la cuenta de correo electrónico/contraseña existente
+        // ignore: unused_local_variable
         final UserCredential userCredential =
             await emailUserCredential.user!.linkWithCredential(googleCredential);
       }

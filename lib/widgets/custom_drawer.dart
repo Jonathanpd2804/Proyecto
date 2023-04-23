@@ -191,78 +191,68 @@ class _CustomDrawerState extends State<CustomDrawer> {
                   },
                 ),
               ),
-            Padding(
-              padding: const EdgeInsets.only(left: 15.0, bottom: 25),
-              child: ListTile(
-                leading: const Icon(
-                  Icons.logout,
-                  color: Colors.white,
-                ),
-                title: const AutoSizeText(
-                  'Iniciar Sesión / Crear Cuenta',
-                  style: TextStyle(
-                    color: Colors.white,
-                  ),
-                  maxLines: 1,
-                ),
-                onTap: () async {
-                  await FirebaseAuth.instance.signOut();
-                  // ignore: use_build_context_synchronously
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(builder: (context) => const AuthPage()),
-                  );
-                },
-              ),
-            ),
           ]),
           if (widget.currentUser != null)
-            Padding(
-              padding: const EdgeInsets.only(left: 60.0, bottom: 25),
-              child: ListTile(
-                leading: const Icon(
-                  Icons.logout,
-                  color: Colors.white,
-                ),
-                title: const Text(
-                  'Cerrar sesión',
-                  style: TextStyle(color: Colors.white),
-                ),
-                onTap: () async {
-                  // Sign out from Firebase
-                  await FirebaseAuth.instance.signOut();
+            Center(
+              child: Column(
+                children: [
+                  const CircleIconsWidget(),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 60.0, bottom: 25),
+                    child: ListTile(
+                      leading: const Icon(
+                        Icons.logout,
+                        color: Colors.white,
+                      ),
+                      title: const Text(
+                        'Cerrar sesión',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      onTap: () async {
+                        // Sign out from Firebase
+                        await FirebaseAuth.instance.signOut();
 
-                  // ignore: use_build_context_synchronously
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(builder: (context) => const AuthPage()),
-                  );
-                },
+                        // ignore: use_build_context_synchronously
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const AuthPage()),
+                        );
+                      },
+                    ),
+                  ),
+                ],
               ),
             ),
           if (widget.currentUser == null)
             Padding(
               padding: const EdgeInsets.only(left: 15.0, bottom: 25),
-              child: ListTile(
-                leading: const Icon(
-                  Icons.logout,
-                  color: Colors.white,
-                ),
-                title: const AutoSizeText(
-                  'Iniciar Sesión / Crear Cuenta',
-                  style: TextStyle(
-                    color: Colors.white,
+              child: Column(
+                children: [
+                  const CircleIconsWidget(),
+                  ListTile(
+                    leading: const Icon(
+                      Icons.logout,
+                      color: Colors.white,
+                    ),
+                    title: const AutoSizeText(
+                      'Iniciar Sesión / Crear Cuenta',
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
+                      maxLines: 1,
+                    ),
+                    onTap: () async {
+                      await FirebaseAuth.instance.signOut();
+                      // ignore: use_build_context_synchronously
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const AuthPage()),
+                      );
+                    },
                   ),
-                  maxLines: 1,
-                ),
-                onTap: () async {
-                  await FirebaseAuth.instance.signOut();
-                  // ignore: use_build_context_synchronously
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(builder: (context) => const AuthPage()),
-                  );
-                },
+                ],
               ),
             ),
         ],

@@ -20,11 +20,11 @@ class CircleIconsWidget extends StatelessWidget {
             // ignore: deprecated_member_use
             onTap: () => launch('https://wa.me/$whatsappNumber'),
             child: Container(
-              width: 50,
-              height: 50,
+              width: 40,
+              height: 40,
               decoration: const BoxDecoration(
                 shape: BoxShape.circle,
-                color: Colors.green,
+                color: Colors.black,
               ),
               child: Image.asset(
                 'lib/images/whatssap.png',
@@ -40,11 +40,11 @@ class CircleIconsWidget extends StatelessWidget {
             // ignore: deprecated_member_use
             onTap: () => launch(phoneNumber),
             child: Container(
-              width: 50,
-              height: 50,
+              width: 40,
+              height: 40,
               decoration: const BoxDecoration(
                 shape: BoxShape.circle,
-                color: Colors.blue,
+                color: Colors.black,
               ),
               child: const Icon(
                 Icons.phone,
@@ -59,15 +59,17 @@ class CircleIconsWidget extends StatelessWidget {
             // ignore: deprecated_member_use
             onTap: () => launch(instagramProfile),
             child: Container(
-              width: 50,
-              height: 50,
+              width: 40,
+              height: 40,
               decoration: const BoxDecoration(
                 shape: BoxShape.circle,
+                color: Colors.black,
               ),
               child: Image.asset(
                 'lib/images/instagram.png',
                 width: 25,
                 height: 25,
+                color: Colors.white,
               ),
             ),
           ),

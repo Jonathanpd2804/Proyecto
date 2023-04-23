@@ -58,6 +58,10 @@ class _ComentariosYPuntuacionState extends State<ComentariosYPuntuacion> {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            const Text(
+              "Añadir comentario",
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
             IconButton(
               onPressed: () {
                 _mostrarDialogoPuntuacion(context);
@@ -98,13 +102,45 @@ class _ComentariosYPuntuacionState extends State<ComentariosYPuntuacion> {
                     color: Colors.amber,
                   ),
                   onRatingUpdate: (double value) async {
-                    await _comentariosYPuntuaciones.add({
-                      'Comentario': _comentarioController.text,
-                      'Puntuación': value,
-                    });
-                    _comentarioController.clear();
-                    // ignore: use_build_context_synchronously
-                    Navigator.pop(context);
+                    if (_comentarioController.text.isNotEmpty) {
+                      bool confirm = await showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: const Text(
+                                '¿Confirmar comentario y puntuación?'),
+                            content: Text(
+                              'Comentario: ${_comentarioController.text}\nPuntuación: $value',
+                            ),
+                            actions: [
+                              TextButton(
+                                onPressed: () => Navigator.pop(context, false),
+                                child: const Text('Cancelar'),
+                              ),
+                              TextButton(
+                                onPressed: () => Navigator.pop(context, true),
+                                child: const Text('Confirmar'),
+                              ),
+                            ],
+                          );
+                        },
+                      );
+
+                      if (confirm != null && confirm) {
+                        await _comentariosYPuntuaciones.add({
+                          'Comentario': _comentarioController.text,
+                          'Puntuación': value,
+                        });
+                        _comentarioController.clear();
+                        // ignore: use_build_context_synchronously
+                        Navigator.pop(context);
+                      }
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                            content: Text('Debes agregar un comentario')),
+                      );
+                    }
                   },
                 ),
               ],

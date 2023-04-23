@@ -159,10 +159,6 @@ class _HomePageState extends State<HomePage> {
                     child: ComentariosYPuntuacion(),
                   ),
                 ),
-                Padding(
-                  padding: EdgeInsets.only(top: 40.0),
-                  child: CircleIconsWidget(),
-                ),
               ],
             ),
           ]),

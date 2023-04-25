@@ -2,8 +2,6 @@
 
 import '../../exports.dart';
 
-
-
 class ProductCardWidget extends StatefulWidget {
   final String id;
   final product;
@@ -16,15 +14,9 @@ class ProductCardWidget extends StatefulWidget {
 }
 
 class _ProductCardWidgetState extends State<ProductCardWidget> {
-  final currentUser = FirebaseAuth.instance.currentUser; 
- // Usuario actual
+  final currentUser = FirebaseAuth.instance.currentUser;
+  // Usuario actual
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-
-      @override
-void initState() {
-  super.initState();
-  deleteOldReservations();
-}
 
   Stream<QuerySnapshot> getDocsStream() {
     return FirebaseFirestore.instance
@@ -33,7 +25,8 @@ void initState() {
         .snapshots();
   }
 
-Future<void> sendEmail(BuildContext context, String userName, String reservaId) async {
+  Future<void> sendEmail(
+      BuildContext context, String userName, String reservaId) async {
     // Configura las credenciales del servidor SMTP
     String username = 'jonathanpd280403@gmail.com';
     String password = 'rtrtuhyqxiddefzh';
@@ -128,7 +121,8 @@ Future<void> sendEmail(BuildContext context, String userName, String reservaId) 
 
                 final reservaId = reservaRef.id; // Obtiene el ID de la reserva
 
-                sendEmail(context, userName, reservaId); // Pasa el ID de la reserva al método sendEmail
+                sendEmail(context, userName,
+                    reservaId); // Pasa el ID de la reserva al método sendEmail
               },
             ),
             TextButton(
@@ -163,30 +157,30 @@ Future<void> sendEmail(BuildContext context, String userName, String reservaId) 
                 ),
                 child: Stack(
                   children: [
-                    // Image.network(
-                    //   job['ImagenURL'],
-                    //   fit: BoxFit.cover,
-                    //   width: 150,
-                    //   height: 150,
-                    // ),
-                    Image.asset(
-                      'lib/images/logo.png',
-                    ),
-                    Container(
+                    Image.network(
+                      widget.product['ImageURL'],
+                      fit: BoxFit.cover,
                       width: 200,
                       height: 225,
-                      color: Colors.black.withOpacity(0.5),
-                      child: const Center(
-                        child: Text(
-                          'Error al cargar la imagen',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
                     ),
+                    // Image.asset(
+                    //   'lib/images/logo.png',
+                    // ),
+                    // Container(
+                    //   width: 200,
+                    //   height: 225,
+                    //   color: Colors.black.withOpacity(0.5),
+                    //   child: const Center(
+                    //     child: Text(
+                    //       'Error al cargar la imagen',
+                    //       style: TextStyle(
+                    //         color: Colors.white,
+                    //         fontSize: 16,
+                    //         fontWeight: FontWeight.bold,
+                    //       ),
+                    //     ),
+                    //   ),
+                    // ),
                   ],
                 ),
               ),
@@ -344,19 +338,4 @@ void showSendDialog(GlobalKey<ScaffoldState> scaffoldKey) {
       );
     },
   );
-}
-
-Future<void> deleteOldReservations() async {
-  final now = Timestamp.now();
-  final cutoff = Timestamp.fromMillisecondsSinceEpoch(now.millisecondsSinceEpoch - 259200000); // 259200000 ms = 3 días
-
-  final reservas = await FirebaseFirestore.instance
-      .collection('reservas')
-      .where('fechaReserva', isLessThan: cutoff)
-      .where('pagado', isEqualTo: false)
-      .get();
-
-  for (final reserva in reservas.docs) {
-    await reserva.reference.delete();
-  }
 }

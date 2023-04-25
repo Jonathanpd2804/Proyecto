@@ -24,30 +24,30 @@ class JobCardWidget extends StatelessWidget {
               ),
               child: Stack(
                 children: [
-                  // Image.network(
-                  //   job['ImagenURL'],
-                  //   fit: BoxFit.cover,
-                  //   width: 150,
-                  //   height: 185,
-                  // ),
-                  Image.asset(
-                    'lib/images/logo.png',
-                  ),
-                  Container(
+                  Image.network(
+                    job['ImagenURL'],
+                    fit: BoxFit.cover,
                     width: 150,
                     height: 185,
-                    color: Colors.black.withOpacity(0.5),
-                    child: const Center(
-                      child: Text(
-                        'Error al cargar la imagen',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
                   ),
+                  // Image.asset(
+                  //   'lib/images/logo.png',
+                  // ),
+                  // Container(
+                  //   width: 150,
+                  //   height: 185,
+                  //   color: Colors.black.withOpacity(0.5),
+                  //   child: const Center(
+                  //     child: Text(
+                  //       'Error al cargar la imagen',
+                  //       style: TextStyle(
+                  //         color: Colors.white,
+                  //         fontSize: 16,
+                  //         fontWeight: FontWeight.bold,
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
                 ],
               ),
             ),

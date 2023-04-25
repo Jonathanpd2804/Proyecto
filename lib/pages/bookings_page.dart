@@ -63,7 +63,7 @@ class ListBookings extends StatelessWidget {
                             children: [
                               Text("Producto: $productId"),
                               Padding(
-                                padding: const EdgeInsets.only(left: 40.0),
+                                padding: const EdgeInsets.only(left: 20.0),
                                 child: ElevatedButton(
                                   onPressed: () {
                                     // Navegar a la pantalla de detalles del producto

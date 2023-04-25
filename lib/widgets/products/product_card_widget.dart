@@ -241,10 +241,9 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                                 ),
                               ),
                             )),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment
-                              .center, // Centrar elementos en el Row
-
+                        Wrap(
+                          alignment: WrapAlignment.center,
+                          crossAxisAlignment: WrapCrossAlignment.center,
                           children: [
                             Scrollbar(
                               child: SizedBox(

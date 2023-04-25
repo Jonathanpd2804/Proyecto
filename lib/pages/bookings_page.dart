@@ -186,6 +186,10 @@ class ListBookings extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      Padding(
+                        padding: const EdgeInsets.all(15.0),
+                        child: Text('Reserva: ${booking.id}'),
+                      ),
                       ListTile(
                         title: Text('Reserva del $date'),
                         subtitle: Text('Cliente: $clientEmail'),

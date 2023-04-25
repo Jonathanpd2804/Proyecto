@@ -11,7 +11,8 @@ class RegisterPage extends StatefulWidget {
 class _RegisterPageState extends State<RegisterPage> {
   final emailController = TextEditingController(); //Email
   final passwordController = TextEditingController(); //Contraseña
-  final confirmPasswordController = TextEditingController(); //Contraseña confirmada
+  final confirmPasswordController =
+      TextEditingController(); //Contraseña confirmada
   final nameController = TextEditingController(); //Nombre
   final lastNameController = TextEditingController(); //Apellidos
   final phoneController = TextEditingController(); //Teléfono
@@ -150,8 +151,9 @@ class _RegisterPageState extends State<RegisterPage> {
                 // Texto de Ya tiene cuenta
                 Padding(
                   padding: const EdgeInsets.only(bottom: 20.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                  child: Wrap(
+                    alignment: WrapAlignment.center,
+                    crossAxisAlignment: WrapCrossAlignment.center,
                     children: [
                       Text(
                         '¡Ya tengo cuenta! / Entrar como invitado',

@@ -3,6 +3,7 @@ import 'package:david_perez/pages/add_product.dart';
 import '../exports.dart';
 
 class ProductsCardColumn extends StatefulWidget {
+  
   final currentUser = FirebaseAuth.instance.currentUser; // Usuario actual
 
   ProductsCardColumn({
@@ -67,10 +68,12 @@ class _ProductsCardColumnState extends State<ProductsCardColumn> {
                 runSpacing: 10,
                 children: products.map((product) {
                   final productData = product.data() as Map<String, dynamic>;
+                  final productId = product.id;
                   return Container(
                     width: MediaQuery.of(context).size.width / 2 - 15,
                     height: 300,
-                    child: ProductCardWidget(product: productData),
+                    child:
+                        ProductCardWidget(id: productId, product: productData),
                   );
                 }).toList(),
               );

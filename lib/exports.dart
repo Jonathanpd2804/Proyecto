@@ -10,6 +10,8 @@ export 'package:david_perez/pages/forgot_pw_page.dart';
 export 'package:david_perez/pages/home_page.dart';
 export 'package:david_perez/pages/workers_page.dart';
 export 'package:david_perez/pages/add_job.dart';
+export 'package:david_perez/widgets/icons_home.dart';
+export 'package:david_perez/widgets/jobs_cards_row.dart';
 
     //Calendars
     export 'package:david_perez/pages/calendars/calendar_worker_page.dart';

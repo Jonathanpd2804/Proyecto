@@ -1,10 +1,10 @@
 import '../exports.dart';
 
-class CardImageWidget extends StatelessWidget {
+class JobCardWidget extends StatelessWidget {
   // ignore: prefer_typing_uninitialized_variables
   final job;
 
-  const CardImageWidget({Key? key, required this.job}) : super(key: key);
+  const JobCardWidget({Key? key, required this.job}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -28,14 +28,14 @@ class CardImageWidget extends StatelessWidget {
                   //   job['ImagenURL'],
                   //   fit: BoxFit.cover,
                   //   width: 150,
-                  //   height: 150,
+                  //   height: 185,
                   // ),
                   Image.asset(
                     'lib/images/logo.png',
                   ),
                   Container(
                     width: 150,
-                    height: 150,
+                    height: 185,
                     color: Colors.black.withOpacity(0.5),
                     child: const Center(
                       child: Text(
@@ -112,7 +112,7 @@ class CardImageWidget extends StatelessWidget {
                   ),
                 )),
             const Padding(
-                padding: EdgeInsets.all(18.0), child: Icon(Icons.ads_click))
+                padding: EdgeInsets.all(18.0), child: Icon(Icons.touch_app))
           ])),
     );
   }

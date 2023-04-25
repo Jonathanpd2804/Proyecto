@@ -1,3 +1,5 @@
+import 'package:david_perez/pages/reservas_page.dart';
+
 import '../exports.dart';
 
 class CustomDrawer extends StatefulWidget {
@@ -187,6 +189,28 @@ class _CustomDrawerState extends State<CustomDrawer> {
                       MaterialPageRoute(
                           builder: (context) =>
                               ListWorkers(user: widget.currentUser)),
+                    );
+                  },
+                ),
+              ),
+            if (widget.currentUser != null && isBoss)
+              Padding(
+                padding: const EdgeInsets.only(left: 10.0),
+                child: ListTile(
+                  leading: const Icon(
+                    Icons.book,
+                    color: Colors.white,
+                  ),
+                  title: const Text(
+                    'Reservas',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  onTap: () async {
+                    await Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              ListReservas()),
                     );
                   },
                 ),

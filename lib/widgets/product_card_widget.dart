@@ -114,10 +114,11 @@ Future<void> sendEmail(BuildContext context, String userName, String reservaId) 
                   break;
                 }
                 final Map<String, dynamic> reserva = {
-                  'usuarioEmail': currentUser?.email,
+                  'clienteEmail': currentUser?.email,
                   'productoId': widget.id,
                   'fechaReserva':
                       Timestamp.now(), // Agrega la fecha actual a la reserva
+                  'pagado': false
                 };
 
                 final reservaRef = await FirebaseFirestore.instance
@@ -351,6 +352,7 @@ Future<void> deleteOldReservations() async {
   final reservas = await FirebaseFirestore.instance
       .collection('reservas')
       .where('fechaReserva', isLessThan: cutoff)
+      .where('pagado', isEqualTo: false)
       .get();
 
   for (final reserva in reservas.docs) {

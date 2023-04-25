@@ -18,7 +18,7 @@ void main() async {
   ]);
 
   // Ejecución de la aplicación
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 // Color personalizado para la aplicación
@@ -57,10 +57,10 @@ class MyApp extends StatelessWidget {
             return MaterialApp(
               color: myColor, // Color personalizado para la aplicación
               debugShowCheckedModeBanner: false,
-              home: user == null ? AuthPage() : HomePage(),
+              home: user == null ? const AuthPage() : const HomePage(),
             );
           } else {
-            return MaterialApp(
+            return const MaterialApp(
               color: myColor, // Color personalizado para la aplicación
               debugShowCheckedModeBanner: false,
               home: Scaffold(

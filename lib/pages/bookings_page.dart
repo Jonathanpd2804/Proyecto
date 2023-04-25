@@ -108,13 +108,34 @@ class ListBookings extends StatelessWidget {
                                     padding: const EdgeInsets.only(top: 20.0),
                                     child: Scrollbar(
                                       child: SizedBox(
-                                        height: 125, // Altura del contenedor
+                                        height: 90, // Altura del contenedor
                                         child: Padding(
                                           padding:
                                               const EdgeInsets.only(right: 8.0),
                                           child: SingleChildScrollView(
                                             child: Text(
                                               product["Descripción"],
+                                              style: const TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 15,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 20.0),
+                                    child: Scrollbar(
+                                      child: SizedBox(
+                                        height: 20, // Altura del contenedor
+                                        child: Padding(
+                                          padding:
+                                              const EdgeInsets.only(right: 8.0),
+                                          child: SingleChildScrollView(
+                                            child: Text(
+                                              product["Precio"],
                                               style: const TextStyle(
                                                 fontWeight: FontWeight.bold,
                                                 fontSize: 15,

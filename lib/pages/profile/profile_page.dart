@@ -111,7 +111,7 @@ class _PerfilPageState extends State<PerfilPage> {
               child: Center(
                 child: SizedBox(
                   width: 300, // Establecer el ancho del Card
-                  height: 250, // Establecer la altura del Card
+                  height: 400, // Establecer la altura del Card
                   child: Card(
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(
@@ -192,7 +192,7 @@ class _PerfilPageState extends State<PerfilPage> {
                                                 )
                                               : null,
                                     ),
-                                    if (user["Medidor"] == true)
+                                    if (user["Medidor"])
                                       ListTile(
                                         title: GetUserTurno(
                                             workerDocumentId: documentId),
@@ -207,7 +207,6 @@ class _PerfilPageState extends State<PerfilPage> {
                                               )
                                             : null,
                                       ),
-                                    if (currentUser?.email == widget.userEmail)
                                       ElevatedButton(
                                         style: ButtonStyle(
                                             backgroundColor:
@@ -235,29 +234,6 @@ class _PerfilPageState extends State<PerfilPage> {
                   ),
                 ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 30.0, bottom: 15),
-              child: Text(
-                  widget.userEmail == currentUser?.email
-                      ? "Mis Citas:"
-                      : "Sus Tareas Asignadas:",
-                  style: const TextStyle(
-                      fontWeight: FontWeight.bold, fontSize: 25)),
-            ),
-            Expanded(
-              child: widget.userEmail == currentUser?.email
-                  ? CitasListView(
-                      clienteEmail: currentUser?.email,
-                      clienteUid: userID,
-                      userEmail: currentUser?.email,
-                    )
-                  : TaskListView(
-                      workerUid: userID,
-                      workerEmail: widget.userEmail,
-                      isAssigned: true,
-                      edit: false,
-                    ),
             ),
           ],
         ),

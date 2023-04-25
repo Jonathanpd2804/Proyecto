@@ -241,17 +241,16 @@ class _CustomDrawerState extends State<CustomDrawer> {
                                 builder: (context) => const AuthPage()),
                           );
                         } catch (e) {
-                          print('Error al cerrar sesión: $e');
                           showDialog(
                             context: context,
                             builder: (context) => AlertDialog(
-                              title: Text('Error al cerrar sesión'),
-                              content: Text(
+                              title: const Text('Error al cerrar sesión'),
+                              content: const Text(
                                   'Se produjo un error al intentar cerrar sesión. Por favor, inténtelo de nuevo más tarde.'),
                               actions: [
                                 TextButton(
                                   onPressed: () => Navigator.pop(context),
-                                  child: Text('Aceptar'),
+                                  child: const Text('Aceptar'),
                                 ),
                               ],
                             ),

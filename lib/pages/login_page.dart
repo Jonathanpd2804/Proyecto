@@ -22,12 +22,12 @@ class _LoginPageState extends State<LoginPage> {
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
-          title: Text('Error'),
-          content: Text('Por favor, ingrese un correo electrónico válido.'),
+          title: const Text('Error'),
+          content: const Text('Por favor, ingrese un correo electrónico válido.'),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: Text('Aceptar'),
+              child: const Text('Aceptar'),
             ),
           ],
         ),
@@ -39,12 +39,12 @@ class _LoginPageState extends State<LoginPage> {
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
-          title: Text('Error'),
-          content: Text('La contraseña debe tener al menos 6 caracteres.'),
+          title: const Text('Error'),
+          content: const Text('La contraseña debe tener al menos 6 caracteres.'),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: Text('Aceptar'),
+              child: const Text('Aceptar'),
             ),
           ],
         ),

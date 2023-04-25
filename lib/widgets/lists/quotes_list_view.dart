@@ -4,7 +4,7 @@ import 'package:intl/intl.dart';
 class CitasListView extends StatelessWidget {
   final String? clienteUid;
   final DateTime? selectedDay;
-  final String? userEmail;
+  final String? userEmail; //Usuario actual
   final String? clienteEmail;
 
   const CitasListView({

@@ -1,6 +1,7 @@
-import 'package:david_perez/pages/add_product.dart';
 
-import '../exports.dart';
+// ignore_for_file: sized_box_for_whitespace
+
+import '../../exports.dart';
 
 class ProductsCardColumn extends StatefulWidget {
   

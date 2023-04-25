@@ -149,7 +149,7 @@ class _CalendarAskQuotesState extends State<CalendarAskQuotes> {
                                   children: [
                                     Text(
                                         '¿Desea reservar la cita para las ${DateFormat('HH:mm').format(DateTime.parse(cita))}?'),
-                                    SizedBox(height: 8),
+                                    const SizedBox(height: 8),
                                     TextField(
                                       onChanged: (value) => direccion = value,
                                       decoration: const InputDecoration(

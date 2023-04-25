@@ -1,4 +1,4 @@
-import '../exports.dart';
+import '../../exports.dart';
 
 class JobCardWidget extends StatelessWidget {
   // ignore: prefer_typing_uninitialized_variables

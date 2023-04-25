@@ -3,7 +3,7 @@ import '../exports.dart';
 // Clase HomePage que extiende StatefulWidget
 class HomePage extends StatefulWidget {
   // Constructor HomePage
-  HomePage({Key? key}) : super(key: key);
+  const HomePage({Key? key}) : super(key: key);
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -15,7 +15,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
         // Barra de navegación personalizada
-        appBar: CustomAppBar(
+        appBar: const CustomAppBar(
           showBackArrow: false,
         ),
         // Cajón lateral personalizado

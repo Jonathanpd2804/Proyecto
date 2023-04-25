@@ -1,4 +1,6 @@
-import '../exports.dart';
+// ignore_for_file: deprecated_member_use, use_build_context_synchronously, empty_catches
+
+import '../../exports.dart';
 import 'package:intl/intl.dart';
 
 class CreateTaskPage extends StatefulWidget {
@@ -7,7 +9,7 @@ class CreateTaskPage extends StatefulWidget {
   final String workerEmail;
   final DateTime? selectedDay;
 
-  CreateTaskPage({
+  const CreateTaskPage({super.key, 
     required this.user,
     required this.workerUid,
     this.selectedDay,
@@ -46,7 +48,7 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(
+      appBar: const CustomAppBar(
         showBackArrow: true,
       ),
       endDrawer: CustomDrawer(),
@@ -154,24 +156,20 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
                   // Volver a la pantalla anterior
                   Navigator.pop(context);
 
-                  // Opcional: Mostrar un mensaje de éxito, por ejemplo, utilizando un SnackBar
-                  // final snackBar = SnackBar(content: Text('Tarea creada con éxito'));
-                  // ScaffoldMessenger.of(context).showSnackBar(snackBar);
                 } catch (e) {
-                  // Manejar el error, como mostrar un mensaje de error
                 }
               },
-              child: Text('Crear'),
               style: ElevatedButton.styleFrom(
                 // Personaliza el color de fondo
                 primary: myColor,
                 // Personaliza el tamaño del botón
-                minimumSize: Size(150, 50),
+                minimumSize: const Size(150, 50),
                 // Personaliza el borde del botón
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10.0),
                 ),
               ),
+              child: const Text('Crear'),
             ),
           )
         ],

@@ -1,5 +1,5 @@
 
-import '../exports.dart';
+import '../../exports.dart';
 
 class DeleteTaskDialog extends StatefulWidget {
   final DocumentSnapshot task;
@@ -18,7 +18,7 @@ class DeleteTaskDialogState extends State<DeleteTaskDialog> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(
+      appBar: const CustomAppBar(
         showBackArrow: true,
       ),
       endDrawer: CustomDrawer(),

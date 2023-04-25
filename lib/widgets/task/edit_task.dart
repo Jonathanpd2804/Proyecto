@@ -1,7 +1,6 @@
-import 'package:david_perez/task/delete_task.dart';
 import 'package:intl/intl.dart';
 
-import '../exports.dart';
+import '../../exports.dart';
 
 class EditTaskDialog extends StatefulWidget {
   final DocumentSnapshot task;
@@ -41,11 +40,6 @@ class EditTaskDialogState extends State<EditTaskDialog> {
     selectedTime = TimeOfDay(hour: hour, minute: minute);
   }
 
-  void _deleteTask() {
-    widget.task.reference.delete();
-    Navigator.pop(context);
-  }
-
   Future<void> selectTime(BuildContext context) async {
     final TimeOfDay? picked = await showTimePicker(
       context: context,
@@ -61,7 +55,7 @@ class EditTaskDialogState extends State<EditTaskDialog> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(
+      appBar: const CustomAppBar(
         showBackArrow: true,
       ),
       endDrawer: CustomDrawer(),
@@ -124,7 +118,7 @@ class EditTaskDialogState extends State<EditTaskDialog> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text('Importante'),
+                      const Text('Importante'),
                       Switch(
                         value: isImportant,
                         onChanged: (value) {
@@ -138,7 +132,7 @@ class EditTaskDialogState extends State<EditTaskDialog> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text('Realizada'),
+                      const Text('Realizada'),
                       Switch(
                         value: isDone,
                         onChanged: (value) {

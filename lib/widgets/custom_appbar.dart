@@ -2,7 +2,7 @@ import '../exports.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final bool showBackArrow; // Si se quiere mostrar las flecha de retroceso
-  CustomAppBar({super.key, required this.showBackArrow});
+  const CustomAppBar({super.key, required this.showBackArrow});
 
   // Tamaño preferido de la AppBar
   @override

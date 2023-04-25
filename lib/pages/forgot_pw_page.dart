@@ -1,8 +1,4 @@
-import 'package:david_perez/main.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
-
-import '../widgets/my_textfield.dart';
+import '../exports.dart';
 
 class ForgotPasswordPage extends StatefulWidget {
   const ForgotPasswordPage({super.key});
@@ -24,8 +20,8 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
     try {
       await FirebaseAuth.instance
           .sendPasswordResetEmail(email: _emailController.text.trim());
-          // ignore: use_build_context_synchronously
-          showDialog(
+      // ignore: use_build_context_synchronously
+      showDialog(
           context: context,
           builder: (context) {
             return const AlertDialog(
@@ -33,7 +29,6 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
             );
           });
     } on FirebaseAuthException catch (e) {
-      
       showDialog(
           context: context,
           builder: (context) {

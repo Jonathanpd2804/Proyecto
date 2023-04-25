@@ -49,7 +49,7 @@ class _CalendarWorkerState extends State<CalendarWorker> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(
+      appBar: const CustomAppBar(
         showBackArrow: true,
       ),
       endDrawer: CustomDrawer(),

@@ -1,4 +1,4 @@
-import '../exports.dart';
+import '../../exports.dart';
 
 class JobsCardsRow extends StatefulWidget {
   final currentUser = FirebaseAuth.instance.currentUser; // Usuario actual

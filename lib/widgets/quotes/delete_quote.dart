@@ -1,6 +1,6 @@
 import 'package:intl/intl.dart';
 
-import '../exports.dart';
+import '../../exports.dart';
 
 class DeleteQuoteDialog extends StatefulWidget {
   final DocumentSnapshot quote;
@@ -41,9 +41,9 @@ class DeleteQuoteDialogState extends State<DeleteQuoteDialog> {
     //Borrar todas las tareas que coincidan con la consulta anterior:
     final tasks = await tasksQuery.get();
     final batch = FirebaseFirestore.instance.batch();
-    tasks.docs.forEach((doc) {
+    for (var doc in tasks.docs) {
       batch.delete(doc.reference);
-    });
+    }
     await batch.commit();
     widget.quote.reference.delete();
   }
@@ -51,7 +51,7 @@ class DeleteQuoteDialogState extends State<DeleteQuoteDialog> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(
+      appBar: const CustomAppBar(
         showBackArrow: true,
       ),
       endDrawer: CustomDrawer(),

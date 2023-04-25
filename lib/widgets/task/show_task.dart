@@ -1,6 +1,8 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:intl/intl.dart';
 
-import '../exports.dart';
+import '../../exports.dart';
 
 class ShowTaskDialog extends StatefulWidget {
   final DocumentSnapshot task;

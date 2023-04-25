@@ -1,5 +1,3 @@
-import 'package:david_perez/pages/reservas_page.dart';
-
 import '../exports.dart';
 
 class CustomDrawer extends StatefulWidget {
@@ -64,7 +62,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                 onTap: () async {
                   await Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => HomePage()),
+                    MaterialPageRoute(builder: (context) => const HomePage()),
                   );
                 },
                 child: Padding(
@@ -210,7 +208,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                       context,
                       MaterialPageRoute(
                           builder: (context) =>
-                              ListReservas()),
+                              const ListReservas()),
                     );
                   },
                 ),

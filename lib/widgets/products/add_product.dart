@@ -1,16 +1,16 @@
 import 'dart:io';
 
-import '../exports.dart';
+import '../../exports.dart';
 
-class JobForm extends StatefulWidget {
-  const JobForm({super.key});
+class ProductForm extends StatefulWidget {
+  const ProductForm({super.key});
 
   @override
   // ignore: library_private_types_in_public_api
-  _JobFormState createState() => _JobFormState();
+  _ProductFormState createState() => _ProductFormState();
 }
 
-class _JobFormState extends State<JobForm> {
+class _ProductFormState extends State<JobForm> {
   final _formKey = GlobalKey<FormState>();
   final _titleController = TextEditingController();
   final _descriptionController = TextEditingController();
@@ -30,7 +30,7 @@ class _JobFormState extends State<JobForm> {
   Future<String> _uploadImageToStorage() async {
     final storageRef = FirebaseStorage.instance
         .ref()
-        .child('Trabajos/${_image!.path.split('/').last}');
+        .child('Productos/${_image!.path.split('/').last}');
     final uploadTask = storageRef.putFile(_image!);
     final snapshot = await uploadTask.whenComplete(() => null);
     final downloadUrl = await snapshot.ref.getDownloadURL();
@@ -58,13 +58,13 @@ class _JobFormState extends State<JobForm> {
       final description = _descriptionController.text;
       final imageUrl = await _uploadImageToStorage();
 
-      final jobCollection = FirebaseFirestore.instance.collection('jobs');
-      final jobData = {
+      final productCollection = FirebaseFirestore.instance.collection('jobs');
+      final productData = {
         'Tittle': title,
         'Description': description,
         'Image': imageUrl,
       };
-      await jobCollection.add(jobData);
+      await productCollection.add(productData);
 
       setState(() {
         _isSubmitting = false;
@@ -78,7 +78,7 @@ class _JobFormState extends State<JobForm> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(
+      appBar: const CustomAppBar(
         showBackArrow: true,
       ),
       endDrawer: CustomDrawer(),

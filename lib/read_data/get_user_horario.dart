@@ -1,5 +1,5 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
+import '../exports.dart';
+
 
 class GetUserTurno extends StatelessWidget {
   final String workerDocumentId; //Id de el trabajador

@@ -1,5 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
+import '../exports.dart';
 
 class GetUserTelefono extends StatelessWidget {
   final String documentId;

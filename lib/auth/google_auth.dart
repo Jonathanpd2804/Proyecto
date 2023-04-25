@@ -1,7 +1,4 @@
 import 'dart:async';
-
-
-
 import '../exports.dart';
 
 class GoogleAuth {
@@ -53,7 +50,7 @@ class GoogleAuth {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => HomePage(),
+            builder: (context) => const HomePage(),
           ),
         );
       }
@@ -91,7 +88,7 @@ class GoogleAuth {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => HomePage(),
+              builder: (context) => const HomePage(),
             ),
           );
         }
@@ -137,7 +134,7 @@ class GoogleAuth {
           ),
           actions: <Widget>[
             TextButton(
-              child: Text('Cancelar'),
+              child: const Text('Cancelar'),
               onPressed: () {
                 Navigator.of(context).pop(null);
               },

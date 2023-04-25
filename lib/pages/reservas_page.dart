@@ -1,4 +1,6 @@
-import 'package:david_perez/exports.dart';
+// ignore_for_file: deprecated_member_use
+
+import '../exports.dart';
 
 class ListReservas extends StatelessWidget {
   const ListReservas({Key? key}) : super(key: key);
@@ -6,7 +8,7 @@ class ListReservas extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(showBackArrow: true),
+      appBar: const CustomAppBar(showBackArrow: true),
       drawer: CustomDrawer(),
       body: StreamBuilder<QuerySnapshot>(
         stream: FirebaseFirestore.instance.collection('reservas').snapshots(),
@@ -66,11 +68,11 @@ class ListReservas extends StatelessWidget {
                                   onPressed: () {
                                     // Navegar a la pantalla de detalles del producto
                                   },
-                                  child: const Text('Ver producto'),
                                   style: ButtonStyle(
                                       backgroundColor:
                                           MaterialStateProperty.all<Color>(
                                               myColor)),
+                                  child: const Text('Ver producto'),
                                 ),
                               ),
                             ],
@@ -158,13 +160,13 @@ class ListReservas extends StatelessWidget {
                                 },
                                 style: pagado
                                     ? ElevatedButton.styleFrom(
-                                        fixedSize: Size(113, 25),
+                                        fixedSize: const Size(113, 25),
                                         primary: Colors.white,
                                         onPrimary: Colors.black,
                                         shape: RoundedRectangleBorder(
                                           borderRadius:
                                               BorderRadius.circular(8),
-                                          side: BorderSide(
+                                          side: const BorderSide(
                                               color: myColor, width: 3),
                                         ),
                                       )

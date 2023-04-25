@@ -1,6 +1,4 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
-import 'package:google_sign_in/google_sign_in.dart';
+// ignore_for_file: use_build_context_synchronously
 
 import '../exports.dart';
 
@@ -59,7 +57,7 @@ class UserAuth {
         // Navega a HomePage después de iniciar sesión correctamente
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => HomePage()),
+          MaterialPageRoute(builder: (context) => const HomePage()),
         );
       }
 

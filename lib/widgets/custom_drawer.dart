@@ -208,7 +208,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                       context,
                       MaterialPageRoute(
                           builder: (context) =>
-                              const ListReservas()),
+                              const ListBookings()),
                     );
                   },
                 ),

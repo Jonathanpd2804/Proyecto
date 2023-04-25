@@ -8,7 +8,7 @@ export 'package:david_perez/pages/register_page.dart';
 export 'package:david_perez/pages/forgot_pw_page.dart';
 export 'package:david_perez/pages/home_page.dart';
 export 'package:david_perez/pages/workers_page.dart';
-export 'package:david_perez/pages/reservas_page.dart';
+export 'package:david_perez/pages/bookings_page.dart';
 
     //Calendars
     export 'package:david_perez/pages/calendars/calendar_worker_page.dart';

@@ -2,8 +2,8 @@
 
 import '../exports.dart';
 
-class ListReservas extends StatelessWidget {
-  const ListReservas({Key? key}) : super(key: key);
+class ListBookings extends StatelessWidget {
+  const ListBookings({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -21,22 +21,22 @@ class ListReservas extends StatelessWidget {
             return const Center(child: CircularProgressIndicator());
           }
 
-          final reservas = snapshot.data!.docs;
+          final bookings = snapshot.data!.docs;
 
-          if (reservas.isEmpty) {
+          if (bookings.isEmpty) {
             return const Center(child: Text('No hay reservas realizadas'));
           }
 
           return ListView.builder(
-            itemCount: reservas.length,
+            itemCount: bookings.length,
             itemBuilder: (BuildContext context, int index) {
-              final reserva = reservas[index];
-              final fechaReserva = reserva['fechaReserva'].toDate().toLocal();
-              final fecha =
-                  '${fechaReserva.day}/${fechaReserva.month}/${fechaReserva.year}';
-              final String clienteEmail = reserva['clienteEmail'];
-              final String productoId = reserva['productoId'];
-              bool pagado = reserva['pagado'];
+              final booking = bookings[index];
+              final dateBooking = booking['fechaReserva'].toDate().toLocal();
+              final date =
+                  '${dateBooking.day}/${dateBooking.month}/${dateBooking.year}';
+              final String clientEmail = booking['clienteEmail'];
+              final String productId = booking['productoId'];
+              bool paid = booking['pagado'];
 
               return Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -45,14 +45,14 @@ class ListReservas extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       ListTile(
-                        title: Text('Reserva del $fecha'),
-                        subtitle: Text('Cliente: $clienteEmail'),
-                        trailing: Text(pagado ? 'Pagado' : 'Pendiente'),
+                        title: Text('Reserva del $date'),
+                        subtitle: Text('Cliente: $clientEmail'),
+                        trailing: Text(paid ? 'Pagado' : 'Pendiente'),
                       ),
                       FutureBuilder<DocumentSnapshot>(
                         future: FirebaseFirestore.instance
                             .collection('productos')
-                            .doc(productoId)
+                            .doc(productId)
                             .get(),
                         builder: (context, snapshot) {
                           if (snapshot.hasError || !snapshot.hasData) {
@@ -61,7 +61,7 @@ class ListReservas extends StatelessWidget {
                           return Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Text("Producto: $productoId"),
+                              Text("Producto: $productId"),
                               Padding(
                                 padding: const EdgeInsets.only(left: 40.0),
                                 child: ElevatedButton(
@@ -80,7 +80,7 @@ class ListReservas extends StatelessWidget {
                         },
                       ),
                       const SizedBox(height: 8.0),
-                      if (!pagado)
+                      if (!paid)
                         ElevatedButton(
                           onPressed: () async {
                             final confirmado = await showDialog<bool>(
@@ -110,7 +110,7 @@ class ListReservas extends StatelessWidget {
                             if (confirmado != null && confirmado) {
                               await FirebaseFirestore.instance
                                   .collection('reservas')
-                                  .doc(reserva.id)
+                                  .doc(booking.id)
                                   .update({'pagado': true});
                             }
                           },
@@ -118,7 +118,7 @@ class ListReservas extends StatelessWidget {
                               backgroundColor: Colors.red),
                           child: const Text('Marcar como pagado'),
                         ),
-                      if (pagado)
+                      if (paid)
                         Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
@@ -154,11 +154,11 @@ class ListReservas extends StatelessWidget {
                                   if (confirmado != null && confirmado) {
                                     await FirebaseFirestore.instance
                                         .collection('reservas')
-                                        .doc(reserva.id)
+                                        .doc(booking.id)
                                         .delete();
                                   }
                                 },
-                                style: pagado
+                                style: paid
                                     ? ElevatedButton.styleFrom(
                                         fixedSize: const Size(113, 25),
                                         primary: Colors.white,

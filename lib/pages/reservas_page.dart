@@ -1,6 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:david_perez/exports.dart';
-import 'package:flutter/material.dart';
 
 class ListReservas extends StatelessWidget {
   const ListReservas({Key? key}) : super(key: key);
@@ -31,7 +29,9 @@ class ListReservas extends StatelessWidget {
             itemCount: reservas.length,
             itemBuilder: (BuildContext context, int index) {
               final reserva = reservas[index];
-              final String fecha = reserva['fechaReserva'].toDate().toString();
+              final fechaReserva = reserva['fechaReserva'].toDate().toLocal();
+              final fecha =
+                  '${fechaReserva.day}/${fechaReserva.month}/${fechaReserva.year}';
               final String clienteEmail = reserva['clienteEmail'];
               final String productoId = reserva['productoId'];
               bool pagado = reserva['pagado'];
@@ -47,23 +47,36 @@ class ListReservas extends StatelessWidget {
                         subtitle: Text('Cliente: $clienteEmail'),
                         trailing: Text(pagado ? 'Pagado' : 'Pendiente'),
                       ),
-                      // ElevatedButton(
-                      //   onPressed: () async {
-                      //     final productoSnapshot = await FirebaseFirestore.instance
-                      //         .collection('productos')
-                      //         .doc(productoId)
-                      //         .get();
-                      //     final producto = productoSnapshot.data();
-                      //     // Navigator.push(
-                      //     //   context,
-                      //     //   MaterialPageRoute(
-                      //     //     builder: (context) =>
-                      //     //         ProductoDetalleScreen(producto: producto),
-                      //     //   ),
-                      //     // );
-                      //   },
-                      //   child: const Text('Ver producto'),
-                      // ),
+                      FutureBuilder<DocumentSnapshot>(
+                        future: FirebaseFirestore.instance
+                            .collection('productos')
+                            .doc(productoId)
+                            .get(),
+                        builder: (context, snapshot) {
+                          if (snapshot.hasError || !snapshot.hasData) {
+                            return const Text('Cargando producto...');
+                          }
+                          return Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text("Producto: $productoId"),
+                              Padding(
+                                padding: const EdgeInsets.only(left: 40.0),
+                                child: ElevatedButton(
+                                  onPressed: () {
+                                    // Navegar a la pantalla de detalles del producto
+                                  },
+                                  child: const Text('Ver producto'),
+                                  style: ButtonStyle(
+                                      backgroundColor:
+                                          MaterialStateProperty.all<Color>(
+                                              myColor)),
+                                ),
+                              ),
+                            ],
+                          );
+                        },
+                      ),
                       const SizedBox(height: 8.0),
                       if (!pagado)
                         ElevatedButton(
@@ -99,50 +112,68 @@ class ListReservas extends StatelessWidget {
                                   .update({'pagado': true});
                             }
                           },
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.red),
                           child: const Text('Marcar como pagado'),
-                          style: ElevatedButton.styleFrom(primary: Colors.red),
                         ),
                       if (pagado)
-                        ElevatedButton(
-                          onPressed: () async {
-                            final confirmado = await showDialog<bool>(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return AlertDialog(
-                                  title: const Text('Confirmar entrega'),
-                                  content: const Text(
-                                    '¿Está seguro de que desea marcar esta reserva como entregada y eliminarla?',
-                                  ),
-                                  actions: [
-                                    TextButton(
-                                      onPressed: () {
-                                        Navigator.of(context).pop(true);
-                                      },
-                                      child: const Text('Sí'),
-                                    ),
-                                    TextButton(
-                                      onPressed: () {
-                                        Navigator.of(context).pop(false);
-                                      },
-                                      child: const Text('No'),
-                                    ),
-                                  ],
-                                );
-                              },
-                            );
-                            if (confirmado != null && confirmado) {
-                              await FirebaseFirestore.instance
-                                  .collection('reservas')
-                                  .doc(reserva.id)
-                                  .delete();
-                            }
-                          },
-                          child: const Text('Entregado'),
-                          style: pagado
-                              ? ElevatedButton.styleFrom(primary: Colors.green)
-                              : null,
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(right: 15.0),
+                              child: ElevatedButton(
+                                onPressed: () async {
+                                  final confirmado = await showDialog<bool>(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: const Text('Confirmar entrega'),
+                                        content: const Text(
+                                          '¿Está seguro de que desea marcar esta reserva como entregada y eliminarla?',
+                                        ),
+                                        actions: [
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.of(context).pop(true);
+                                            },
+                                            child: const Text('Sí'),
+                                          ),
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.of(context).pop(false);
+                                            },
+                                            child: const Text('No'),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                  if (confirmado != null && confirmado) {
+                                    await FirebaseFirestore.instance
+                                        .collection('reservas')
+                                        .doc(reserva.id)
+                                        .delete();
+                                  }
+                                },
+                                style: pagado
+                                    ? ElevatedButton.styleFrom(
+                                        fixedSize: Size(113, 25),
+                                        primary: Colors.white,
+                                        onPrimary: Colors.black,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                          side: BorderSide(
+                                              color: myColor, width: 3),
+                                        ),
+                                      )
+                                    : null,
+                                child: const Text('Entregado'),
+                              ),
+                            ),
+                          ],
                         ),
-
                       const SizedBox(height: 16.0),
                     ],
                   ),

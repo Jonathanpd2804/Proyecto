@@ -109,28 +109,37 @@ class ProductCardWidget extends StatelessWidget {
                             ),
                           )),
                       Row(
+                        mainAxisAlignment: MainAxisAlignment
+                            .center, // Centrar elementos en el Row
+
                         children: [
                           Scrollbar(
                             child: SizedBox(
                               height: 15, // Altura del contenedor
-                              child: Padding(
-                                padding: const EdgeInsets.only(left: 45.0),
-                                child: Text(
-                                  product["Precio"],
-                                  style: const TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 15,
-                                  ),
+                              child: Text(
+                                product["Precio"],
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 15,
                                 ),
                               ),
                             ),
                           ),
-                          IconButton(
-                            icon: Icon(Icons.shopping_cart),
-                            onPressed: () {
-                              // Acción al presionar el botón de "añadir al carrito"
-                            },
-                          ),
+                          // Cambiar el color de fondo del botón
+
+                          Padding(
+                            padding: const EdgeInsets.only(left: 15.0),
+                            child: ElevatedButton(
+                              style: ButtonStyle(
+                                  backgroundColor:
+                                      MaterialStateProperty.all<Color>(
+                                          myColor)),
+                              onPressed: () {
+                                // Acción al presionar el botón "Reservar"
+                              },
+                              child: const Text("Reservar"),
+                            ),
+                          )
                         ],
                       ),
                     ],

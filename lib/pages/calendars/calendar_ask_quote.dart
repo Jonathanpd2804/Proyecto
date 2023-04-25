@@ -49,40 +49,38 @@ class _CalendarAskQuotesState extends State<CalendarAskQuotes> {
 
     String clienteUid = await calendarioService.getClienteUid();
 
-    if (clienteUid != null) {
-      DateTime citaDateTime = DateTime.parse(cita);
-      String turn = "";
+    DateTime citaDateTime = DateTime.parse(cita);
+    String turn = "";
 
-      if (citaDateTime.hour >= 8 && citaDateTime.hour < 17) {
-        turn = "Mañana";
-      } else if (citaDateTime.hour >= 17 && citaDateTime.hour < 20) {
-        turn = "Tarde";
-      }
-
-      final citaRef = await firestore.collection('citas').add({
-        'Fecha': citaDateTime,
-        'Cliente': clienteUid,
-        'Turno': turn,
-        'Dirección': direccion,
-        'Realizada': false
-      });
-
-      //Agregarla a tareas de el trabajador que tenga ese turno
-
-      //Obtener el trabajador con el turno de la cita
-      String workerID = await calendarioService.getWorkerUid(turn);
-
-      await firestore.collection('tareas').add({
-        'Fecha': citaDateTime,
-        'Trabajador': workerID,
-        'Realizada': false,
-        'Asignada': true,
-        'Dirección': direccion,
-        'Importante': true,
-        'Título': "Medición",
-        'IdCita': citaRef.id,
-      });
+    if (citaDateTime.hour >= 8 && citaDateTime.hour < 17) {
+      turn = "Mañana";
+    } else if (citaDateTime.hour >= 17 && citaDateTime.hour < 20) {
+      turn = "Tarde";
     }
+
+    final citaRef = await firestore.collection('citas').add({
+      'Fecha': citaDateTime,
+      'Cliente': clienteUid,
+      'Turno': turn,
+      'Dirección': direccion,
+      'Realizada': false
+    });
+
+    //Agregarla a tareas de el trabajador que tenga ese turno
+
+    //Obtener el trabajador con el turno de la cita
+    String workerID = await calendarioService.getWorkerUid(turn);
+
+    await firestore.collection('tareas').add({
+      'Fecha': citaDateTime,
+      'Trabajador': workerID,
+      'Realizada': false,
+      'Asignada': true,
+      'Dirección': direccion,
+      'Importante': true,
+      'Título': "Medición",
+      'IdCita': citaRef.id,
+    });
   }
 
   Future<List<String>> _getCitasOcupadas(DateTime date) async {

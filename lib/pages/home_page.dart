@@ -149,10 +149,10 @@ class _HomePageState extends State<HomePage> {
                   ],
                 ),
               ),
-            const Column(
+            Column(
               children: [
                 Padding(
-                  padding: EdgeInsets.only(top: 40.0),
+                  padding: const EdgeInsets.only(top: 40.0),
                   child: SizedBox(
                     width: 400,
                     height: 200,

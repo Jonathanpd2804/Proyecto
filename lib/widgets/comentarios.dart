@@ -1,7 +1,9 @@
 import 'package:david_perez/exports.dart';
 
 class ComentariosYPuntuacion extends StatefulWidget {
-  const ComentariosYPuntuacion({super.key});
+  final currentUser = FirebaseAuth.instance.currentUser; // Usuario actual
+
+  ComentariosYPuntuacion({super.key});
 
   @override
   // ignore: library_private_types_in_public_api
@@ -55,21 +57,22 @@ class _ComentariosYPuntuacionState extends State<ComentariosYPuntuacion> {
             },
           ),
         ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text(
-              "Añadir comentario",
-              style: TextStyle(fontWeight: FontWeight.bold),
-            ),
-            IconButton(
-              onPressed: () {
-                _mostrarDialogoPuntuacion(context);
-              },
-              icon: const Icon(Icons.add_comment),
-            ),
-          ],
-        ),
+        if (widget.currentUser != null)
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text(
+                "Añadir comentario",
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              IconButton(
+                onPressed: () {
+                  _mostrarDialogoPuntuacion(context);
+                },
+                icon: const Icon(Icons.add_comment),
+              ),
+            ],
+          ),
       ],
     );
   }

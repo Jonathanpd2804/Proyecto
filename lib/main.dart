@@ -1,4 +1,7 @@
+// ignore_for_file: depend_on_referenced_packages
+
 import 'exports.dart';
+import 'package:provider/provider.dart';
 
 void main() async {
   // Inicialización de Firebase
@@ -13,9 +16,9 @@ void main() async {
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]);
-  
+
   // Ejecución de la aplicación
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 // Color personalizado para la aplicación
@@ -36,14 +39,51 @@ const MaterialColor myColor = MaterialColor(
 );
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      color: myColor, // Color personalizado para la aplicación
-      debugShowCheckedModeBanner: false, // Desactivación del banner de depuración
-      home: HomePage(),
+    return MultiProvider(
+      providers: [
+        Provider<AuthenticationService>(
+          create: (_) => AuthenticationService(FirebaseAuth.instance),
+        ),
+      ],
+      child: StreamBuilder<User?>(
+        stream: FirebaseAuth.instance.authStateChanges(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.active) {
+            final user = snapshot.data;
+            return MaterialApp(
+              color: myColor, // Color personalizado para la aplicación
+              debugShowCheckedModeBanner: false,
+              home: user == null ? AuthPage() : HomePage(),
+            );
+          } else {
+            return MaterialApp(
+              color: myColor, // Color personalizado para la aplicación
+              debugShowCheckedModeBanner: false,
+              home: Scaffold(
+                body: Center(
+                  child: CircularProgressIndicator(),
+                ),
+              ),
+            );
+          }
+        },
+      ),
     );
+  }
+}
+
+class AuthenticationService {
+  final FirebaseAuth _firebaseAuth;
+
+  AuthenticationService(this._firebaseAuth);
+
+  Stream<User?> get authStateChanges => _firebaseAuth.authStateChanges();
+
+  Future<void> signOut() async {
+    await _firebaseAuth.signOut();
   }
 }

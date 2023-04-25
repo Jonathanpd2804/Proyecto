@@ -1,3 +1,5 @@
+import 'package:email_validator/email_validator.dart';
+
 import '../exports.dart';
 
 class LoginPage extends StatefulWidget {
@@ -11,6 +13,47 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final emailController = TextEditingController(); //Email
   final passwordController = TextEditingController(); //Contraseña
+
+  bool validateFields() {
+    String email = emailController.text.trim();
+    String password = passwordController.text.trim();
+
+    if (email.isEmpty || !EmailValidator.validate(email)) {
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text('Error'),
+          content: Text('Por favor, ingrese un correo electrónico válido.'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text('Aceptar'),
+            ),
+          ],
+        ),
+      );
+      return false;
+    }
+
+    if (password.isEmpty || password.length < 6) {
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text('Error'),
+          content: Text('La contraseña debe tener al menos 6 caracteres.'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text('Aceptar'),
+            ),
+          ],
+        ),
+      );
+      return false;
+    }
+
+    return true;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -89,13 +132,13 @@ class _LoginPageState extends State<LoginPage> {
                   padding: const EdgeInsets.only(top: 10.0),
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor:
-                          myColor,
+                      backgroundColor: myColor,
                     ),
                     onPressed: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => const HomePage()),
+                        MaterialPageRoute(
+                            builder: (context) => const HomePage()),
                       );
                     },
                     child: const Text('Ingresar como invitado'),
@@ -107,11 +150,15 @@ class _LoginPageState extends State<LoginPage> {
                 // Botón iniciar sesión
                 MyButton(
                   text: 'Sign In',
-                  onTap: UserAuth(
-                    emailController: emailController,
-                    passwordController: passwordController,
-                    context: context,
-                  ).signUserIn,
+                  onTap: () {
+                    if (validateFields()) {
+                      UserAuth(
+                        emailController: emailController,
+                        passwordController: passwordController,
+                        context: context,
+                      ).signUserIn();
+                    }
+                  },
                 ),
 
                 const SizedBox(height: 50),

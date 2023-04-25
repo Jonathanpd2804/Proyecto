@@ -29,38 +29,22 @@ class UserAuth {
     );
 
     try {
-      UserCredential? userCredential;
+      UserCredential userCredential;
 
-      // If user signed in with Google, get the Google credentials and sign in
-      if (await _googleSignIn.isSignedIn()) {
-        final GoogleSignInAccount? googleUser = await _googleSignIn.signInSilently();
-        if (googleUser != null) {
-          final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
-          final credential = GoogleAuthProvider.credential(
-            accessToken: googleAuth.accessToken,
-            idToken: googleAuth.idToken,
-          );
-          userCredential = await auth.signInWithCredential(credential);
-        }
-      } else {
-        // Otherwise, sign in with email and password
-        userCredential = await auth.signInWithEmailAndPassword(
-          email: emailController.text,
-          password: passwordController.text,
-        );
-      }
+      // Sign in with email and password
+      userCredential = await auth.signInWithEmailAndPassword(
+        email: emailController.text,
+        password: passwordController.text,
+      );
 
       // Pop the loading circle
       Navigator.pop(context);
 
-      if (userCredential != null) {
-        // Navega a HomePage después de iniciar sesión correctamente
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const HomePage()),
-        );
-      }
-
+      // Navigate to HomePage after successful sign in
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const HomePage()),
+      );
     } on FirebaseAuthException catch (e) {
       // Pop the loading circle
       Navigator.pop(context);

@@ -10,10 +10,11 @@ class ProductForm extends StatefulWidget {
   _ProductFormState createState() => _ProductFormState();
 }
 
-class _ProductFormState extends State<JobForm> {
+class _ProductFormState extends State<ProductForm> {
   final _formKey = GlobalKey<FormState>();
   final _titleController = TextEditingController();
   final _descriptionController = TextEditingController();
+  final _priceController = TextEditingController();
   File? _image;
   bool _isSubmitting = false; //Se está creand el trabajo
   String? _imageError; //Mensaje de imagen no introducida
@@ -57,12 +58,14 @@ class _ProductFormState extends State<JobForm> {
       final title = _titleController.text;
       final description = _descriptionController.text;
       final imageUrl = await _uploadImageToStorage();
+      final precio = _priceController.text;
 
       final productCollection = FirebaseFirestore.instance.collection('jobs');
       final productData = {
-        'Tittle': title,
-        'Description': description,
-        'Image': imageUrl,
+        'Título': title,
+        'Descripción': description,
+        'ImagenURL': imageUrl,
+        'Precio': precio
       };
       await productCollection.add(productData);
 
@@ -158,6 +161,21 @@ class _ProductFormState extends State<JobForm> {
                   },
                 ),
                 const SizedBox(height: 16.0),
+                TextFormField(
+                  controller: _priceController,
+                  decoration: const InputDecoration(
+                    labelText: 'Precio',
+                    border: OutlineInputBorder(),
+                  ),
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return 'Por favor, ingrese una precio';
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 16.0),
+                
                 Center(
                   child: ElevatedButton(
                     // ignore: deprecated_member_use
@@ -165,7 +183,7 @@ class _ProductFormState extends State<JobForm> {
                     onPressed: _isSubmitting ? null : _submitForm,
                     child: _isSubmitting
                         ? const CircularProgressIndicator(color: Colors.white)
-                        : const Text('Crear trabajo'),
+                        : const Text('Crear producto'),
                   ),
                 ),
               ],

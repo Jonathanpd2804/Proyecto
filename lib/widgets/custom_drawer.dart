@@ -1,4 +1,6 @@
 import '../exports.dart';
+// ignore: depend_on_referenced_packages
+import 'package:provider/provider.dart';
 
 class CustomDrawer extends StatefulWidget {
   // ignore: non_constant_identifier_names
@@ -207,8 +209,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                     await Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) =>
-                              const ListBookings()),
+                          builder: (context) => const ListBookings()),
                     );
                   },
                 ),
@@ -231,15 +232,31 @@ class _CustomDrawerState extends State<CustomDrawer> {
                         style: TextStyle(color: Colors.white),
                       ),
                       onTap: () async {
-                        // Sign out from Firebase
-                        await FirebaseAuth.instance.signOut();
+                        try {
+                          context.read<AuthenticationService>().signOut();
 
-                        // ignore: use_build_context_synchronously
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const AuthPage()),
-                        );
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const AuthPage()),
+                          );
+                        } catch (e) {
+                          print('Error al cerrar sesión: $e');
+                          showDialog(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                              title: Text('Error al cerrar sesión'),
+                              content: Text(
+                                  'Se produjo un error al intentar cerrar sesión. Por favor, inténtelo de nuevo más tarde.'),
+                              actions: [
+                                TextButton(
+                                  onPressed: () => Navigator.pop(context),
+                                  child: Text('Aceptar'),
+                                ),
+                              ],
+                            ),
+                          );
+                        }
                       },
                     ),
                   ),

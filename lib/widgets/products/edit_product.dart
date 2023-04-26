@@ -1,4 +1,4 @@
-// ignore_for_file: must_be_immutable, prefer_typing_uninitialized_variables
+// ignore_for_file: must_be_immutable, prefer_typing_uninitialized_variables, prefer_const_constructors_in_immutables, avoid_print, use_build_context_synchronously
 
 import 'dart:io';
 
@@ -64,7 +64,7 @@ class _EditProductState extends State<EditProduct> {
       builder: (BuildContext context) {
         return WillPopScope(
           onWillPop: () async => false,
-          child: AlertDialog(
+          child: const AlertDialog(
             content: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -89,7 +89,7 @@ class _EditProductState extends State<EditProduct> {
         image: DecorationImage(
           fit: BoxFit.cover,
           image: _image != null
-              ? FileImage(_image!) as ImageProvider<Object>
+              ? FileImage(_image!)
               : NetworkImage(_imageUrlFromDatabase!) as ImageProvider<Object>,
         ),
       ),
@@ -217,12 +217,12 @@ class _EditProductState extends State<EditProduct> {
                       final newImageUrl =
                           await _uploadImageToStorage(_imageUrlFromDatabase!);
                       if (newImageUrl != null) {
-                        _imageUrlFromDatabase = newImageUrl as String?;
+                        _imageUrlFromDatabase = newImageUrl;
                       } else {
                         Navigator.pop(
                             context); // Cierra el diálogo de carga en caso de error
                         ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
+                          const SnackBar(
                             content: Text(
                                 'Error al subir la imagen. Por favor, inténtalo de nuevo.'),
                           ),

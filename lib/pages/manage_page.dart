@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import '../exports.dart';
 
 class ManagePage extends StatefulWidget {
@@ -21,9 +23,9 @@ class _ManagePageState extends State<ManagePage> {
           children: <Widget>[
             _buildCard('Trabajadores', Icons.person,
                 ListWorkers(user: widget.currentUser)),
-            _buildCard('Reservas', Icons.event, ListBookings()),
-            _buildCard('Productos', Icons.shopping_cart, ListProducts()),
-            _buildCard('Trabajos', Icons.work, HomePage()),
+            _buildCard('Reservas', Icons.event, const ListBookings()),
+            _buildCard('Productos', Icons.shopping_cart, const ListProducts()),
+            _buildCard('Trabajos', Icons.work, const HomePage()),
           ],
         ),
       ),

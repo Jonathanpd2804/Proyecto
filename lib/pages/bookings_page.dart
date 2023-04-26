@@ -233,8 +233,8 @@ class ListBookings extends StatelessWidget {
                                 child: Text("Producto: $productId"),
                               );
                             } else {
-                              productInfo = Padding(
-                                padding: const EdgeInsets.only(left: 18.0),
+                              productInfo = const Padding(
+                                padding: EdgeInsets.only(left: 18.0),
                                 child: Text('Producto no encontrado'),
                               );
                             }

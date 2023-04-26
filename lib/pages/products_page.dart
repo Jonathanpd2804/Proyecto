@@ -19,14 +19,14 @@ class ListProducts extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => ProductForm(),
+                    builder: (context) => const ProductForm(),
                   ),
                 );
               },
-              child: const Text("Agregar Producto"),
               style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all<Color>(myColor),
               ),
+              child: const Text("Agregar Producto"),
             ),
           ),
           StreamBuilder<QuerySnapshot>(
@@ -68,11 +68,11 @@ class ListProducts extends StatelessWidget {
                           children: [
                             Padding(
                               padding: const EdgeInsets.all(15.0),
-                              child: Text('Producto: ${titleProduct}'),
+                              child: Text('Producto: $titleProduct'),
                             ),
                             ListTile(
                               title: Text('Descripción: $descriptionProduct'),
-                              subtitle: Text('Precio: ${priceProduct} €'),
+                              subtitle: Text('Precio: $priceProduct €'),
                               trailing: Text(stockProduct != 0
                                   ? 'En Stock: $stockProduct'
                                   : 'Agotado'),

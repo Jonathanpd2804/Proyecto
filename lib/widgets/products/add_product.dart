@@ -15,6 +15,8 @@ class _ProductFormState extends State<ProductForm> {
   final _titleController = TextEditingController();
   final _descriptionController = TextEditingController();
   final _priceController = TextEditingController();
+  final _stockController = TextEditingController();
+
   File? _image;
   bool _isSubmitting = false; //Se está creand el trabajo
   String? _imageError; //Mensaje de imagen no introducida
@@ -58,14 +60,17 @@ class _ProductFormState extends State<ProductForm> {
       final title = _titleController.text;
       final description = _descriptionController.text;
       final imageUrl = await _uploadImageToStorage();
-      final precio = _priceController.text;
+      final price = _priceController.text;
+      final stock = _stockController.text;
 
-      final productCollection = FirebaseFirestore.instance.collection('jobs');
+      final productCollection =
+          FirebaseFirestore.instance.collection('productos');
       final productData = {
         'Título': title,
         'Descripción': description,
         'ImagenURL': imageUrl,
-        'Precio': precio
+        'Precio': price,
+        'Cantidad' : stock
       };
       await productCollection.add(productData);
 
@@ -174,8 +179,20 @@ class _ProductFormState extends State<ProductForm> {
                     return null;
                   },
                 ),
+                TextFormField(
+                  controller: _stockController,
+                  decoration: const InputDecoration(
+                    labelText: 'Cantidad',
+                    border: OutlineInputBorder(),
+                  ),
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return 'Por favor, ingrese una precio';
+                    }
+                    return null;
+                  },
+                ),
                 const SizedBox(height: 16.0),
-                
                 Center(
                   child: ElevatedButton(
                     // ignore: deprecated_member_use

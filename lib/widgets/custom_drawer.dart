@@ -114,7 +114,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
               Padding(
                 padding: const EdgeInsets.only(left: 10.0),
                 child: ListTile(
-                  leading: const Icon(Icons.settings, color: Colors.white),
+                  leading: const Icon(Icons.home, color: Colors.white),
                   title: const Text(
                     "Mi Perfil",
                     style: TextStyle(color: Colors.white),
@@ -198,18 +198,18 @@ class _CustomDrawerState extends State<CustomDrawer> {
                 padding: const EdgeInsets.only(left: 10.0),
                 child: ListTile(
                   leading: const Icon(
-                    Icons.book,
+                    Icons.settings,
                     color: Colors.white,
                   ),
                   title: const Text(
-                    'Reservas',
+                    'Gestiones',
                     style: TextStyle(color: Colors.white),
                   ),
                   onTap: () async {
                     await Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const ListBookings()),
+                          builder: (context) => ManagePage()),
                     );
                   },
                 ),

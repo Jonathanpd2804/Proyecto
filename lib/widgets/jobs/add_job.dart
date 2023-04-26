@@ -58,11 +58,11 @@ class _JobFormState extends State<JobForm> {
       final description = _descriptionController.text;
       final imageUrl = await _uploadImageToStorage();
 
-      final jobCollection = FirebaseFirestore.instance.collection('jobs');
+      final jobCollection = FirebaseFirestore.instance.collection('trabajos');
       final jobData = {
-        'Tittle': title,
-        'Description': description,
-        'Image': imageUrl,
+        'Título': title,
+        'Descripción': description,
+        'ImagenURL': imageUrl,
       };
       await jobCollection.add(jobData);
 

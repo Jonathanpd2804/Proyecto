@@ -158,7 +158,7 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                 child: Stack(
                   children: [
                     Image.network(
-                      widget.product['ImageURL'],
+                      widget.product['ImagenURL'],
                       fit: BoxFit.cover,
                       width: 200,
                       height: 225,
@@ -249,7 +249,7 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                               child: SizedBox(
                                 height: 15, // Altura del contenedor
                                 child: Text(
-                                  widget.product["Precio"],
+                                  "${widget.product["Precio"].toString()} €",
                                   style: const TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 15,

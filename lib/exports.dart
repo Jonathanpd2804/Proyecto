@@ -11,6 +11,7 @@ export 'package:david_perez/pages/home_page.dart';
 export 'package:david_perez/pages/workers_page.dart';
 export 'package:david_perez/pages/bookings_page.dart';
 export 'package:david_perez/pages/products_page.dart';
+export 'package:david_perez/pages/manage_page.dart';
 
 
     //Calendars

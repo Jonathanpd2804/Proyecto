@@ -91,30 +91,7 @@ class _JobsCardsRowState extends State<JobsCardsRow> {
             ],
           ),
         ),
-        if (isBoss)
-          Padding(
-            padding: const EdgeInsets.only(top: 15.0, left: 250),
-            child: Row(
-              children: [
-                const Text(
-                  "Añadir trabajo",
-                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const JobForm()),
-                    );
-                  },
-                  child: const Padding(
-                    padding: EdgeInsets.only(left: 12.0),
-                    child: Icon(Icons.add),
-                  ),
-                )
-              ],
-            ),
-          ),
+        
       ],
     );
   }

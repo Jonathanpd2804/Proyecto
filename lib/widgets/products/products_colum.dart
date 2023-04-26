@@ -81,32 +81,7 @@ class _ProductsCardColumnState extends State<ProductsCardColumn> {
             },
           ),
         ),
-        if (isBoss)
-          Padding(
-            padding: const EdgeInsets.only(top: 30.0, bottom: 15),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Text(
-                  "Añadir producto",
-                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const ProductForm()),
-                    );
-                  },
-                  child: const Padding(
-                    padding: EdgeInsets.only(left: 12.0),
-                    child: Icon(Icons.add),
-                  ),
-                )
-              ],
-            ),
-          ),
+        
       ],
     );
   }

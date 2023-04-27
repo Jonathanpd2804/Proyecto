@@ -1,5 +1,7 @@
 // ignore_for_file: deprecated_member_use
 
+import 'package:david_perez/pages/jobs_page.dart';
+
 import '../exports.dart';
 
 class ManagePage extends StatefulWidget {
@@ -25,7 +27,7 @@ class _ManagePageState extends State<ManagePage> {
                 ListWorkers(user: widget.currentUser)),
             _buildCard('Reservas', Icons.event, const ListBookings()),
             _buildCard('Productos', Icons.shopping_cart, const ListProducts()),
-            _buildCard('Trabajos', Icons.work, const HomePage()),
+            _buildCard('Trabajos', Icons.work, const ListJobs()),
           ],
         ),
       ),

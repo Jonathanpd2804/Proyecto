@@ -74,7 +74,7 @@ class _ProductsCardColumnState extends State<ProductsCardColumn> {
                     width: MediaQuery.of(context).size.width / 2 - 15,
                     height: 300,
                     child:
-                        ProductCardWidget(id: productId, product: productData),
+                        ProductCardWidget(productID: productId, product: productData),
                   );
                 }).toList(),
               );

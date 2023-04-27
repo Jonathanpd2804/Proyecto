@@ -3,10 +3,11 @@
 import '../../exports.dart';
 
 class ProductCardWidget extends StatefulWidget {
-  final String id;
+  final String productID;
   final product;
 
-  const ProductCardWidget({Key? key, required this.product, required this.id})
+  const ProductCardWidget(
+      {Key? key, required this.product, required this.productID})
       : super(key: key);
 
   @override
@@ -107,22 +108,49 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                   userName = userDoc['Nombre'];
                   break;
                 }
-                final Map<String, dynamic> reserva = {
+
+                final reserva = {
                   'clienteEmail': currentUser?.email,
-                  'productoId': widget.id,
-                  'fechaReserva':
-                      Timestamp.now(), // Agrega la fecha actual a la reserva
-                  'pagado': false
+                  'productoId': widget.productID,
+                  'fechaReserva': Timestamp.now(),
+                  'pagado': false,
                 };
 
                 final reservaRef = await FirebaseFirestore.instance
                     .collection('reservas')
                     .add(reserva);
 
-                final reservaId = reservaRef.id; // Obtiene el ID de la reserva
+                final reservaId = reservaRef.id;
 
-                sendEmail(context, userName,
-                    reservaId); // Pasa el ID de la reserva al método sendEmail
+                // Actualiza la cantidad disponible del producto en la base de datos
+                final productoRef = FirebaseFirestore.instance
+                    .collection('productos')
+                    .doc(widget.productID);
+
+                FirebaseFirestore.instance.runTransaction((transaction) async {
+                  final producto = await transaction.get(productoRef);
+                  final cantidadActual = int.parse(producto['Cantidad']);
+
+                  const cantidadReservada = 1; // Cantidad a reservar
+
+                  if (cantidadActual >= cantidadReservada) {
+                    final nuevaCantidad = cantidadActual - cantidadReservada;
+                    transaction.update(
+                        productoRef, {'Cantidad': nuevaCantidad.toString()});
+                  } else {
+                    throw 'No hay suficiente cantidad disponible';
+                  }
+                }).then((value) {
+                  sendEmail(context, userName, reservaId);
+                }).catchError((error) {
+                  showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      title: const Text('Error'),
+                      content: Text(error.toString()),
+                    ),
+                  );
+                });
               },
             ),
             TextButton(
@@ -223,7 +251,7 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                           child: Divider(thickness: 1, color: Colors.black87),
                         ),
                         Padding(
-                            padding: const EdgeInsets.only(top: 20.0),
+                            padding: const EdgeInsets.only(top: 5.0),
                             child: Scrollbar(
                               child: SizedBox(
                                 height: 82, // Altura del contenedor
@@ -241,6 +269,10 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                                 ),
                               ),
                             )),
+                        const Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 5),
+                          child: Divider(thickness: 1, color: Colors.black87),
+                        ),
                         Wrap(
                           alignment: WrapAlignment.center,
                           crossAxisAlignment: WrapCrossAlignment.center,
@@ -263,9 +295,9 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                               padding: const EdgeInsets.only(left: 15.0),
                               child: ElevatedButton(
                                 style: ButtonStyle(
-                                    backgroundColor:
-                                        MaterialStateProperty.all<Color>(
-                                            myColor)),
+                                  backgroundColor:
+                                      MaterialStateProperty.all<Color>(myColor),
+                                ),
                                 onPressed: () {
                                   if (currentUser == null) {
                                     // Muestra un mensaje indicando que el usuario debe iniciar sesión
@@ -277,13 +309,28 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                                       ),
                                     );
                                   } else {
-                                    // Muestra el cuadro de diálogo de confirmación
-                                    _showConfirmationDialog(context);
+                                    if (widget.product["Cantidad"] == "0") {
+                                      // Muestra un mensaje indicando que el producto está agotado
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        const SnackBar(
+                                          content: Text('Producto agotado'),
+                                          duration: Duration(seconds: 2),
+                                        ),
+                                      );
+                                    } else {
+                                      // Muestra el cuadro de diálogo de confirmación
+                                      _showConfirmationDialog(context);
+                                    }
                                   }
                                 },
-                                child: const Text("Reservar"),
+                                child: Text(
+                                  widget.product["Cantidad"] != "0"
+                                      ? "Reservar"
+                                      : "Agotado",
+                                ),
                               ),
-                            )
+                            ),
                           ],
                         ),
                       ],

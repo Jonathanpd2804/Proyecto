@@ -47,18 +47,6 @@ class _HomePageState extends State<HomePage> {
             JobsCardsRow(),
             ProductsCardColumn(),
 
-            // Column(
-            //   children: [
-            //     Padding(
-            //       padding: const EdgeInsets.only(top: 40.0),
-            //       child: SizedBox(
-            //         width: 400,
-            //         height: 200,
-            //         child: ComentariosYPuntuacion(),
-            //       ),
-            //     ),
-            //   ],
-            // ),
           ]),
         ));
   }

@@ -16,21 +16,6 @@ class ProductsCardColumn extends StatefulWidget {
 }
 
 class _ProductsCardColumnState extends State<ProductsCardColumn> {
-  bool isBoss = false;
-
-  late UserIsBoss userIsBoss;
-
-  @override
-  void initState() {
-    super.initState();
-    // Inicialización de la instancia de UserIsBoss y obtención del valor isBoss
-    userIsBoss = UserIsBoss(widget.currentUser);
-    userIsBoss.getUser().then((_) {
-      setState(() {
-        isBoss = userIsBoss.isBoss;
-      });
-    });
-  }
 
   final FirebaseFirestore database = FirebaseFirestore.instance;
 

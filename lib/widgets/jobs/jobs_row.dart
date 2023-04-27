@@ -12,23 +12,7 @@ class JobsCardsRow extends StatefulWidget {
 }
 
 class _JobsCardsRowState extends State<JobsCardsRow> {
-  bool isBoss = false;
-
-  late UserIsBoss userIsBoss;
-
-  @override
-  void initState() {
-    super.initState();
-    // Inicialización de la instancia de UserIsBoss y obtención del valor isBoss
-    userIsBoss = UserIsBoss(widget.currentUser);
-    userIsBoss.getUser().then((_) {
-      setState(() {
-        isBoss = userIsBoss.isBoss;
-      });
-    });
-  }
-
-  final FirebaseFirestore database = FirebaseFirestore.instance;
+    final FirebaseFirestore database = FirebaseFirestore.instance;
 
   Stream<QuerySnapshot> fetchJobsStream() {
     return database.collection('trabajos').snapshots();

@@ -1,10 +1,10 @@
 import '../exports.dart';
 
-class UserIsBoss {
+class UserIsAdmin {
   final User? user;
-  bool isBoss = false;
+  bool isAdmin = false;
 
-  UserIsBoss(this.user);
+  UserIsAdmin(this.user);
 
   Future<void> getUser() async {
     final querySnapshot = await FirebaseFirestore.instance
@@ -13,7 +13,7 @@ class UserIsBoss {
         .get();
 
     final data = querySnapshot.docs.first.data();
-    isBoss = data['Jefe'] ?? false; // actualiza el valor de isBoss
+    isAdmin = data['Administrador'] ?? false; // actualiza el valor de isBoss
   }
 }
 

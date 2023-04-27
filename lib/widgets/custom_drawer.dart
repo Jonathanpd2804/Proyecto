@@ -14,11 +14,11 @@ class CustomDrawer extends StatefulWidget {
 class _CustomDrawerState extends State<CustomDrawer> {
   // Variables para saber si el usuario es trabajador o jefe
   bool isWorker = false;
-  bool isBoss = false;
+  bool isAdmin = false;
   String documentID = "";
 
-  // Instancias de las clases que nos permiten verificar si el usuario es jefe o trabajador
-  late UserIsBoss userIsBoss;
+  // Instancias de las clases que nos permiten verificar si el usuario es administrador o no
+  late UserIsAdmin userIsAdmin;
   late UserIsWorker userIsWorker;
   late UserDocumentID userDocumentID;
 
@@ -36,10 +36,10 @@ class _CustomDrawerState extends State<CustomDrawer> {
     }
 
     // Inicialización de la instancia de UserIsBoss y obtención del valor isBoss
-    userIsBoss = UserIsBoss(widget.currentUser);
-    userIsBoss.getUser().then((_) {
+    userIsAdmin = UserIsAdmin(widget.currentUser);
+    userIsAdmin.getUser().then((_) {
       setState(() {
-        isBoss = userIsBoss.isBoss;
+        isAdmin = userIsAdmin.isAdmin;
       });
     });
     // Inicialización de la instancia de UserIsWorker y obtención del valor isWorker
@@ -171,7 +171,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                   },
                 ),
               ),
-            if (widget.currentUser != null && isBoss)
+            if (widget.currentUser != null && isAdmin)
               Padding(
                 padding: const EdgeInsets.only(left: 10.0),
                 child: ListTile(
@@ -193,7 +193,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                   },
                 ),
               ),
-            if (widget.currentUser != null && isBoss)
+            if (widget.currentUser != null && isAdmin)
               Padding(
                 padding: const EdgeInsets.only(left: 10.0),
                 child: ListTile(

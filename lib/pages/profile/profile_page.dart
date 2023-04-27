@@ -213,17 +213,16 @@ class _PerfilPageState extends State<PerfilPage> {
                                               )
                                             : null,
                                       ),
-                                    if (currentUser?.email == widget.userEmail)
-                                      ElevatedButton(
-                                        style: ButtonStyle(
-                                            backgroundColor:
-                                                MaterialStateProperty.all(
-                                                    Colors.red)),
-                                        onPressed: () {
-                                          confirmDeletion(context, documentId);
-                                        },
-                                        child: const Text('Eliminar'),
-                                      ),
+                                    ElevatedButton(
+                                      style: ButtonStyle(
+                                          backgroundColor:
+                                              MaterialStateProperty.all(
+                                                  Colors.red)),
+                                      onPressed: () {
+                                        confirmDeletion(context, documentId);
+                                      },
+                                      child: const Text('Eliminar'),
+                                    ),
                                   ],
                                 );
                               },

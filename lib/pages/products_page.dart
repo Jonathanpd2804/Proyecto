@@ -58,7 +58,6 @@ class ListProducts extends StatelessWidget {
                     final String descriptionProduct = product['Descripción'];
                     final String priceProduct = product['Precio'];
                     final String titleProduct = product['Título'];
-                    final String imageURL = product["ImagenURL"];
 
                     return Padding(
                       padding: const EdgeInsets.all(8.0),
@@ -73,7 +72,7 @@ class ListProducts extends StatelessWidget {
                             ListTile(
                               title: Text('Descripción: $descriptionProduct'),
                               subtitle: Text('Precio: $priceProduct €'),
-                              trailing: Text(stockProduct != 0
+                              trailing: Text(stockProduct != "0"
                                   ? 'En Stock: $stockProduct'
                                   : 'Agotado'),
                             ),

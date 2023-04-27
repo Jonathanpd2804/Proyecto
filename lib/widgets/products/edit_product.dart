@@ -17,7 +17,7 @@ class _EditProductState extends State<EditProduct> {
   late String _title;
   late String _description;
   late String _price;
-  late int _cantidad;
+  late String _cantidad;
   File? _image;
   String? _imageUrlFromDatabase;
   late String productID;
@@ -199,7 +199,7 @@ class _EditProductState extends State<EditProduct> {
                   return null;
                 },
                 onSaved: (value) {
-                  _cantidad = int.parse(value!);
+                  _cantidad = value!;
                 },
               ),
               const SizedBox(height: 16.0),

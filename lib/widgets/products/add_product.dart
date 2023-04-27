@@ -179,6 +179,7 @@ class _ProductFormState extends State<ProductForm> {
                     return null;
                   },
                 ),
+                const SizedBox(height: 16.0),
                 TextFormField(
                   controller: _stockController,
                   decoration: const InputDecoration(

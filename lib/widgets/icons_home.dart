@@ -3,7 +3,8 @@ import '../exports.dart';
 class IconsHome extends StatefulWidget {
   final String iconURL;
   final String text;
-  const IconsHome({Key? key, required this.iconURL, required this.text}) : super(key: key);
+  final Widget page;
+  const IconsHome({Key? key, required this.iconURL, required this.text, required this.page}) : super(key: key);
 
   @override
   // ignore: library_private_types_in_public_api
@@ -18,7 +19,7 @@ class _IconsHomeState extends State<IconsHome> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => const JobForm(),
+            builder: (context) => widget.page,
           ),
         );
       },

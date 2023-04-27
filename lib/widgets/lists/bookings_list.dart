@@ -1,64 +1,48 @@
+import 'package:david_perez/widgets/bookings/show_booking.dart';
+
 import '../../exports.dart';
 import 'package:intl/intl.dart';
 
-class CitasListView extends StatelessWidget {
-  final String? clienteUid;
-  final DateTime? selectedDay;
+class BookingsListView extends StatelessWidget {
   final currentUser = FirebaseAuth.instance.currentUser;
   final String? clienteEmail;
 
-  CitasListView({
+  BookingsListView({
     Key? key,
-    required this.clienteUid,
-    this.selectedDay,
     required this.clienteEmail,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    Query citasQuery = FirebaseFirestore.instance
-        .collection('citas')
-        .where('Cliente', isEqualTo: clienteUid);
-
-    if (selectedDay != null) {
-      citasQuery = citasQuery
-          .where('Fecha',
-              isGreaterThanOrEqualTo: Timestamp.fromDate(selectedDay!))
-          .where('Fecha',
-              isLessThan: Timestamp.fromDate(DateTime(selectedDay!.year,
-                  selectedDay!.month, selectedDay!.day + 1)));
-    }
+    Query bookingsQuery = FirebaseFirestore.instance
+        .collection('reservas')
+        .where('clienteEmail', isEqualTo: clienteEmail);
 
     return StreamBuilder<QuerySnapshot>(
-      stream: citasQuery.snapshots(),
+      stream: bookingsQuery.snapshots(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
         }
         if (snapshot.hasError) {
-          return const Center(child: Text('Error al cargar la lista de citas'));
-        }
-
-        final quotes = snapshot.data!.docs;
-
-        if (quotes.isEmpty && selectedDay != null) {
           return const Center(
-            child: Text('No hay citas para este día.'),
-          );
+              child: Text('Error al cargar la lista de reservas'));
         }
 
-        if (quotes.isEmpty && selectedDay == null) {
+        final bookings = snapshot.data!.docs;
+
+        if (bookings.isEmpty) {
           return Center(
             child: Text(currentUser!.email == clienteEmail
-                ? 'No tienes ninguna cita'
-                : 'No tiene ninguna cita'),
+                ? 'No tienes ninguna reserva'
+                : 'No tiene ninguna reserva'),
           );
         }
 
         return ListView.builder(
-          itemCount: quotes.length,
+          itemCount: bookings.length,
           itemBuilder: (context, index) {
-            final quote = quotes[index];
+            final booking = bookings[index];
             return ListTile(
               title: Container(
                 decoration: BoxDecoration(
@@ -72,8 +56,8 @@ class CitasListView extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.only(left: 8.0),
                         child: Text(
-                          DateFormat('dd/MM/yyyy - hh:mm:ss a').format(quote[
-                                  'Fecha']
+                          DateFormat('dd/MM/yyyy - hh:mm:ss a').format(booking[
+                                  'fechaReserva']
                               .toDate()), // Formatea la fecha y hora como un String
                           style: const TextStyle(fontSize: 16.0),
                         ),
@@ -87,34 +71,19 @@ class CitasListView extends StatelessWidget {
                             showDialog(
                               context: context,
                               builder: (BuildContext context) {
-                                return DeleteQuoteDialog(quote: quote);
+                                return DeleteQuoteDialog(quote: booking);
                               },
                             );
                           },
                         ),
                       ),
-                      if (!quote["Realizada"] &&
-                          clienteEmail != currentUser!.email)
-                        Padding(
-                          padding: const EdgeInsets.only(right: 10.0),
-                          child: GestureDetector(
-                            child: const Icon(Icons.check),
-                            onTap: () {
-                              DocumentReference tareaRef = FirebaseFirestore
-                                  .instance
-                                  .collection('citas')
-                                  .doc(quote.id);
-                              tareaRef.update({'Realizada': true});
-                            },
-                          ),
-                        ),
                       GestureDetector(
                         child: const Icon(Icons.remove_red_eye),
                         onTap: () {
                           showDialog(
                             context: context,
                             builder: (BuildContext context) {
-                              return ShowQuoteDialog(quote: quote);
+                              return ShowBookingDialog(booking: booking);
                             },
                           );
                         },

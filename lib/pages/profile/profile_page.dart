@@ -1,23 +1,29 @@
+import 'package:david_perez/widgets/lists/bookings_list.dart';
+
 import '../../exports.dart';
 
 // ignore: must_be_immutable
 class PerfilPage extends StatefulWidget {
   // ignore: prefer_typing_uninitialized_variables
-  final userEmail; //Email de el usuario a ver
+  final userEmail;
 
-  const PerfilPage({Key? key, this.userEmail}) : super(key: key);
+  const PerfilPage({
+    Key? key,
+    this.userEmail,
+  }) : super(key: key);
 
   @override
   State<PerfilPage> createState() => _PerfilPageState();
 }
 
 class _PerfilPageState extends State<PerfilPage> {
+  //Correo del usuario a ver
   final UserDeleteService userDeleteService = UserDeleteService();
   // Instancia de la clase UserDeleteService
   final currentUser = FirebaseAuth.instance.currentUser;
   List<String> docIDs = [];
 
-  String userID = "";
+  String documentID = "";
 
   late UserDocumentID userDocumentID;
 
@@ -29,7 +35,7 @@ class _PerfilPageState extends State<PerfilPage> {
       userDocumentID = UserDocumentID(widget.userEmail);
       userDocumentID.getUserDocumentID().then((_) {
         setState(() {
-          userID = userDocumentID.documentID;
+          documentID = userDocumentID.documentID;
         });
       });
     }
@@ -99,7 +105,7 @@ class _PerfilPageState extends State<PerfilPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const CustomAppBar(
+      appBar: CustomAppBar(
         showBackArrow: true,
       ),
       endDrawer: CustomDrawer(),
@@ -111,7 +117,7 @@ class _PerfilPageState extends State<PerfilPage> {
               child: Center(
                 child: SizedBox(
                   width: 300, // Establecer el ancho del Card
-                  height: 400, // Establecer la altura del Card
+                  height: 250, // Establecer la altura del Card
                   child: Card(
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(
@@ -192,7 +198,7 @@ class _PerfilPageState extends State<PerfilPage> {
                                                 )
                                               : null,
                                     ),
-                                    if (user["Medidor"])
+                                    if (user["Medidor"] == true)
                                       ListTile(
                                         title: GetUserTurno(
                                             workerDocumentId: documentId),
@@ -207,6 +213,7 @@ class _PerfilPageState extends State<PerfilPage> {
                                               )
                                             : null,
                                       ),
+                                    if (currentUser?.email == widget.userEmail)
                                       ElevatedButton(
                                         style: ButtonStyle(
                                             backgroundColor:
@@ -235,6 +242,33 @@ class _PerfilPageState extends State<PerfilPage> {
                 ),
               ),
             ),
+            Padding(
+              padding: const EdgeInsets.only(top: 30.0, bottom: 15),
+              child: Text(
+                  widget.userEmail == currentUser?.email
+                      ? "Mis Citas:"
+                      : "Sus Citas:",
+                  style: const TextStyle(
+                      fontWeight: FontWeight.bold, fontSize: 25)),
+            ),
+            Expanded(
+                child: CitasListView(
+              clienteEmail: widget.userEmail,
+              clienteUid: documentID,
+            )),
+            Padding(
+              padding: const EdgeInsets.only(top: 30.0, bottom: 15),
+              child: Text(
+                  widget.userEmail == currentUser?.email
+                      ? "Mis Reservas:"
+                      : "Sus reservas:",
+                  style: const TextStyle(
+                      fontWeight: FontWeight.bold, fontSize: 25)),
+            ),
+            Expanded(
+                child: BookingsListView(
+              clienteEmail: widget.userEmail,
+            )),
           ],
         ),
       ),

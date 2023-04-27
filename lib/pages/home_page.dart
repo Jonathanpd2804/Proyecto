@@ -1,3 +1,5 @@
+import 'package:david_perez/pages/services_page.dart';
+
 import '../exports.dart';
 
 // Clase HomePage que extiende StatefulWidget
@@ -23,7 +25,7 @@ class _HomePageState extends State<HomePage> {
         // Cuerpo de la página principal
         body: SingleChildScrollView(
           child: Column(children: [
-            const Padding(
+            Padding(
               padding: EdgeInsets.only(top: 40.0, left: 20),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -32,14 +34,17 @@ class _HomePageState extends State<HomePage> {
                   IconsHome(
                     iconURL: 'lib/images/servicios.png',
                     text: 'Servicios',
+                    page: ServicesList()
                   ),
                   IconsHome(
                     iconURL: 'lib/images/mantenimientos.png',
                     text: 'Mantenimientos',
+                    page: ServicesList(),
                   ),
                   IconsHome(
                     iconURL: 'lib/images/instalaciones.png',
                     text: 'Instalaciones',
+                    page: ServicesList(),
                   )
                 ],
               ),

@@ -176,28 +176,6 @@ class _CustomDrawerState extends State<CustomDrawer> {
                 padding: const EdgeInsets.only(left: 10.0),
                 child: ListTile(
                   leading: const Icon(
-                    Icons.group,
-                    color: Colors.white,
-                  ),
-                  title: const Text(
-                    'Trabajadores',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  onTap: () async {
-                    await Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) =>
-                              ListWorkers(user: widget.currentUser)),
-                    );
-                  },
-                ),
-              ),
-            if (widget.currentUser != null && isAdmin)
-              Padding(
-                padding: const EdgeInsets.only(left: 10.0),
-                child: ListTile(
-                  leading: const Icon(
                     Icons.settings,
                     color: Colors.white,
                   ),
@@ -208,8 +186,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                   onTap: () async {
                     await Navigator.push(
                       context,
-                      MaterialPageRoute(
-                          builder: (context) => ManagePage()),
+                      MaterialPageRoute(builder: (context) => ManagePage()),
                     );
                   },
                 ),

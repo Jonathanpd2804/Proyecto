@@ -50,6 +50,7 @@ class MyApp extends StatelessWidget {
         Provider<AuthenticationService>(
           create: (_) => AuthenticationService(FirebaseAuth.instance),
         ),
+        
       ],
       child: StreamBuilder<User?>(
         stream: FirebaseAuth.instance.authStateChanges(),

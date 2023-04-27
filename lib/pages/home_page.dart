@@ -1,4 +1,4 @@
-import 'package:david_perez/pages/services_page.dart';
+
 
 import '../exports.dart';
 
@@ -39,12 +39,12 @@ class _HomePageState extends State<HomePage> {
                   IconsHome(
                     iconURL: 'lib/images/mantenimientos.png',
                     text: 'Mantenimientos',
-                    page: ServicesList(),
+                    page: MaintenanceList(),
                   ),
                   IconsHome(
                     iconURL: 'lib/images/instalaciones.png',
                     text: 'Instalaciones',
-                    page: ServicesList(),
+                    page: FacilitiesList(),
                   )
                 ],
               ),

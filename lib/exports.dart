@@ -13,19 +13,22 @@ export 'package:david_perez/pages/bookings_page.dart';
 export 'package:david_perez/pages/products_page.dart';
 export 'package:david_perez/pages/manage_page.dart';
 export 'package:david_perez/pages/jobs_page.dart';
+export 'package:david_perez/pages/facilities_page.dart';
+export 'package:david_perez/pages/maintenance_page.dart';
+export 'package:david_perez/pages/services_page.dart';
 
-    //Calendars
-    export 'package:david_perez/pages/calendars/calendar_worker_page.dart';
-    export 'package:david_perez/pages/calendars/calendar_quotes_page.dart';
-    export 'package:david_perez/pages/calendars/calendar_ask_quote.dart';
+//Calendars
+export 'package:david_perez/pages/calendars/calendar_worker_page.dart';
+export 'package:david_perez/pages/calendars/calendar_quotes_page.dart';
+export 'package:david_perez/pages/calendars/calendar_ask_quote.dart';
 
-        //Services
-        export 'package:david_perez/pages/calendars/services/calendar_service.dart';  
+//Services
+export 'package:david_perez/pages/calendars/services/calendar_service.dart';
 
-    //Profile
-    export 'package:david_perez/pages/profile/profile_page.dart';
-    export 'package:david_perez/pages/profile/manage/delete_user.dart';
-    export 'package:david_perez/pages/profile/manage/edit_user.dart';
+//Profile
+export 'package:david_perez/pages/profile/profile_page.dart';
+export 'package:david_perez/pages/profile/manage/delete_user.dart';
+export 'package:david_perez/pages/profile/manage/edit_user.dart';
 
 //Firebase
 export 'package:firebase_core/firebase_core.dart';
@@ -53,32 +56,31 @@ export 'package:david_perez/widgets/custom_drawer.dart';
 export 'package:david_perez/widgets/icons.dart';
 export 'package:david_perez/widgets/icons_home.dart';
 
-    //List
-    export 'package:david_perez/widgets/lists/task_list_view.dart';
-    export 'package:david_perez/widgets/lists/quotes_list_view.dart';
+//List
+export 'package:david_perez/widgets/lists/task_list_view.dart';
+export 'package:david_perez/widgets/lists/quotes_list_view.dart';
 
-    //Products
-    export 'package:david_perez/widgets/products/products_colum.dart';
-    export 'package:david_perez/widgets/products/product_card_widget.dart';
-    export 'package:david_perez/widgets/products/add_product.dart';
+//Products
+export 'package:david_perez/widgets/products/products_colum.dart';
+export 'package:david_perez/widgets/products/product_card_widget.dart';
+export 'package:david_perez/widgets/products/add_product.dart';
 
-    //Jobs
-    export 'package:david_perez/widgets/jobs/add_job.dart';
-    export 'package:david_perez/widgets/jobs/job_card_widget.dart';
-    export 'package:david_perez/widgets/jobs/jobs_row.dart';
-    export 'package:david_perez/widgets/jobs/edit_job.dart';
+//Jobs
+export 'package:david_perez/widgets/jobs/add_job.dart';
+export 'package:david_perez/widgets/jobs/job_card_widget.dart';
+export 'package:david_perez/widgets/jobs/jobs_row.dart';
+export 'package:david_perez/widgets/jobs/edit_job.dart';
 
+//Tasks
+export 'package:david_perez/widgets/task/create_task.dart';
+export 'package:david_perez/widgets/task/create_task_page.dart';
+export 'package:david_perez/widgets/task/edit_task.dart';
+export 'package:david_perez/widgets/task/show_task.dart';
+export 'package:david_perez/widgets/task/delete_task.dart';
 
-    //Tasks
-    export 'package:david_perez/widgets/task/create_task.dart';
-    export 'package:david_perez/widgets/task/create_task_page.dart';
-    export 'package:david_perez/widgets/task/edit_task.dart';
-    export 'package:david_perez/widgets/task/show_task.dart';
-    export 'package:david_perez/widgets/task/delete_task.dart';
-
-    //Quotes
-    export 'package:david_perez/widgets/quotes/show_quote.dart';
-    export 'package:david_perez/widgets/quotes/delete_quote.dart';
+//Quotes
+export 'package:david_perez/widgets/quotes/show_quote.dart';
+export 'package:david_perez/widgets/quotes/delete_quote.dart';
 
 //Pub dev
 export 'package:auto_size_text/auto_size_text.dart';

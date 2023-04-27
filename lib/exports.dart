@@ -12,7 +12,7 @@ export 'package:david_perez/pages/workers_page.dart';
 export 'package:david_perez/pages/bookings_page.dart';
 export 'package:david_perez/pages/products_page.dart';
 export 'package:david_perez/pages/manage_page.dart';
-
+export 'package:david_perez/pages/jobs_page.dart';
 
     //Calendars
     export 'package:david_perez/pages/calendars/calendar_worker_page.dart';
@@ -66,6 +66,8 @@ export 'package:david_perez/widgets/icons_home.dart';
     export 'package:david_perez/widgets/jobs/add_job.dart';
     export 'package:david_perez/widgets/jobs/job_card_widget.dart';
     export 'package:david_perez/widgets/jobs/jobs_row.dart';
+    export 'package:david_perez/widgets/jobs/edit_job.dart';
+
 
     //Tasks
     export 'package:david_perez/widgets/task/create_task.dart';

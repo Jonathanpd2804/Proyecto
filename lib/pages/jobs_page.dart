@@ -1,5 +1,3 @@
-import 'package:david_perez/widgets/jobs/edit_job.dart';
-import 'package:david_perez/widgets/products/edit_product.dart';
 
 import '../exports.dart';
 
@@ -56,7 +54,6 @@ class ListJobs extends StatelessWidget {
                     final job = jobs[index];
                     final jobID = job.id;
                     final String descriptionJob = job['Descripción'];
-                    final String imageURLJob = job['ImagenURL'];
                     final String titleJob = job['Título'];
 
                     return Padding(

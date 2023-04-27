@@ -1,6 +1,5 @@
 // ignore_for_file: deprecated_member_use
 
-import 'package:david_perez/pages/jobs_page.dart';
 
 import '../exports.dart';
 

@@ -12,7 +12,7 @@ class JobsCardsRow extends StatefulWidget {
 }
 
 class _JobsCardsRowState extends State<JobsCardsRow> {
-    final FirebaseFirestore database = FirebaseFirestore.instance;
+  final FirebaseFirestore database = FirebaseFirestore.instance;
 
   Stream<QuerySnapshot> fetchJobsStream() {
     return database.collection('trabajos').snapshots();
@@ -22,14 +22,21 @@ class _JobsCardsRowState extends State<JobsCardsRow> {
   Widget build(BuildContext context) {
     return Column(
       children: [
+        const Padding(
+          padding: EdgeInsets.only(top: 50.0),
+          child: Text(
+            "NUESTROS TRABAJOS",
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          ),
+        ),
         Padding(
-          padding: const EdgeInsets.only(top: 50.0),
+          padding: const EdgeInsets.only(top: 30.0),
           // Lista horizontal de trabajos
           child: Row(
             children: [
               Expanded(
                 child: Padding(
-                  padding: const EdgeInsets.only(left: 40.0),
+                  padding: const EdgeInsets.only(left: 20.0),
                   child: SizedBox(
                     height: 260,
                     child: StreamBuilder(
@@ -75,7 +82,6 @@ class _JobsCardsRowState extends State<JobsCardsRow> {
             ],
           ),
         ),
-        
       ],
     );
   }

@@ -1,10 +1,8 @@
-
 // ignore_for_file: sized_box_for_whitespace
 
 import '../../exports.dart';
 
 class ProductsCardColumn extends StatefulWidget {
-  
   final currentUser = FirebaseAuth.instance.currentUser; // Usuario actual
 
   ProductsCardColumn({
@@ -16,7 +14,6 @@ class ProductsCardColumn extends StatefulWidget {
 }
 
 class _ProductsCardColumnState extends State<ProductsCardColumn> {
-
   final FirebaseFirestore database = FirebaseFirestore.instance;
 
   Stream<QuerySnapshot> fetchProductsStream() {
@@ -27,6 +24,13 @@ class _ProductsCardColumnState extends State<ProductsCardColumn> {
   Widget build(BuildContext context) {
     return Column(
       children: [
+        const Padding(
+          padding: EdgeInsets.only(top: 50.0),
+          child: Text(
+            "PRODUCTOS EN VENTA",
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          ),
+        ),
         Padding(
           padding: const EdgeInsets.only(top: 50.0, bottom: 25),
           // Lista vertical de productos
@@ -58,15 +62,14 @@ class _ProductsCardColumnState extends State<ProductsCardColumn> {
                   return Container(
                     width: MediaQuery.of(context).size.width / 2 - 15,
                     height: 300,
-                    child:
-                        ProductCardWidget(productID: productId, product: productData),
+                    child: ProductCardWidget(
+                        productID: productId, product: productData),
                   );
                 }).toList(),
               );
             },
           ),
         ),
-        
       ],
     );
   }

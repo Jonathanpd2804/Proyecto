@@ -12,24 +12,27 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
       backgroundColor: myColor,
-      
+
       // Botón de retroceso para volver a la pantalla anterior
       leading: showBackArrow
-    ? GestureDetector(
-        child: const Icon(Icons.arrow_back),
-        onTap: () {
-          Navigator.pop(context);
-        })
-    : Container(),
+          ? GestureDetector(
+              child: const Icon(Icons.arrow_back),
+              onTap: () {
+                Navigator.pop(context);
+              })
+          : Container(),
 
       actions: [
         // Logo y nombre de la aplicación en la AppBar
         Padding(
           padding: const EdgeInsets.only(right: 120.0),
           child: Row(
+            mainAxisSize: MainAxisSize.min,
             children: [
-              Image.asset(
-                'lib/images/logo.png',
+              Flexible(
+                child: Image.asset(
+                  'lib/images/logo.png',
+                ),
               ),
               const SizedBox(width: 20),
               const Text(
@@ -39,7 +42,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
             ],
           ),
         ),
-        
+
         // Icono de persona que abre el drawer
         IconButton(
           onPressed: () {

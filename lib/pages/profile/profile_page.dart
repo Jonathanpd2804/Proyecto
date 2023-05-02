@@ -105,7 +105,7 @@ class _PerfilPageState extends State<PerfilPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(
+      appBar: const CustomAppBar(
         showBackArrow: true,
       ),
       endDrawer: CustomDrawer(),
@@ -113,7 +113,7 @@ class _PerfilPageState extends State<PerfilPage> {
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.only(top: 100.0, bottom: 20),
+              padding: const EdgeInsets.only(top: 50.0, bottom: 5),
               child: Center(
                 child: SizedBox(
                   width: 300, // Establecer el ancho del Card

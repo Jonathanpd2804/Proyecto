@@ -1,3 +1,4 @@
+import 'package:david_perez/widgets/bookings/delete_booking.dart';
 import 'package:david_perez/widgets/bookings/show_booking.dart';
 
 import '../../exports.dart';
@@ -71,7 +72,7 @@ class BookingsListView extends StatelessWidget {
                             showDialog(
                               context: context,
                               builder: (BuildContext context) {
-                                return DeleteQuoteDialog(quote: booking);
+                                return DeleteBookingDialog(booking: booking);
                               },
                             );
                           },

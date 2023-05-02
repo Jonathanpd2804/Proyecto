@@ -1,51 +1,38 @@
-import 'package:intl/intl.dart';
-
 import '../../exports.dart';
 
-class DeleteQuoteDialog extends StatefulWidget {
-  final DocumentSnapshot quote;
+class DeleteBookingDialog extends StatefulWidget {
+  final DocumentSnapshot booking;
 
-  const DeleteQuoteDialog({Key? key, required this.quote}) : super(key: key);
+  const DeleteBookingDialog({Key? key, required this.booking})
+      : super(key: key);
 
   @override
-  DeleteQuoteDialogState createState() => DeleteQuoteDialogState();
+  DeleteBookingDialogState createState() => DeleteBookingDialogState();
 }
 
-class DeleteQuoteDialogState extends State<DeleteQuoteDialog> {
-  TextEditingController addresController = TextEditingController();
-  TextEditingController dateController = TextEditingController();
-  bool isImportant = false;
-  bool isDone = false;
-
-  @override
-  void initState() {
-    super.initState();
-    addresController.text = widget.quote['Dirección'];
-    final dateTimestamp = widget.quote['Fecha'] as Timestamp;
-    final dateDateTime = dateTimestamp.toDate();
-    final dateString = DateFormat('dd/MM/yyyy').format(dateDateTime);
-    dateController.text = dateString;
-  }
-
-  void deleteQuote() {
-    widget.quote.reference.delete();
+class DeleteBookingDialogState extends State<DeleteBookingDialog> {
+  void deleteBooking() {
+    widget.booking.reference.delete();
   }
 
   void deleteTask() async {
-    final citaId = widget.quote.id; //Obtener el id de la cita
+    final bookingId = widget.booking.id; //Obtener el id de la reserva
 
-    //Obtener una referencia a la colección "tareas" y filtrar por el IdCita:
-    final tasksCollection = FirebaseFirestore.instance.collection('tareas');
-    final tasksQuery = tasksCollection.where('IdCita', isEqualTo: citaId);
+    //Obtener una referencia a la colección "reservas" y filtrar por el bookingId:
 
-    //Borrar todas las tareas que coincidan con la consulta anterior:
-    final tasks = await tasksQuery.get();
+    final bookingsCollection =
+        FirebaseFirestore.instance.collection('reservas');
+    final querySnapshot =
+        await bookingsCollection.where('bookingId', isEqualTo: bookingId).get();
+    final bookings = querySnapshot.docs;
+
     final batch = FirebaseFirestore.instance.batch();
-    for (var doc in tasks.docs) {
+    for (var doc in bookings) {
       batch.delete(doc.reference);
     }
+
     await batch.commit();
-    widget.quote.reference.delete();
+    await widget.booking.reference.delete();
   }
 
   @override
@@ -56,7 +43,7 @@ class DeleteQuoteDialogState extends State<DeleteQuoteDialog> {
       ),
       endDrawer: CustomDrawer(),
       body: AlertDialog(
-        title: const Text("¿Estás seguro de que quieres borrar esta cita?"),
+        title: const Text("¿Estás seguro de que quieres borrar esta reserva?"),
         actions: [
           TextButton(
             child: const Text("Cancelar"),
@@ -67,7 +54,7 @@ class DeleteQuoteDialogState extends State<DeleteQuoteDialog> {
           TextButton(
             child: const Text("Borrar"),
             onPressed: () {
-              deleteQuote();
+              deleteBooking();
               deleteTask();
               Navigator.of(context).pop();
             },

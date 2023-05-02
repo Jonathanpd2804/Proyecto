@@ -1,4 +1,3 @@
-import 'package:intl/intl.dart';
 
 import '../../exports.dart';
 
@@ -12,20 +11,8 @@ class DeleteQuoteDialog extends StatefulWidget {
 }
 
 class DeleteQuoteDialogState extends State<DeleteQuoteDialog> {
-  TextEditingController addresController = TextEditingController();
-  TextEditingController dateController = TextEditingController();
-  bool isImportant = false;
-  bool isDone = false;
+ 
 
-  @override
-  void initState() {
-    super.initState();
-    addresController.text = widget.quote['Dirección'];
-    final dateTimestamp = widget.quote['Fecha'] as Timestamp;
-    final dateDateTime = dateTimestamp.toDate();
-    final dateString = DateFormat('dd/MM/yyyy').format(dateDateTime);
-    dateController.text = dateString;
-  }
 
   void deleteQuote() {
     widget.quote.reference.delete();
@@ -35,7 +22,7 @@ class DeleteQuoteDialogState extends State<DeleteQuoteDialog> {
     final citaId = widget.quote.id; //Obtener el id de la cita
 
     //Obtener una referencia a la colección "tareas" y filtrar por el IdCita:
-    final tasksCollection = FirebaseFirestore.instance.collection('tareas');
+    final tasksCollection = FirebaseFirestore.instance.collection('citas');
     final tasksQuery = tasksCollection.where('IdCita', isEqualTo: citaId);
 
     //Borrar todas las tareas que coincidan con la consulta anterior:

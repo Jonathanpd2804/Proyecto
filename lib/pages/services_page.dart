@@ -2,19 +2,21 @@ import 'package:david_perez/exports.dart';
 
 class Servicio {
   final String key;
-  final String titulo;
-  final String descripcion;
+  final String title;
+  final String description;
 
   Servicio(
-      {required this.key, required this.titulo, required this.descripcion});
+      {required this.key, required this.title, required this.description});
 }
 
 class ServicesList extends StatefulWidget {
+  const ServicesList({super.key});
+
   @override
-  _ServicesListState createState() => _ServicesListState();
+  ServicesListState createState() => ServicesListState();
 }
 
-class _ServicesListState extends State<ServicesList> {
+class ServicesListState extends State<ServicesList> {
   List<Servicio> _servicios = [];
   final currentUser = FirebaseAuth.instance.currentUser; // Usuario actual
   late UserIsAdmin userIsAdmin;
@@ -31,14 +33,14 @@ class _ServicesListState extends State<ServicesList> {
     final snapshot = await dbRef.get();
 
     List<Servicio> servicios = [];
-    snapshot.docs.forEach((doc) {
+    for (var doc in snapshot.docs) {
       Servicio servicio = Servicio(
         key: doc.id,
-        titulo: doc['Título'],
-        descripcion: doc['Descripción'],
+        title: doc['Título'],
+        description: doc['Descripción'],
       );
       servicios.add(servicio);
-    });
+    }
 
     setState(() {
       _servicios = servicios;
@@ -81,7 +83,7 @@ class _ServicesListState extends State<ServicesList> {
                 margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
                 child: ListTile(
                   title: Center(
-                    child: Text(_servicios[index].titulo,
+                    child: Text(_servicios[index].title,
                         style: const TextStyle(fontWeight: FontWeight.bold)),
                   ),
                   onTap: () {
@@ -89,7 +91,7 @@ class _ServicesListState extends State<ServicesList> {
                       context: context,
                       builder: (BuildContext context) {
                         return AlertDialog(
-                          title: Text(_servicios[index].descripcion),
+                          title: Text(_servicios[index].description),
                           actions: [
                             TextButton(
                               child: const Text("Cerrar"),

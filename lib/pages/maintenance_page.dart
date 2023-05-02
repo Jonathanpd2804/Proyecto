@@ -2,19 +2,21 @@ import 'package:david_perez/exports.dart';
 
 class Maintenance {
   final String key;
-  final String titulo;
-  final String descripcion;
+  final String title;
+  final String description;
 
   Maintenance(
-      {required this.key, required this.titulo, required this.descripcion});
+      {required this.key, required this.title, required this.description});
 }
 
 class MaintenanceList extends StatefulWidget {
+  const MaintenanceList({super.key});
+
   @override
-  _MaintenanceListState createState() => _MaintenanceListState();
+  MaintenanceListState createState() => MaintenanceListState();
 }
 
-class _MaintenanceListState extends State<MaintenanceList> {
+class MaintenanceListState extends State<MaintenanceList> {
   List<Maintenance> _maintenances = [];
   final currentUser = FirebaseAuth.instance.currentUser; // Usuario actual
   late UserIsAdmin userIsAdmin;
@@ -31,14 +33,14 @@ class _MaintenanceListState extends State<MaintenanceList> {
     final snapshot = await dbRef.get();
 
     List<Maintenance> maintenances = [];
-    snapshot.docs.forEach((doc) {
+    for (var doc in snapshot.docs) {
       Maintenance maintenance = Maintenance(
         key: doc.id,
-        titulo: doc['Título'],
-        descripcion: doc['Descripción'],
+        title: doc['Título'],
+        description: doc['Descripción'],
       );
       maintenances.add(maintenance);
-    });
+    }
 
     setState(() {
       _maintenances = maintenances;
@@ -81,7 +83,7 @@ class _MaintenanceListState extends State<MaintenanceList> {
                 margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
                 child: ListTile(
                   title: Center(
-                    child: Text(_maintenances[index].titulo,
+                    child: Text(_maintenances[index].title,
                         style: const TextStyle(fontWeight: FontWeight.bold)),
                   ),
                   onTap: () {
@@ -89,7 +91,7 @@ class _MaintenanceListState extends State<MaintenanceList> {
                       context: context,
                       builder: (BuildContext context) {
                         return AlertDialog(
-                          title: Text(_maintenances[index].descripcion),
+                          title: Text(_maintenances[index].description),
                           actions: [
                             TextButton(
                               child: const Text("Cerrar"),

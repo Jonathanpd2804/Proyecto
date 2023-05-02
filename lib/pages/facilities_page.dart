@@ -10,11 +10,13 @@ class Facility {
 }
 
 class FacilitiesList extends StatefulWidget {
+  const FacilitiesList({super.key});
+
   @override
-  _FacilitiesListState createState() => _FacilitiesListState();
+  FacilitiesListState createState() => FacilitiesListState();
 }
 
-class _FacilitiesListState extends State<FacilitiesList> {
+class FacilitiesListState extends State<FacilitiesList> {
   List<Facility> _facilities = [];
   final currentUser = FirebaseAuth.instance.currentUser; // Usuario actual
   late UserIsAdmin userIsAdmin;
@@ -31,14 +33,14 @@ class _FacilitiesListState extends State<FacilitiesList> {
     final snapshot = await dbRef.get();
 
     List<Facility> facilities = [];
-    snapshot.docs.forEach((doc) {
+    for (var doc in snapshot.docs) {
       Facility facility = Facility(
         key: doc.id,
         titulo: doc['Título'],
         descripcion: doc['Descripción'],
       );
       facilities.add(facility);
-    });
+    }
 
     setState(() {
       _facilities = facilities;

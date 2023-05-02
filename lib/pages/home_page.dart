@@ -25,7 +25,7 @@ class _HomePageState extends State<HomePage> {
         // Cuerpo de la página principal
         body: SingleChildScrollView(
           child: Column(children: [
-            Padding(
+            const Padding(
               padding: EdgeInsets.only(top: 40.0, left: 20),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,

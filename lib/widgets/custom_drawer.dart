@@ -165,7 +165,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                     await Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const CalendarioCitasPage(),
+                        builder: (context) => CalendarQuotesPage(),
                       ),
                     );
                   },

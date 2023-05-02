@@ -213,7 +213,33 @@ class ListBookings extends StatelessWidget {
                           children: [
                         Padding(
                           padding: const EdgeInsets.all(15.0),
-                          child: Text('Reserva: ${booking.id}'),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text('Reserva: ${booking.id}'),
+                              ElevatedButton(
+                                onPressed: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return DeleteBookingDialog(booking: booking);
+                                    },
+                                  );
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  fixedSize: const Size(113, 25),
+                                  primary: Colors.white,
+                                  onPrimary: Colors.black,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8),
+                                    side: const BorderSide(
+                                        color: myColor, width: 3),
+                                  ),
+                                ),
+                                child: const Text("Borrar"),
+                              )
+                            ],
+                          ),
                         ),
                         ListTile(
                           title: Text('Reserva del $date'),
@@ -240,11 +266,12 @@ class ListBookings extends StatelessWidget {
                             }
 
                             return Column(
-                              crossAxisAlignment: CrossAxisAlignment.end,
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 productInfo,
                                 Padding(
-                                  padding: const EdgeInsets.only(top: 8.0),
+                                  padding:
+                                      const EdgeInsets.only(top: 8.0, left: 20),
                                   child: ElevatedButton(
                                     onPressed: productFound
                                         ? () {
@@ -263,67 +290,20 @@ class ListBookings extends StatelessWidget {
                                     child: const Text('Ver producto'),
                                   ),
                                 ),
-                                ElevatedButton(
-                                  onPressed: () async {
-                                    final confirmado = await showDialog<bool>(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return AlertDialog(
-                                          title: Text(paid
-                                              ? 'Confirmar no pagado'
-                                              : 'Confirmar pago'),
-                                          content: Text(paid
-                                              ? '¿Está seguro de que desea marcar esta reserva como no pagada?'
-                                              : '¿Está seguro de que desea marcar esta reserva como pagada?'),
-                                          actions: [
-                                            TextButton(
-                                              onPressed: () {
-                                                Navigator.of(context).pop(true);
-                                              },
-                                              child: const Text('Sí'),
-                                            ),
-                                            TextButton(
-                                              onPressed: () {
-                                                Navigator.of(context)
-                                                    .pop(false);
-                                              },
-                                              child: const Text('No'),
-                                            ),
-                                          ],
-                                        );
-                                      },
-                                    );
-                                    if (confirmado != null && confirmado) {
-                                      await FirebaseFirestore.instance
-                                          .collection('reservas')
-                                          .doc(booking.id)
-                                          .update({'pagado': !paid});
-                                    }
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                    fixedSize: const Size(113, 25),
-                                    primary: Colors.white,
-                                    onPrimary: Colors.black,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(8),
-                                      side: const BorderSide(
-                                          color: myColor, width: 3),
-                                    ),
-                                  ),
-                                  child: Text(paid ? 'No pagado' : 'Pagado'),
-                                ),
-                                if (paid)
-                                  ElevatedButton(
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 20.0),
+                                  child: ElevatedButton(
                                     onPressed: () async {
                                       final confirmado = await showDialog<bool>(
                                         context: context,
                                         builder: (BuildContext context) {
                                           return AlertDialog(
-                                            title:
-                                                const Text('Confirmar entrega'),
-                                            content: const Text(
-                                              '¿Está seguro de que desea marcar esta reserva como entregada y eliminarla?',
-                                            ),
+                                            title: Text(paid
+                                                ? 'Confirmar no pagado'
+                                                : 'Confirmar pago'),
+                                            content: Text(paid
+                                                ? '¿Está seguro de que desea marcar esta reserva como no pagada?'
+                                                : '¿Está seguro de que desea marcar esta reserva como pagada?'),
                                             actions: [
                                               TextButton(
                                                 onPressed: () {
@@ -347,7 +327,7 @@ class ListBookings extends StatelessWidget {
                                         await FirebaseFirestore.instance
                                             .collection('reservas')
                                             .doc(booking.id)
-                                            .delete();
+                                            .update({'pagado': !paid});
                                       }
                                     },
                                     style: ElevatedButton.styleFrom(
@@ -360,7 +340,63 @@ class ListBookings extends StatelessWidget {
                                             color: myColor, width: 3),
                                       ),
                                     ),
-                                    child: const Text('Entregado'),
+                                    child: Text(paid ? 'No pagado' : 'Pagado'),
+                                  ),
+                                ),
+                                if (paid)
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 20.0),
+                                    child: ElevatedButton(
+                                      onPressed: () async {
+                                        final confirmado =
+                                            await showDialog<bool>(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return AlertDialog(
+                                              title: const Text(
+                                                  'Confirmar entrega'),
+                                              content: const Text(
+                                                '¿Está seguro de que desea marcar esta reserva como entregada y eliminarla?',
+                                              ),
+                                              actions: [
+                                                TextButton(
+                                                  onPressed: () {
+                                                    Navigator.of(context)
+                                                        .pop(true);
+                                                  },
+                                                  child: const Text('Sí'),
+                                                ),
+                                                TextButton(
+                                                  onPressed: () {
+                                                    Navigator.of(context)
+                                                        .pop(false);
+                                                  },
+                                                  child: const Text('No'),
+                                                ),
+                                              ],
+                                            );
+                                          },
+                                        );
+                                        if (confirmado != null && confirmado) {
+                                          await FirebaseFirestore.instance
+                                              .collection('reservas')
+                                              .doc(booking.id)
+                                              .delete();
+                                        }
+                                      },
+                                      style: ElevatedButton.styleFrom(
+                                        fixedSize: const Size(113, 25),
+                                        primary: Colors.white,
+                                        onPrimary: Colors.black,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                          side: const BorderSide(
+                                              color: myColor, width: 3),
+                                        ),
+                                      ),
+                                      child: const Text('Entregado'),
+                                    ),
                                   ),
                                 const SizedBox(height: 16.0),
                               ],

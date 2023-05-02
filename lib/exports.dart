@@ -59,6 +59,10 @@ export 'package:david_perez/widgets/icons_home.dart';
 export 'package:david_perez/widgets/lists/task_list_view.dart';
 export 'package:david_perez/widgets/lists/quotes_list_view.dart';
 
+//Bookings
+export 'package:david_perez/widgets/bookings/delete_booking.dart';
+export 'package:david_perez/widgets/bookings/show_booking.dart';
+
 //Products
 export 'package:david_perez/widgets/products/products_colum.dart';
 export 'package:david_perez/widgets/products/product_card_widget.dart';

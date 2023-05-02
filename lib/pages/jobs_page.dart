@@ -102,11 +102,27 @@ class ListJobs extends StatelessWidget {
                                             child: const Text('Cancelar'),
                                           ),
                                           TextButton(
-                                            onPressed: () {
+                                            onPressed: () async{
+                                              //Borrar imagen
+                                              final jobDoc =
+                                                  FirebaseFirestore.instance
+                                                      .collection('trabajos')
+                                                      .doc(jobID);
+                                              final jobData =
+                                                  await jobDoc.get();
+                                              final imageUrl =
+                                                  jobData.get('ImagenURL');
+
+                                              final storageRef = FirebaseStorage
+                                                  .instance
+                                                  .refFromURL(imageUrl);
+                                              await storageRef.delete();
+                                              //borrar trabajo
                                               FirebaseFirestore.instance
                                                   .collection('trabajos')
                                                   .doc(jobID)
                                                   .delete();
+                                              // ignore: use_build_context_synchronously
                                               Navigator.of(context).pop();
                                             },
                                             child: const Text('Borrar'),

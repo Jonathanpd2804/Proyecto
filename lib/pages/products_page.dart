@@ -110,11 +110,31 @@ class ListProducts extends StatelessWidget {
                                             child: const Text('Cancelar'),
                                           ),
                                           TextButton(
-                                            onPressed: () {
+                                            onPressed: () async {
+                                              //Borrar imagen
+                                              final productDoc =
+                                                  FirebaseFirestore.instance
+                                                      .collection('productos')
+                                                      .doc(productID);
+                                              final productData =
+                                                  await productDoc.get();
+                                              final imageUrl =
+                                                  productData.get('ImagenURL');
+
+                                              final storageRef = FirebaseStorage
+                                                  .instance
+                                                  .refFromURL(imageUrl);
+                                              await storageRef.delete();
+
+                                              //Borrar producto
                                               FirebaseFirestore.instance
                                                   .collection('productos')
                                                   .doc(productID)
                                                   .delete();
+
+                                              await productDoc.delete();
+
+                                              // ignore: use_build_context_synchronously
                                               Navigator.of(context).pop();
                                             },
                                             child: const Text('Borrar'),

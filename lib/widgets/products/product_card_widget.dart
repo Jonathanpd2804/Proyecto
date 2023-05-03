@@ -162,12 +162,12 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                   FirebaseFirestore.instance
                       .runTransaction((transaction) async {
                     final producto = await transaction.get(productoRef);
-                    final cantidadActual = int.parse(producto['Cantidad']);
+                    final cantidadActual = producto['Cantidad'];
 
                     if (cantidadActual >= cantidadReservada!) {
                       final nuevaCantidad = cantidadActual - cantidadReservada!;
                       transaction.update(
-                          productoRef, {'Cantidad': nuevaCantidad.toString()});
+                          productoRef, {'Cantidad': nuevaCantidad});
                     } else {
                       throw 'No hay suficiente cantidad disponible';
                     }

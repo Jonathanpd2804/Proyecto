@@ -83,17 +83,44 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
     }
   }
 
+  final _formKey = GlobalKey<FormState>();
+
   Future<void> _showConfirmationDialog(BuildContext context) async {
+    int? cantidadReservada =
+        0; // Variable para almacenar la cantidad a reservar
+
     return showDialog<void>(
       context: context,
       barrierDismissible: false,
       builder: (BuildContext context) {
         return AlertDialog(
           title: const Text('Confirmar reserva'),
-          content: const SingleChildScrollView(
-            child: ListBody(
+          content: Form(
+            key: _formKey, // Add this line to get the FormState
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 Text('¿Estás seguro de que deseas reservar este producto?'),
+                const SizedBox(height: 16.0),
+                TextFormField(
+                  decoration: const InputDecoration(
+                    labelText: 'Cantidad a reservar',
+                  ),
+                  keyboardType: TextInputType.number,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Por favor, introduce una cantidad';
+                    }
+                    final intCantidad = int.tryParse(value);
+                    if (intCantidad == null || intCantidad <= 0) {
+                      return 'Por favor, introduce una cantidad válida';
+                    }
+                    return null;
+                  },
+                  onSaved: (value) {
+                    cantidadReservada = int.tryParse(value!);
+                  },
+                ),
               ],
             ),
           ),
@@ -101,56 +128,61 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
             TextButton(
               child: const Text('Reservar'),
               onPressed: () async {
-                Navigator.of(context).pop();
-                String userName = '';
-                await for (var snapshot in getDocsStream()) {
-                  final userDoc = snapshot.docs.first;
-                  userName = userDoc['Nombre'];
-                  break;
-                }
+                // Valida y guarda la cantidad a reservar
+                if (_formKey.currentState!.validate()) {
+                  _formKey.currentState!.save();
 
-                final reserva = {
-                  'clienteEmail': currentUser?.email,
-                  'productoId': widget.productID,
-                  'fechaReserva': Timestamp.now(),
-                  'pagado': false,
-                };
-
-                final reservaRef = await FirebaseFirestore.instance
-                    .collection('reservas')
-                    .add(reserva);
-
-                final reservaId = reservaRef.id;
-
-                // Actualiza la cantidad disponible del producto en la base de datos
-                final productoRef = FirebaseFirestore.instance
-                    .collection('productos')
-                    .doc(widget.productID);
-
-                FirebaseFirestore.instance.runTransaction((transaction) async {
-                  final producto = await transaction.get(productoRef);
-                  final cantidadActual = int.parse(producto['Cantidad']);
-
-                  const cantidadReservada = 1; // Cantidad a reservar
-
-                  if (cantidadActual >= cantidadReservada) {
-                    final nuevaCantidad = cantidadActual - cantidadReservada;
-                    transaction.update(
-                        productoRef, {'Cantidad': nuevaCantidad.toString()});
-                  } else {
-                    throw 'No hay suficiente cantidad disponible';
+                  Navigator.of(context).pop();
+                  String userName = '';
+                  await for (var snapshot in getDocsStream()) {
+                    final userDoc = snapshot.docs.first;
+                    userName = userDoc['Nombre'];
+                    break;
                   }
-                }).then((value) {
-                  sendEmail(context, userName, reservaId);
-                }).catchError((error) {
-                  showDialog(
-                    context: context,
-                    builder: (context) => AlertDialog(
-                      title: const Text('Error'),
-                      content: Text(error.toString()),
-                    ),
-                  );
-                });
+
+                  final reserva = {
+                    'clienteEmail': currentUser?.email,
+                    'productoId': widget.productID,
+                    'fechaReserva': Timestamp.now(),
+                    'pagado': false,
+                    'cantidad': cantidadReservada
+                  };
+
+                  final reservaRef = await FirebaseFirestore.instance
+                      .collection('reservas')
+                      .add(reserva);
+
+                  final reservaId = reservaRef.id;
+
+                  // Actualiza la cantidad disponible del producto en la base de datos
+                  final productoRef = FirebaseFirestore.instance
+                      .collection('productos')
+                      .doc(widget.productID);
+
+                  FirebaseFirestore.instance
+                      .runTransaction((transaction) async {
+                    final producto = await transaction.get(productoRef);
+                    final cantidadActual = int.parse(producto['Cantidad']);
+
+                    if (cantidadActual >= cantidadReservada!) {
+                      final nuevaCantidad = cantidadActual - cantidadReservada!;
+                      transaction.update(
+                          productoRef, {'Cantidad': nuevaCantidad.toString()});
+                    } else {
+                      throw 'No hay suficiente cantidad disponible';
+                    }
+                  }).then((value) {
+                    sendEmail(context, userName, reservaId);
+                  }).catchError((error) {
+                    showDialog(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                        title: const Text('Error'),
+                        content: Text(error.toString()),
+                      ),
+                    );
+                  });
+                }
               },
             ),
             TextButton(

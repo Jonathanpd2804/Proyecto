@@ -17,10 +17,14 @@ Esta aplicación ofrece una solución práctica para que los clientes puedan sol
 
 ## Instalación
 
-En el enlace de la [Apk](https://github.com/Jonathanpd2804/Proyecto/blob/main/david_perez.apk) deberá hacer click en "Download" e instalar el archivo apk en su dispositivo móvil.
+Para instalar la entre en el enlace de la [Apk](https://github.com/Jonathanpd2804/Proyecto/blob/main/david_perez.apk) y deberá hacer click en "Download" e instalar el archivo apk en su dispositivo móvil.
 
 <ul>
     <li><h3>Compatibilidad</h3></li>
     <p style="list-style-type: none; margin-top: 0;">Esta app solo está disponible para Android</p>
 </ul>
+
+## Bocetos
+
+En este [Enlace](https://www.figma.com/file/XavRoJbvuxSQw9GSDJX229/Proyecto?type=design&node-id=0%3A1&t=6nQCUfEavbdMPyNY-1) podrás ver los bocetos que fueron diseñados para la aplicación, para poder ver las distintas pantallas debes ir a menú que hay arriba a la izquierda de el todo, ahí podrás seleccionar entre todas las pantallas a ver.
 

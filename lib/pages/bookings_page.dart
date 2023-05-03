@@ -203,6 +203,7 @@ class ListBookings extends StatelessWidget {
                   '${dateBooking.day}/${dateBooking.month}/${dateBooking.year}';
               final String clientEmail = booking['clienteEmail'];
               final String productId = booking['productoId'];
+              final int amount = booking['cantidad'];
               bool paid = booking['pagado'];
 
               return Padding(
@@ -222,7 +223,8 @@ class ListBookings extends StatelessWidget {
                                   showDialog(
                                     context: context,
                                     builder: (BuildContext context) {
-                                      return DeleteBookingDialog(booking: booking);
+                                      return DeleteBookingDialog(
+                                          booking: booking);
                                     },
                                   );
                                 },
@@ -256,7 +258,16 @@ class ListBookings extends StatelessWidget {
                             if (productFound) {
                               productInfo = Padding(
                                 padding: const EdgeInsets.only(left: 18.0),
-                                child: Text("Producto: $productId"),
+                                child: Row(
+                                  children: [
+                                    Text("Producto: $productId"),
+                                    Padding(
+                                      padding:
+                                          const EdgeInsets.only(left: 20.0),
+                                      child: Text("Cantidad: $amount"),
+                                    )
+                                  ],
+                                ),
                               );
                             } else {
                               productInfo = const Padding(

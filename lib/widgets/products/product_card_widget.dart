@@ -19,6 +19,8 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
   // Usuario actual
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
+  bool isLoading = false;
+
   Stream<QuerySnapshot> getDocsStream() {
     return FirebaseFirestore.instance
         .collection('usuarios')
@@ -74,10 +76,8 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
 ''';
 
     try {
-      // Envía el correo electrónico
       final sendReport = await send(message, smtpServer);
       print('Mensaje enviado: $sendReport');
-      showSendDialog(_scaffoldKey);
     } catch (e) {
       showErrorDialog(context);
     }
@@ -191,24 +191,6 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                       width: 200,
                       height: 225,
                     ),
-                    // Image.asset(
-                    //   'lib/images/logo.png',
-                    // ),
-                    // Container(
-                    //   width: 200,
-                    //   height: 225,
-                    //   color: Colors.black.withOpacity(0.5),
-                    //   child: const Center(
-                    //     child: Text(
-                    //       'Error al cargar la imagen',
-                    //       style: TextStyle(
-                    //         color: Colors.white,
-                    //         fontSize: 16,
-                    //         fontWeight: FontWeight.bold,
-                    //       ),
-                    //     ),
-                    //   ),
-                    // ),
                   ],
                 ),
               ),
@@ -372,6 +354,26 @@ void showSendDialog(GlobalKey<ScaffoldState> scaffoldKey) {
     builder: (BuildContext context) {
       return AlertDialog(
         title: const Text('Enviado'),
+        content: const Text('Se le ha enviado un email a su correo'),
+        actions: <Widget>[
+          TextButton(
+            child: const Text('Aceptar'),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+        ],
+      );
+    },
+  );
+}
+
+void showLoadingDialog(GlobalKey<ScaffoldState> scaffoldKey) {
+  showDialog(
+    context: scaffoldKey.currentContext!, // Utiliza el contexto del GlobalKey
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: const Text('cargando'),
         content: const Text('Se le ha enviado un email a su correo'),
         actions: <Widget>[
           TextButton(

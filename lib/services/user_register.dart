@@ -23,7 +23,7 @@ class UserRegister {
     required this.isWorker,
   });
 
-  bool isBoss = false; //Es Jefe
+  bool isAdmin = false; //Es Administrador
   bool isMeasurer = false; //Es Medidor
 
   Future<bool> isCodeValid(String code) async {
@@ -41,7 +41,7 @@ class UserRegister {
     if (querySnapshot.docs.isNotEmpty) {
       Map<String, dynamic> data =
           querySnapshot.docs.first.data() as Map<String, dynamic>;
-      isBoss = data['Jefe'] ?? false; //Cambia el valor de es Jefe
+      isAdmin = data['Administrador'] ?? false; //Cambia el valor de es Jefe
       isMeasurer = data['Medidor'] ?? false; //Cambia el valor de es Medidor
     }
 
@@ -105,7 +105,7 @@ class UserRegister {
           int.parse(phoneController.text.trim()),
           emailController.text.trim(),
           isWorker,
-          isBoss,
+          isAdmin,
           isMeasurer);
 
       // ignore: usebuildcontextsynchronously
@@ -188,7 +188,7 @@ class UserRegister {
       'Telefono': phone,
       'Email': email,
       'Trabajador': esTrabajador,
-      if (esTrabajador) 'Jefe': esJefe,
+      if (esTrabajador) 'Administrador': esJefe,
       if (esTrabajador) 'Medidor': esMedidor,
       if (esMedidor) 'Turno': "No asignado",
     });

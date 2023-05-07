@@ -100,7 +100,7 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
-                Text('¿Estás seguro de que deseas reservar este producto?'),
+                const Text('¿Estás seguro de que deseas reservar este producto?'),
                 const SizedBox(height: 16.0),
                 TextFormField(
                   decoration: const InputDecoration(
@@ -323,7 +323,7 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                                       ),
                                     );
                                   } else {
-                                    if (widget.product["Cantidad"] == "0") {
+                                    if (widget.product["Cantidad"] == 0) {
                                       // Muestra un mensaje indicando que el producto está agotado
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(
@@ -339,7 +339,7 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                                   }
                                 },
                                 child: Text(
-                                  widget.product["Cantidad"] != "0"
+                                  widget.product["Cantidad"] != 0
                                       ? "Reservar"
                                       : "Agotado",
                                 ),

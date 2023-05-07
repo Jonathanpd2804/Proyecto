@@ -1,4 +1,3 @@
-
 import '../../exports.dart';
 
 // ignore: must_be_immutable
@@ -76,6 +75,32 @@ class _PerfilPageState extends State<PerfilPage> {
                     batch.delete(doc.reference);
                   }
                   return batch.commit();
+                }).then((_) {
+                  // Eliminar todas las reservas del usuario
+                  FirebaseFirestore.instance
+                      .collection('reservas')
+                      .where('clienteEmail', isEqualTo: widget.userEmail)
+                      .get()
+                      .then((querySnapshot) {
+                    final batch = FirebaseFirestore.instance.batch();
+                    for (var doc in querySnapshot.docs) {
+                      batch.delete(doc.reference);
+                    }
+                    return batch.commit();
+                  });
+                }).then((_) {
+                  // Eliminar todas las citas del usuario
+                  FirebaseFirestore.instance
+                      .collection('citas')
+                      .where('Cliente', isEqualTo: documentId)
+                      .get()
+                      .then((querySnapshot) {
+                    final batch = FirebaseFirestore.instance.batch();
+                    for (var doc in querySnapshot.docs) {
+                      batch.delete(doc.reference);
+                    }
+                    return batch.commit();
+                  });
                 }).then((_) {
                   // Eliminar el usuario de Firebase Store
                   return FirebaseFirestore.instance
@@ -184,8 +209,8 @@ class _PerfilPageState extends State<PerfilPage> {
                                               : null,
                                     ),
                                     ListTile(
-                                      title: GetUserPhone(
-                                          documentId: documentId),
+                                      title:
+                                          GetUserPhone(documentId: documentId),
                                       trailing:
                                           widget.userEmail == currentUser?.email
                                               ? IconButton(

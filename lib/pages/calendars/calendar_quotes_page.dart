@@ -14,72 +14,72 @@ class _CalendarQuotesPageState extends State<CalendarQuotesPage> {
   late DateTime _focusedDay;
   DateTime? _selectedDay;
 
-  CalendarService calendarioService = CalendarService();
+  CalendarService calendarService = CalendarService();
 
   @override
   void initState() {
     super.initState();
-    calendarioService
-        .eliminarCitasAntiguas(); // Eliminar las citas antiguas al inicializar el widget
+    calendarService
+        .deleteOldQuotes(); // Eliminar las citas antiguas al inicializar el widget
     _calendarFormat = CalendarFormat.month;
     _focusedDay = DateTime.now();
   }
 
-  bool _isDaySelectable(DateTime day, List<String> citasOcupadas) {
+  bool _isDaySelectable(DateTime day, List<String> quotesBusy) {
     if (day.isBefore(DateTime(
             DateTime.now().year, DateTime.now().month, DateTime.now().day)) ||
         day.weekday == DateTime.saturday ||
         day.weekday == DateTime.sunday) {
       return false;
     }
-    final List<String> todasCitas = _getCitas(day, citasOcupadas);
-    return citasOcupadas.length != todasCitas.length;
+    final List<String> allQuotes = _getQuotes(day, quotesBusy);
+    return quotesBusy.length != allQuotes.length;
   }
 
-  Future<bool> _allCitasOcupadas(DateTime date) async {
-    final List<String> citasOcupadas = await _getCitasOcupadas(date);
-    final List<String> todasCitas = _getCitas(date, citasOcupadas);
-    return citasOcupadas.length == todasCitas.length;
+  Future<bool> _allQuotesBusy(DateTime date) async {
+    final List<String> quotesBusy = await _getQuotesBusy(date);
+    final List<String> allQuotes = _getQuotes(date, quotesBusy);
+    return quotesBusy.length == allQuotes.length;
   }
 
-  Future<void> _agregarCita(String cita, String direccion) async {
+  Future<void> _addQuote(String quote, String direccion) async {
     final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
-    String clienteUid = await calendarioService.getClienteUid();
+    String clientUid = await calendarService.getClientUid();
 
-    DateTime citaDateTime = DateTime.parse(cita);
+    DateTime quoteDateTime = DateTime.parse(quote);
     String turn = "";
 
-    if (citaDateTime.hour >= 8 && citaDateTime.hour < 17) {
+    if (quoteDateTime.hour >= 8 && quoteDateTime.hour < 17) {
       turn = "Mañana";
-    } else if (citaDateTime.hour >= 17 && citaDateTime.hour < 20) {
+    } else if (quoteDateTime.hour >= 17 && quoteDateTime.hour < 20) {
       turn = "Tarde";
     }
 
-    final citaRef = await firestore.collection('citas').add({
-      'Fecha': citaDateTime,
-      'Cliente': clienteUid,
+    final quoteRef = await firestore.collection('citas').add({
+      'Fecha': quoteDateTime,
+      'Cliente': clientUid,
       'Turno': turn,
       'Dirección': direccion,
       'Realizada': false
     });
 
     //Obtener el trabajador con el turno de la cita
-    String workerID = await calendarioService.getWorkerUid(turn);
+    String workerID = await calendarService.getWorkerUid(turn);
 
     await firestore.collection('tareas').add({
-      'Fecha': citaDateTime,
+      'Fecha': quoteDateTime,
       'Trabajador': workerID,
       'Realizada': false,
       'Asignada': true,
       'Dirección': direccion,
       'Importante': true,
       'Título': "Medición",
-      'IdCita': citaRef.id,
+      'IdCita': quoteRef.id,
     });
   }
 
-  Future<List<String>> _getCitasOcupadas(DateTime date) async {
+  Future<List<String>> _getQuotesBusy(DateTime date) async {
     final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
     final QuerySnapshot snapshot = await firestore
@@ -92,25 +92,25 @@ class _CalendarQuotesPageState extends State<CalendarQuotesPage> {
         .get();
 
     return snapshot.docs.map((doc) {
-      final DateTime citaTime = doc['Fecha'].toDate();
-      return DateFormat('yyyy-MM-dd HH:mm:ss').format(citaTime);
+      final DateTime quoteTime = doc['Fecha'].toDate();
+      return DateFormat('yyyy-MM-dd HH:mm:ss').format(quoteTime);
     }).toList();
   }
 
-  void _showCitasList(DateTime date) {
+  void _showQuotesList(DateTime date) {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
       builder: (BuildContext context) {
         return FutureBuilder<List<String>>(
-          future: _getCitasOcupadas(date),
+          future: _getQuotesBusy(date),
           builder:
               (BuildContext context, AsyncSnapshot<List<String>> snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(child: CircularProgressIndicator());
             }
 
-            final citasOcupadas = snapshot.data!;
+            final quotesBusy = snapshot.data!;
 
             return DraggableScrollableSheet(
               expand: false,
@@ -118,20 +118,20 @@ class _CalendarQuotesPageState extends State<CalendarQuotesPage> {
                   (BuildContext context, ScrollController scrollController) {
                 return ListView.builder(
                   controller: scrollController,
-                  itemCount: _getCitas(date, citasOcupadas).length,
+                  itemCount: _getQuotes(date, quotesBusy).length,
                   itemBuilder: (BuildContext context, int index) {
-                    String cita = _getCitas(date, citasOcupadas)[index];
-                    bool ocupada = citasOcupadas.contains(cita);
+                    String quote = _getQuotes(date, quotesBusy)[index];
+                    bool busy = quotesBusy.contains(quote);
 
                     return ListTile(
-                      title: Text(cita),
+                      title: Text(quote),
                       trailing: Icon(
-                        ocupada ? Icons.close : Icons.check,
-                        color: ocupada ? Colors.red : Colors.green,
+                        busy ? Icons.close : Icons.check,
+                        color: busy ? Colors.red : Colors.green,
                       ),
                       onTap: () async {
-                        if (!ocupada) {
-                          String? direccion;
+                        if (!busy) {
+                          String? address;
                           // Muestra un diálogo para confirmar la cita y pedir la dirección
                           bool? confirmed = await showDialog<bool>(
                             context: context,
@@ -142,10 +142,10 @@ class _CalendarQuotesPageState extends State<CalendarQuotesPage> {
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
                                     Text(
-                                        '¿Desea reservar la cita para las ${DateFormat('HH:mm').format(DateTime.parse(cita))}?'),
+                                        '¿Desea reservar la cita para las ${DateFormat('HH:mm').format(DateTime.parse(quote))}?'),
                                     const SizedBox(height: 8),
                                     TextField(
-                                      onChanged: (value) => direccion = value,
+                                      onChanged: (value) => address = value,
                                       decoration: const InputDecoration(
                                           hintText: "Dirección"),
                                     ),
@@ -167,12 +167,12 @@ class _CalendarQuotesPageState extends State<CalendarQuotesPage> {
                             },
                           );
 
-                          if (confirmed == true && direccion != null) {
+                          if (confirmed == true && address != null) {
                             // Agregar la cita ocupada a Firestore con la dirección
-                            await _agregarCita(cita, direccion!);
+                            await _addQuote(quote, address!);
                             // Actualizar la lista de citas ocupadas
                             setState(() {
-                              citasOcupadas.add(cita);
+                              quotesBusy.add(quote);
                             });
                           }
                         }
@@ -188,16 +188,16 @@ class _CalendarQuotesPageState extends State<CalendarQuotesPage> {
     );
   }
 
-  List<String> _getCitas(DateTime date, List<String> citasOcupadas) {
-    final List<String> citas = [];
+  List<String> _getQuotes(DateTime date, List<String> quotesBusy) {
+    final List<String> quotes = [];
 
     for (int i = 8; i < 21; i++) {
-      DateTime citaTime = DateTime(date.year, date.month, date.day, i);
-      String hora = DateFormat('yyyy-MM-dd HH:mm:ss').format(citaTime);
-      citas.add(hora);
+      DateTime quoteTime = DateTime(date.year, date.month, date.day, i);
+      String hour = DateFormat('yyyy-MM-dd HH:mm:ss').format(quoteTime);
+      quotes.add(hour);
     }
 
-    return citas;
+    return quotes;
   }
 
   @override
@@ -234,16 +234,16 @@ class _CalendarQuotesPageState extends State<CalendarQuotesPage> {
                   },
                   onDaySelected: (selectedDay, focusedDay) {
                     // Obtén las citas ocupadas en el día seleccionado
-                    _getCitasOcupadas(selectedDay).then((citasOcupadas) {
+                    _getQuotesBusy(selectedDay).then((quotesBusy) {
                       // Verifica si el día es seleccionable antes de cambiar el estado y mostrar la lista de citas
-                      if (_isDaySelectable(selectedDay, citasOcupadas)) {
+                      if (_isDaySelectable(selectedDay, quotesBusy)) {
                         setState(() {
                           _selectedDay = selectedDay;
                           _focusedDay =
                               DateTime(selectedDay.year, selectedDay.month, 1);
                         });
 
-                        _showCitasList(selectedDay);
+                        _showQuotesList(selectedDay);
                       }
                     });
                   },
@@ -253,7 +253,7 @@ class _CalendarQuotesPageState extends State<CalendarQuotesPage> {
                   calendarBuilders: CalendarBuilders(
                     defaultBuilder: (context, day, events) {
                       return FutureBuilder<bool>(
-                        future: _allCitasOcupadas(day),
+                        future: _allQuotesBusy(day),
                         builder: (context, snapshot) {
                           if (snapshot.connectionState ==
                               ConnectionState.waiting) {
@@ -261,10 +261,10 @@ class _CalendarQuotesPageState extends State<CalendarQuotesPage> {
                                 child: CircularProgressIndicator());
                           }
 
-                          bool todasCitasOcupadas = snapshot.data!;
+                          bool allQuotesBusy = snapshot.data!;
 
                           if (day.isBefore(DateTime.now()) ||
-                              todasCitasOcupadas ||
+                              allQuotesBusy ||
                               day.weekday == DateTime.saturday ||
                               day.weekday == DateTime.sunday) {
                             return Container(

@@ -17,7 +17,7 @@ class _EditProductState extends State<EditProduct> {
   late String _title;
   late String _description;
   late String _price;
-  late String _cantidad;
+  late String _quantity;
   File? _image;
   String? _imageUrlFromDatabase;
   late String productID;
@@ -103,7 +103,7 @@ class _EditProductState extends State<EditProduct> {
     _title = productData['Título'];
     _description = productData['Descripción'];
     _price = productData['Precio'];
-    _cantidad = productData['Cantidad'];
+    _quantity = productData['Cantidad'];
     _imageUrlFromDatabase = productData['ImagenURL'];
     productID = widget.product.id;
 
@@ -188,7 +188,7 @@ class _EditProductState extends State<EditProduct> {
                 },
               ),
               TextFormField(
-                initialValue: _cantidad.toString(),
+                initialValue: _quantity.toString(),
                 decoration: const InputDecoration(
                   labelText: 'Cantidad',
                 ),
@@ -199,7 +199,7 @@ class _EditProductState extends State<EditProduct> {
                   return null;
                 },
                 onSaved: (value) {
-                  _cantidad = value!;
+                  _quantity = value!;
                 },
               ),
               const SizedBox(height: 16.0),
@@ -238,7 +238,7 @@ class _EditProductState extends State<EditProduct> {
                       'Título': _title,
                       'Descripción': _description,
                       'Precio': _price,
-                      'Cantidad': _cantidad,
+                      'Cantidad': _quantity,
                       'ImagenURL': _imageUrlFromDatabase,
                     });
 

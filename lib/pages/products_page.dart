@@ -1,4 +1,3 @@
-import 'package:david_perez/widgets/products/edit_product.dart';
 
 import '../exports.dart';
 

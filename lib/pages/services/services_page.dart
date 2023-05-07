@@ -1,12 +1,12 @@
 import 'package:david_perez/exports.dart';
-import 'package:david_perez/pages/services/add_service.dart';
 
-class Servicio {
+
+class Service {
   final String key;
   final String title;
   final String description;
 
-  Servicio({required this.key, required this.title, required this.description});
+  Service({required this.key, required this.title, required this.description});
 }
 
 class ServicesList extends StatefulWidget {
@@ -17,7 +17,7 @@ class ServicesList extends StatefulWidget {
 }
 
 class ServicesListState extends State<ServicesList> {
-  List<Servicio> _servicios = [];
+  List<Service> _services = [];
   final currentUser = FirebaseAuth.instance.currentUser; // Usuario actual
   late UserIsAdmin userIsAdmin;
   bool isAdmin = false;
@@ -25,25 +25,25 @@ class ServicesListState extends State<ServicesList> {
   @override
   void initState() {
     super.initState();
-    obtenerServicios();
+    getServices();
   }
 
-  Future<void> obtenerServicios() async {
+  Future<void> getServices() async {
     final dbRef = FirebaseFirestore.instance.collection('servicios');
     final snapshot = await dbRef.get();
 
-    List<Servicio> servicios = [];
+    List<Service> services = [];
     for (var doc in snapshot.docs) {
-      Servicio servicio = Servicio(
+      Service service = Service(
         key: doc.id,
         title: doc['Título'],
         description: doc['Descripción'],
       );
-      servicios.add(servicio);
+      services.add(service);
     }
 
     setState(() {
-      _servicios = servicios;
+      _services = services;
       userIsAdmin = UserIsAdmin(currentUser);
       userIsAdmin.getUser().then((_) {
         setState(() {
@@ -82,7 +82,7 @@ class ServicesListState extends State<ServicesList> {
                 child: const Text("Añadir Servicio")),
           Expanded(
               child: ListView.builder(
-                  itemCount: _servicios.length,
+                  itemCount: _services.length,
                   itemBuilder: (context, index) {
                     return Card(
                         elevation: 4,
@@ -90,7 +90,7 @@ class ServicesListState extends State<ServicesList> {
                             vertical: 8, horizontal: 16),
                         child: ListTile(
                           title: Center(
-                            child: Text(_servicios[index].title,
+                            child: Text(_services[index].title,
                                 style: const TextStyle(
                                     fontWeight: FontWeight.bold)),
                           ),
@@ -99,7 +99,7 @@ class ServicesListState extends State<ServicesList> {
                               context: context,
                               builder: (BuildContext context) {
                                 return AlertDialog(
-                                  title: Text(_servicios[index].description),
+                                  title: Text(_services[index].description),
                                   actions: [
                                     TextButton(
                                       child: const Text("Cerrar"),

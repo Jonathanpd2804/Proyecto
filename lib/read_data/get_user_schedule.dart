@@ -1,10 +1,10 @@
 import '../exports.dart';
 
 
-class GetUserTurno extends StatelessWidget {
+class GetUserTurn extends StatelessWidget {
   final String workerDocumentId; //Id de el trabajador
 
-  const GetUserTurno({super.key, required this.workerDocumentId});
+  const GetUserTurn({super.key, required this.workerDocumentId});
 
 
   @override

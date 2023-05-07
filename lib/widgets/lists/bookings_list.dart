@@ -5,18 +5,18 @@ import 'package:intl/intl.dart';
 
 class BookingsListView extends StatelessWidget {
   final currentUser = FirebaseAuth.instance.currentUser;
-  final String? clienteEmail;
+  final String? clientEmail;
 
   BookingsListView({
     Key? key,
-    required this.clienteEmail,
+    required this.clientEmail,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     Query bookingsQuery = FirebaseFirestore.instance
         .collection('reservas')
-        .where('clienteEmail', isEqualTo: clienteEmail);
+        .where('clienteEmail', isEqualTo: clientEmail);
 
     return StreamBuilder<QuerySnapshot>(
       stream: bookingsQuery.snapshots(),
@@ -33,7 +33,7 @@ class BookingsListView extends StatelessWidget {
 
         if (bookings.isEmpty) {
           return Center(
-            child: Text(currentUser!.email == clienteEmail
+            child: Text(currentUser!.email == clientEmail
                 ? 'No tienes ninguna reserva'
                 : 'No tiene ninguna reserva'),
           );

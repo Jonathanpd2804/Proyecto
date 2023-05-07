@@ -1,22 +1,22 @@
 import '../../exports.dart';
 
 class CreateTask {
-  final TextEditingController tituloController;
-  final TextEditingController descripcionController;
-  final DateTime? fecha;
-  final bool importante;
+  final TextEditingController titleController;
+  final TextEditingController descriptionController;
+  final DateTime? date;
+  final bool important;
   final String worker;
   final String workerEmail;
-  final String autorEmail;
+  final String authorEmail;
 
   CreateTask({
-    required this.tituloController,
-    required this.descripcionController,
-    required this.fecha,
-    required this.importante,
+    required this.titleController,
+    required this.descriptionController,
+    required this.date,
+    required this.important,
     required this.worker,
     required this.workerEmail,
-    required this.autorEmail,
+    required this.authorEmail,
   });
 
   Future<void> addTaskToDatabase() async {
@@ -28,13 +28,13 @@ class CreateTask {
       throw Exception('Descripción inválida');
     }
 
-    bool asignada = autorEmail == workerEmail;
+    bool asignada = authorEmail == workerEmail;
 
     await FirebaseFirestore.instance.collection('tareas').add({
-      'Título': tituloController.text.trim(),
-      'Descripción': descripcionController.text.trim(),
-      'Fecha': fecha!.toUtc(),
-      'Importante': importante,
+      'Título': titleController.text.trim(),
+      'Descripción': descriptionController.text.trim(),
+      'Fecha': date!.toUtc(),
+      'Importante': important,
       'Realizada': false,
       'Trabajador': worker,
       'Asignada': !asignada,
@@ -42,10 +42,10 @@ class CreateTask {
   }
 
   bool isTitleValid() {
-    return tituloController.text.trim().isNotEmpty;
+    return titleController.text.trim().isNotEmpty;
   }
 
   bool isDescriptionValid() {
-    return descripcionController.text.trim().isNotEmpty;
+    return descriptionController.text.trim().isNotEmpty;
   }
 }

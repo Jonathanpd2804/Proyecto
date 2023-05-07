@@ -1,24 +1,24 @@
 import '../../exports.dart';
 import 'package:intl/intl.dart';
 
-class CitasListView extends StatelessWidget {
-  final String? clienteUid;
+class QuotesListView extends StatelessWidget {
+  final String? clientUid;
   final DateTime? selectedDay;
   final currentUser = FirebaseAuth.instance.currentUser;
-  final String? clienteEmail;
+  final String? clientEmail;
 
-  CitasListView({
+  QuotesListView({
     Key? key,
-    required this.clienteUid,
+    required this.clientUid,
     this.selectedDay,
-    required this.clienteEmail,
+    required this.clientEmail,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     Query citasQuery = FirebaseFirestore.instance
         .collection('citas')
-        .where('Cliente', isEqualTo: clienteUid);
+        .where('Cliente', isEqualTo: clientUid);
 
     if (selectedDay != null) {
       citasQuery = citasQuery
@@ -49,7 +49,7 @@ class CitasListView extends StatelessWidget {
 
         if (quotes.isEmpty && selectedDay == null) {
           return Center(
-            child: Text(currentUser!.email == clienteEmail
+            child: Text(currentUser!.email == clientEmail
                 ? 'No tienes ninguna cita'
                 : 'No tiene ninguna cita'),
           );
@@ -94,7 +94,7 @@ class CitasListView extends StatelessWidget {
                         ),
                       ),
                       if (!quote["Realizada"] &&
-                          clienteEmail != currentUser!.email)
+                          clientEmail != currentUser!.email)
                         Padding(
                           padding: const EdgeInsets.only(right: 10.0),
                           child: GestureDetector(

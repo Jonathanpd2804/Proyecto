@@ -71,10 +71,10 @@ class _CalendarWorkerState extends State<CalendarWorker> {
                 }
                 final workerData =
                     snapshot.data!.data() as Map<String, dynamic>;
-                final workerNombre = workerData['Nombre'];
+                final workerName = workerData['Nombre'];
                 workerEmail = workerData['Email'];
                 return AutoSizeText(
-                  "Calendario de $workerNombre",
+                  "Calendario de $workerName",
                   minFontSize: 20,
                 );
               },

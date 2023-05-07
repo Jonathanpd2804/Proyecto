@@ -1,9 +1,9 @@
 import '../exports.dart';
 
-class GetUserTelefono extends StatelessWidget {
+class GetUserPhone extends StatelessWidget {
   final String documentId;
 
-  const GetUserTelefono({super.key, required this.documentId});
+  const GetUserPhone({super.key, required this.documentId});
 
 
   @override

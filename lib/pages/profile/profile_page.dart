@@ -1,4 +1,3 @@
-import 'package:david_perez/widgets/lists/bookings_list.dart';
 
 import '../../exports.dart';
 
@@ -185,7 +184,7 @@ class _PerfilPageState extends State<PerfilPage> {
                                               : null,
                                     ),
                                     ListTile(
-                                      title: GetUserTelefono(
+                                      title: GetUserPhone(
                                           documentId: documentId),
                                       trailing:
                                           widget.userEmail == currentUser?.email
@@ -200,7 +199,7 @@ class _PerfilPageState extends State<PerfilPage> {
                                     ),
                                     if (user["Medidor"] == true)
                                       ListTile(
-                                        title: GetUserTurno(
+                                        title: GetUserTurn(
                                             workerDocumentId: documentId),
                                         trailing: widget.userEmail !=
                                                 currentUser?.email
@@ -251,9 +250,9 @@ class _PerfilPageState extends State<PerfilPage> {
                       fontWeight: FontWeight.bold, fontSize: 25)),
             ),
             Expanded(
-                child: CitasListView(
-              clienteEmail: widget.userEmail,
-              clienteUid: documentID,
+                child: QuotesListView(
+              clientEmail: widget.userEmail,
+              clientUid: documentID,
             )),
             Padding(
               padding: const EdgeInsets.only(top: 30.0, bottom: 15),
@@ -266,7 +265,7 @@ class _PerfilPageState extends State<PerfilPage> {
             ),
             Expanded(
                 child: BookingsListView(
-              clienteEmail: widget.userEmail,
+              clientEmail: widget.userEmail,
             )),
           ],
         ),

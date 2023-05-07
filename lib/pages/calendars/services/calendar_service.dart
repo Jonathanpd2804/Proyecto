@@ -4,7 +4,7 @@ class CalendarService {
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
   final User? currentUser = FirebaseAuth.instance.currentUser;
 
-  Future eliminarCitasAntiguas() async {
+  Future deleteOldQuotes() async {
     final FirebaseFirestore firestore = FirebaseFirestore.instance;
     final DateTime now = DateTime.now();
     final DateTime startOfToday = DateTime(now.year, now.month, now.day);
@@ -26,7 +26,7 @@ class CalendarService {
         .get();
   }
 
-  Future<String> getClienteUid() async {
+  Future<String> getClientUid() async {
     QuerySnapshot<Object?> userDataQuery = await getUserDataFuture();
 
     if (userDataQuery.docs.isNotEmpty) {

@@ -16,6 +16,9 @@ export 'package:david_perez/pages/jobs_page.dart';
 export 'package:david_perez/pages/facilities/facilities_page.dart';
 export 'package:david_perez/pages/maintenances/maintenance_page.dart';
 export 'package:david_perez/pages/services/services_page.dart';
+export 'package:david_perez/pages/facilities/add_facilities.dart';
+export 'package:david_perez/pages/maintenances/add_maintenance.dart';
+
 
 //Calendars
 export 'package:david_perez/pages/calendars/calendar_worker_page.dart';
@@ -23,6 +26,7 @@ export 'package:david_perez/pages/calendars/calendar_quotes_page.dart';
 
 //Services
 export 'package:david_perez/pages/calendars/services/calendar_service.dart';
+export 'package:david_perez/pages/services/add_service.dart';
 
 //Profile
 export 'package:david_perez/pages/profile/profile_page.dart';
@@ -54,10 +58,14 @@ export 'package:david_perez/widgets/custom_appbar.dart';
 export 'package:david_perez/widgets/custom_drawer.dart';
 export 'package:david_perez/widgets/icons.dart';
 export 'package:david_perez/widgets/icons_home.dart';
+export 'package:david_perez/widgets/products/edit_product.dart';
+
 
 //List
 export 'package:david_perez/widgets/lists/task_list_view.dart';
 export 'package:david_perez/widgets/lists/quotes_list_view.dart';
+export 'package:david_perez/widgets/lists/bookings_list.dart';
+
 
 //Bookings
 export 'package:david_perez/widgets/bookings/delete_booking.dart';
@@ -92,6 +100,8 @@ export 'package:flip_card/flip_card.dart';
 export 'package:flutter_svg/flutter_svg.dart';
 export 'package:url_launcher/url_launcher.dart';
 export 'package:flutter_rating_bar/flutter_rating_bar.dart';
+export 'package:email_validator/email_validator.dart';
+
 
 //Auth
 export 'package:david_perez/auth/google_auth.dart';
@@ -102,11 +112,11 @@ export 'package:david_perez/services/user_auth.dart';
 export 'package:david_perez/services/user_register.dart';
 
 //Read Data
-export 'package:david_perez/read_data/get_user_apellidos.dart';
+export 'package:david_perez/read_data/get_user_lastname.dart';
 export 'package:david_perez/read_data/get_user_email.dart';
 export 'package:david_perez/read_data/get_user_name.dart';
-export 'package:david_perez/read_data/get_user_telefono.dart';
-export 'package:david_perez/read_data/get_user_horario.dart';
+export 'package:david_perez/read_data/get_user_phone.dart';
+export 'package:david_perez/read_data/get_user_schedule.dart';
 export 'package:david_perez/read_data/get_user_is_admin.dart';
 export 'package:david_perez/read_data/get_user_is_worker.dart';
 export 'package:david_perez/read_data/get_user_document_id.dart';

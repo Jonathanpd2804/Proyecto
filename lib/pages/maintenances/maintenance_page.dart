@@ -1,5 +1,5 @@
 import 'package:david_perez/exports.dart';
-import 'package:david_perez/pages/maintenances/add_maintenance.dart';
+
 
 class Maintenance {
   final String key;
@@ -26,10 +26,10 @@ class MaintenanceListState extends State<MaintenanceList> {
   @override
   void initState() {
     super.initState();
-    obtenerMaintenances();
+    getMaintenances();
   }
 
-  Future<void> obtenerMaintenances() async {
+  Future<void> getMaintenances() async {
     final dbRef = FirebaseFirestore.instance.collection('mantenimientos');
     final snapshot = await dbRef.get();
 

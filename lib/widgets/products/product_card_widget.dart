@@ -86,7 +86,7 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
   final _formKey = GlobalKey<FormState>();
 
   Future<void> _showConfirmationDialog(BuildContext context) async {
-    int? cantidadReservada =
+    int? quantityReserved =
         0; // Variable para almacenar la cantidad a reservar
 
     return showDialog<void>(
@@ -111,14 +111,14 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                     if (value == null || value.isEmpty) {
                       return 'Por favor, introduce una cantidad';
                     }
-                    final intCantidad = int.tryParse(value);
-                    if (intCantidad == null || intCantidad <= 0) {
+                    final intQuantity = int.tryParse(value);
+                    if (intQuantity == null || intQuantity <= 0) {
                       return 'Por favor, introduce una cantidad válida';
                     }
                     return null;
                   },
                   onSaved: (value) {
-                    cantidadReservada = int.tryParse(value!);
+                    quantityReserved = int.tryParse(value!);
                   },
                 ),
               ],
@@ -140,39 +140,39 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                     break;
                   }
 
-                  final reserva = {
+                  final booking = {
                     'clienteEmail': currentUser?.email,
                     'productoId': widget.productID,
                     'fechaReserva': Timestamp.now(),
                     'pagado': false,
-                    'cantidad': cantidadReservada
+                    'cantidad': quantityReserved
                   };
 
                   final reservaRef = await FirebaseFirestore.instance
                       .collection('reservas')
-                      .add(reserva);
+                      .add(booking);
 
-                  final reservaId = reservaRef.id;
+                  final bookingId = reservaRef.id;
 
                   // Actualiza la cantidad disponible del producto en la base de datos
-                  final productoRef = FirebaseFirestore.instance
+                  final productRef = FirebaseFirestore.instance
                       .collection('productos')
                       .doc(widget.productID);
 
                   FirebaseFirestore.instance
                       .runTransaction((transaction) async {
-                    final producto = await transaction.get(productoRef);
-                    final cantidadActual = producto['Cantidad'];
+                    final producto = await transaction.get(productRef);
+                    final currentQuantity = producto['Cantidad'];
 
-                    if (cantidadActual >= cantidadReservada!) {
-                      final nuevaCantidad = cantidadActual - cantidadReservada!;
+                    if (currentQuantity >= quantityReserved!) {
+                      final newQuantity = currentQuantity - quantityReserved!;
                       transaction.update(
-                          productoRef, {'Cantidad': nuevaCantidad});
+                          productRef, {'Cantidad': newQuantity});
                     } else {
                       throw 'No hay suficiente cantidad disponible';
                     }
                   }).then((value) {
-                    sendEmail(context, userName, reservaId);
+                    sendEmail(context, userName, bookingId);
                   }).catchError((error) {
                     showDialog(
                       context: context,

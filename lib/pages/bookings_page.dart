@@ -305,7 +305,7 @@ class ListBookings extends StatelessWidget {
                                   padding: const EdgeInsets.only(left: 20.0),
                                   child: ElevatedButton(
                                     onPressed: () async {
-                                      final confirmado = await showDialog<bool>(
+                                      final confirm = await showDialog<bool>(
                                         context: context,
                                         builder: (BuildContext context) {
                                           return AlertDialog(
@@ -334,7 +334,7 @@ class ListBookings extends StatelessWidget {
                                           );
                                         },
                                       );
-                                      if (confirmado != null && confirmado) {
+                                      if (confirm != null && confirm) {
                                         await FirebaseFirestore.instance
                                             .collection('reservas')
                                             .doc(booking.id)
@@ -359,7 +359,7 @@ class ListBookings extends StatelessWidget {
                                     padding: const EdgeInsets.only(left: 20.0),
                                     child: ElevatedButton(
                                       onPressed: () async {
-                                        final confirmado =
+                                        final confirm =
                                             await showDialog<bool>(
                                           context: context,
                                           builder: (BuildContext context) {
@@ -388,7 +388,7 @@ class ListBookings extends StatelessWidget {
                                             );
                                           },
                                         );
-                                        if (confirmado != null && confirmado) {
+                                        if (confirm != null && confirm) {
                                           await FirebaseFirestore.instance
                                               .collection('reservas')
                                               .doc(booking.id)

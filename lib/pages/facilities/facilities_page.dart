@@ -1,13 +1,13 @@
 import 'package:david_perez/exports.dart';
-import 'package:david_perez/pages/facilities/add_facilities.dart';
+
 
 class Facility {
   final String key;
-  final String titulo;
-  final String descripcion;
+  final String title;
+  final String description;
 
   Facility(
-      {required this.key, required this.titulo, required this.descripcion});
+      {required this.key, required this.title, required this.description});
 }
 
 class FacilitiesList extends StatefulWidget {
@@ -37,8 +37,8 @@ class FacilitiesListState extends State<FacilitiesList> {
     for (var doc in snapshot.docs) {
       Facility facility = Facility(
         key: doc.id,
-        titulo: doc['Título'],
-        descripcion: doc['Descripción'],
+        title: doc['Título'],
+        description: doc['Descripción'],
       );
       facilities.add(facility);
     }
@@ -91,7 +91,7 @@ class FacilitiesListState extends State<FacilitiesList> {
                           vertical: 8, horizontal: 16),
                       child: ListTile(
                           title: Center(
-                            child: Text(_facilities[index].titulo,
+                            child: Text(_facilities[index].title,
                                 style: const TextStyle(
                                     fontWeight: FontWeight.bold)),
                           ),
@@ -100,7 +100,7 @@ class FacilitiesListState extends State<FacilitiesList> {
                               context: context,
                               builder: (BuildContext context) {
                                 return AlertDialog(
-                                  title: Text(_facilities[index].descripcion),
+                                  title: Text(_facilities[index].description),
                                   actions: [
                                     TextButton(
                                       child: const Text("Cerrar"),

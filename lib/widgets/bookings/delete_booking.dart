@@ -55,12 +55,12 @@ class DeleteBookingDialogState extends State<DeleteBookingDialog> {
             child: const Text("Borrar"),
             onPressed: () {
               deleteBooking();
-              final productoRef = FirebaseFirestore.instance
+              final productRef = FirebaseFirestore.instance
                   .collection('productos')
                   .doc(widget.booking["productoId"]);
-              final cantidadReservada = widget.booking["cantidad"];
-              productoRef.update(
-                  {'Cantidad': FieldValue.increment(cantidadReservada)});
+              final quantityReserved = widget.booking["cantidad"];
+              productRef.update(
+                  {'Cantidad': FieldValue.increment(quantityReserved)});
 
               Navigator.of(context).pop();
             },

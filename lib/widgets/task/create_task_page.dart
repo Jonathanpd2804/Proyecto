@@ -21,11 +21,11 @@ class CreateTaskPage extends StatefulWidget {
 }
 
 class _CreateTaskPageState extends State<CreateTaskPage> {
-  final tituloController = TextEditingController();
-  final descripcionController = TextEditingController();
+  final titleController = TextEditingController();
+  final descriptionController = TextEditingController();
   late TimeOfDay selectedTime;
 
-  bool _esImportante = false;
+  bool _isImportant = false;
 
   @override
   void initState() {
@@ -65,14 +65,14 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
             height: 50,
           ),
           MyTextField(
-              controller: tituloController,
+              controller: titleController,
               hintText: "Título",
               obscureText: false),
           const SizedBox(
             height: 20,
           ),
           MyTextField(
-              controller: descripcionController,
+              controller: descriptionController,
               hintText: "Descripción",
               obscureText: false),
           Padding(
@@ -120,10 +120,10 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
               padding: EdgeInsets.only(left: 12.0),
               child: Text("Importante"),
             ),
-            value: _esImportante,
+            value: _isImportant,
             onChanged: (bool? value) {
               setState(() {
-                _esImportante = value!;
+                _isImportant = value!;
               });
             },
           ),
@@ -131,7 +131,7 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
             padding: const EdgeInsets.only(top: 28.0),
             child: ElevatedButton(
               onPressed: () async {
-                DateTime fechaHora = DateTime(
+                DateTime dateHour = DateTime(
                   widget.selectedDay!.year,
                   widget.selectedDay!.month,
                   widget.selectedDay!.day,
@@ -140,13 +140,13 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
                 );
 
                 CreateTask task = CreateTask(
-                  tituloController: tituloController,
-                  descripcionController: descripcionController,
-                  fecha: fechaHora,
-                  importante: _esImportante,
+                  titleController: titleController,
+                  descriptionController: descriptionController,
+                  date: dateHour,
+                  important: _isImportant,
                   worker: widget.workerUid,
                   workerEmail: widget.workerEmail,
-                  autorEmail: widget.user.email,
+                  authorEmail: widget.user.email,
                 );
 
 

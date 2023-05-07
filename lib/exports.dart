@@ -13,9 +13,9 @@ export 'package:david_perez/pages/bookings_page.dart';
 export 'package:david_perez/pages/products_page.dart';
 export 'package:david_perez/pages/manage_page.dart';
 export 'package:david_perez/pages/jobs_page.dart';
-export 'package:david_perez/pages/facilities_page.dart';
-export 'package:david_perez/pages/maintenance_page.dart';
-export 'package:david_perez/pages/services_page.dart';
+export 'package:david_perez/pages/facilities/facilities_page.dart';
+export 'package:david_perez/pages/maintenances/maintenance_page.dart';
+export 'package:david_perez/pages/services/services_page.dart';
 
 //Calendars
 export 'package:david_perez/pages/calendars/calendar_worker_page.dart';

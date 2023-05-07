@@ -72,33 +72,6 @@ class "david_perez::pages::bookings_page.dart::ListBookings" {
 
 "flutter::src::widgets::framework.dart::StatelessWidget" <|-- "david_perez::pages::bookings_page.dart::ListBookings"
 
-class "david_perez::pages::calendars::calendar_ask_quote.dart::CalendarAskQuotes" {
-  +User? user
-  +State<CalendarAskQuotes> createState()
-}
-
-"david_perez::pages::calendars::calendar_ask_quote.dart::CalendarAskQuotes" o-- "firebase_auth::firebase_auth.dart::User"
-"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "david_perez::pages::calendars::calendar_ask_quote.dart::CalendarAskQuotes"
-
-class "david_perez::pages::calendars::calendar_ask_quote.dart::_CalendarAskQuotesState" {
-  -CalendarFormat _calendarFormat
-  -DateTime _focusedDay
-  -DateTime? _selectedDay
-  +CalendarService calendarioService
-  +void initState()
-  -bool _isDaySelectable()
-  -dynamic _allCitasOcupadas()
-  -dynamic _agregarCita()
-  -dynamic _getCitasOcupadas()
-  -void _showCitasList()
-  -List<String> _getCitas()
-  +Widget build()
-}
-
-"david_perez::pages::calendars::calendar_ask_quote.dart::_CalendarAskQuotesState" o-- "table_calendar::src::shared::utils.dart::CalendarFormat"
-"david_perez::pages::calendars::calendar_ask_quote.dart::_CalendarAskQuotesState" o-- "david_perez::pages::calendars::services::calendar_service.dart::CalendarService"
-"flutter::src::widgets::framework.dart::State" <|-- "david_perez::pages::calendars::calendar_ask_quote.dart::_CalendarAskQuotesState"
-
 class "david_perez::pages::calendars::calendar_quotes_page.dart::CalendarQuotesPage" {
   +User? user
   +State<CalendarQuotesPage> createState()
@@ -111,14 +84,14 @@ class "david_perez::pages::calendars::calendar_quotes_page.dart::_CalendarQuotes
   -CalendarFormat _calendarFormat
   -DateTime _focusedDay
   -DateTime? _selectedDay
-  +CalendarService calendarioService
+  +CalendarService calendarService
   +void initState()
   -bool _isDaySelectable()
-  -dynamic _allCitasOcupadas()
-  -dynamic _agregarCita()
-  -dynamic _getCitasOcupadas()
-  -void _showCitasList()
-  -List<String> _getCitas()
+  -dynamic _allQuotesBusy()
+  -dynamic _addQuote()
+  -dynamic _getQuotesBusy()
+  -void _showQuotesList()
+  -List<String> _getQuotes()
   +Widget build()
 }
 
@@ -152,9 +125,9 @@ class "david_perez::pages::calendars::calendar_worker_page.dart::_CalendarWorker
 class "david_perez::pages::calendars::services::calendar_service.dart::CalendarService" {
   +FirebaseFirestore firestore
   +User? currentUser
-  +dynamic eliminarCitasAntiguas()
+  +dynamic deleteOldQuotes()
   +dynamic getUserDataFuture()
-  +dynamic getClienteUid()
+  +dynamic getClientUid()
   +dynamic getWorkerTurn()
   +dynamic getWorkerUid()
 }
@@ -183,8 +156,8 @@ class "david_perez::pages::facilities::add_facilities.dart::_FacilitieFormState"
 
 class "david_perez::pages::facilities::facilities_page.dart::Facility" {
   +String key
-  +String titulo
-  +String descripcion
+  +String title
+  +String description
 }
 
 class "david_perez::pages::facilities::facilities_page.dart::FacilitiesList" {
@@ -296,7 +269,7 @@ class "david_perez::pages::maintenances::maintenance_page.dart::MaintenanceListS
   +UserIsAdmin userIsAdmin
   +bool isAdmin
   +void initState()
-  +dynamic obtenerMaintenances()
+  +dynamic getMaintenances()
   +Widget build()
 }
 
@@ -405,7 +378,7 @@ class "david_perez::pages::services::add_service.dart::_ServiceFormState" {
 "david_perez::pages::services::add_service.dart::_ServiceFormState" o-- "flutter::src::widgets::editable_text.dart::TextEditingController"
 "flutter::src::widgets::framework.dart::State" <|-- "david_perez::pages::services::add_service.dart::_ServiceFormState"
 
-class "david_perez::pages::services::services_page.dart::Servicio" {
+class "david_perez::pages::services::services_page.dart::Service" {
   +String key
   +String title
   +String description
@@ -418,12 +391,12 @@ class "david_perez::pages::services::services_page.dart::ServicesList" {
 "flutter::src::widgets::framework.dart::StatefulWidget" <|-- "david_perez::pages::services::services_page.dart::ServicesList"
 
 class "david_perez::pages::services::services_page.dart::ServicesListState" {
-  -List<Servicio> _servicios
+  -List<Service> _services
   +User? currentUser
   +UserIsAdmin userIsAdmin
   +bool isAdmin
   +void initState()
-  +dynamic obtenerServicios()
+  +dynamic getServices()
   +Widget build()
 }
 
@@ -438,13 +411,6 @@ class "david_perez::pages::workers_page.dart::ListWorkers" {
 
 "flutter::src::widgets::framework.dart::StatelessWidget" <|-- "david_perez::pages::workers_page.dart::ListWorkers"
 
-class "david_perez::read_data::get_user_apellidos.dart::GetUserLastName" {
-  +String documentId
-  +Widget build()
-}
-
-"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "david_perez::read_data::get_user_apellidos.dart::GetUserLastName"
-
 class "david_perez::read_data::get_user_document_id.dart::UserDocumentID" {
   +String? userEmail
   +String documentID
@@ -457,13 +423,6 @@ class "david_perez::read_data::get_user_email.dart::GetUserEmail" {
 }
 
 "flutter::src::widgets::framework.dart::StatelessWidget" <|-- "david_perez::read_data::get_user_email.dart::GetUserEmail"
-
-class "david_perez::read_data::get_user_horario.dart::GetUserTurno" {
-  +String workerDocumentId
-  +Widget build()
-}
-
-"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "david_perez::read_data::get_user_horario.dart::GetUserTurno"
 
 class "david_perez::read_data::get_user_is_admin.dart::UserIsAdmin" {
   +User? user
@@ -481,6 +440,13 @@ class "david_perez::read_data::get_user_is_worker.dart::UserIsWorker" {
 
 "david_perez::read_data::get_user_is_worker.dart::UserIsWorker" o-- "firebase_auth::firebase_auth.dart::User"
 
+class "david_perez::read_data::get_user_lastname.dart::GetUserLastName" {
+  +String documentId
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "david_perez::read_data::get_user_lastname.dart::GetUserLastName"
+
 class "david_perez::read_data::get_user_name.dart::GetUserName" {
   +String documentId
   +Widget build()
@@ -488,12 +454,19 @@ class "david_perez::read_data::get_user_name.dart::GetUserName" {
 
 "flutter::src::widgets::framework.dart::StatelessWidget" <|-- "david_perez::read_data::get_user_name.dart::GetUserName"
 
-class "david_perez::read_data::get_user_telefono.dart::GetUserTelefono" {
+class "david_perez::read_data::get_user_phone.dart::GetUserPhone" {
   +String documentId
   +Widget build()
 }
 
-"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "david_perez::read_data::get_user_telefono.dart::GetUserTelefono"
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "david_perez::read_data::get_user_phone.dart::GetUserPhone"
+
+class "david_perez::read_data::get_user_schedule.dart::GetUserTurn" {
+  +String workerDocumentId
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "david_perez::read_data::get_user_schedule.dart::GetUserTurn"
 
 class "david_perez::services::user_auth.dart::UserAuth" {
   +TextEditingController emailController
@@ -713,23 +686,23 @@ class "david_perez::widgets::jobs::job_card_widget.dart::JobCardWidget" {
 
 class "david_perez::widgets::lists::bookings_list.dart::BookingsListView" {
   +User? currentUser
-  +String? clienteEmail
+  +String? clientEmail
   +Widget build()
 }
 
 "david_perez::widgets::lists::bookings_list.dart::BookingsListView" o-- "firebase_auth::firebase_auth.dart::User"
 "flutter::src::widgets::framework.dart::StatelessWidget" <|-- "david_perez::widgets::lists::bookings_list.dart::BookingsListView"
 
-class "david_perez::widgets::lists::quotes_list_view.dart::CitasListView" {
-  +String? clienteUid
+class "david_perez::widgets::lists::quotes_list_view.dart::QuotesListView" {
+  +String? clientUid
   +DateTime? selectedDay
   +User? currentUser
-  +String? clienteEmail
+  +String? clientEmail
   +Widget build()
 }
 
-"david_perez::widgets::lists::quotes_list_view.dart::CitasListView" o-- "firebase_auth::firebase_auth.dart::User"
-"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "david_perez::widgets::lists::quotes_list_view.dart::CitasListView"
+"david_perez::widgets::lists::quotes_list_view.dart::QuotesListView" o-- "firebase_auth::firebase_auth.dart::User"
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "david_perez::widgets::lists::quotes_list_view.dart::QuotesListView"
 
 class "david_perez::widgets::lists::task_list_view.dart::TaskListView" {
   +String? workerUid
@@ -807,7 +780,7 @@ class "david_perez::widgets::products::edit_product.dart::_EditProductState" {
   -String _title
   -String _description
   -String _price
-  -String _cantidad
+  -String _quantity
   -File? _image
   -String? _imageUrlFromDatabase
   +String productID
@@ -913,13 +886,13 @@ class "david_perez::widgets::square_tile.dart::SquareTile" {
 "flutter::src::widgets::framework.dart::StatelessWidget" <|-- "david_perez::widgets::square_tile.dart::SquareTile"
 
 class "david_perez::widgets::task::create_task.dart::CreateTask" {
-  +TextEditingController tituloController
-  +TextEditingController descripcionController
-  +DateTime? fecha
-  +bool importante
+  +TextEditingController titleController
+  +TextEditingController descriptionController
+  +DateTime? date
+  +bool important
   +String worker
   +String workerEmail
-  +String autorEmail
+  +String authorEmail
   +dynamic addTaskToDatabase()
   +bool isTitleValid()
   +bool isDescriptionValid()
@@ -938,10 +911,10 @@ class "david_perez::widgets::task::create_task_page.dart::CreateTaskPage" {
 "flutter::src::widgets::framework.dart::StatefulWidget" <|-- "david_perez::widgets::task::create_task_page.dart::CreateTaskPage"
 
 class "david_perez::widgets::task::create_task_page.dart::_CreateTaskPageState" {
-  +TextEditingController tituloController
-  +TextEditingController descripcionController
+  +TextEditingController titleController
+  +TextEditingController descriptionController
   +TimeOfDay selectedTime
-  -bool _esImportante
+  -bool _isImportant
   +void initState()
   +dynamic selectTime()
   +Widget build()
@@ -973,6 +946,27 @@ class "david_perez::widgets::task::edit_task.dart::EditTaskDialog" {
 
 "david_perez::widgets::task::edit_task.dart::EditTaskDialog" o-- "cloud_firestore::cloud_firestore.dart::DocumentSnapshot<Object>"
 "flutter::src::widgets::framework.dart::StatefulWidget" <|-- "david_perez::widgets::task::edit_task.dart::EditTaskDialog"
+
+class "david_perez::widgets::task::edit_task.dart::EditTaskDialogState" {
+  +TextEditingController titleController
+  +TextEditingController descriptionController
+  +TextEditingController dateController
+  +TimeOfDay selectedTime
+  +bool isImportant
+  +bool isDone
+  +void initState()
+  +dynamic selectTime()
+  +Widget build()
+}
+
+"david_perez::widgets::task::edit_task.dart::EditTaskDialogState" o-- "flutter::src::widgets::editable_text.dart::TextEditingController"
+"david_perez::widgets::task::edit_task.dart::EditTaskDialogState" o-- "flutter::src::material::time.dart::TimeOfDay"
+"flutter::src::widgets::framework.dart::State" <|-- "david_perez::widgets::task::edit_task.dart::EditTaskDialogState"
+
+class "david_perez::widgets::task::show_task.dart::ShowTaskDialog" {
+  +DocumentSnapshot<Object?> task
+  +ShowTaskDialogState createState()
+}
 
 "david_perez::widgets::task::show_task.dart::ShowTaskDialog" o-- "cloud_firestore::cloud_firestore.dart::DocumentSnapshot<Object>"
 "flutter::src::widgets::framework.dart::StatefulWidget" <|-- "david_perez::widgets::task::show_task.dart::ShowTaskDialog"

@@ -31,3 +31,8 @@ En este [enlace](https://www.figma.com/file/XavRoJbvuxSQw9GSDJX229/Proyecto?type
 ## Diagramas
 
 Este [enlace](https://raw.githubusercontent.com/Jonathanpd2804/Proyecto/f001bf973b9e60e289edad3d729632810a2b2ab7/uml.svg) te mostrará el diagrama de clases.
+
+
+## Youtube
+
+Haz click [aquí](https://youtu.be/Uudn9gjECwk)para ver el vídeo en youtube.

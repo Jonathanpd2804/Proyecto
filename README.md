@@ -25,14 +25,12 @@ Para instalar la entre en el enlace de la [Apk](https://github.com/Jonathanpd280
 </ul>
 
 ## Bocetos
-
 En este [enlace](https://www.figma.com/file/XavRoJbvuxSQw9GSDJX229/Proyecto?type=design&node-id=0%3A1&t=6nQCUfEavbdMPyNY-1) podrás ver los bocetos que fueron diseñados para la aplicación, para poder ver las distintas pantallas debes ir a menú que hay arriba a la izquierda de el todo, ahí podrás seleccionar entre todas las pantallas a ver.
 
 ## Diagramas
-
+Este [enlace](https://github.com/Jonathanpd2804/Proyecto/blob/main/diagramacasosuso.svg) te mostrará el diagrama de casos de usos
 Este [enlace](https://raw.githubusercontent.com/Jonathanpd2804/Proyecto/f001bf973b9e60e289edad3d729632810a2b2ab7/uml.svg) te mostrará el diagrama de clases.
 
 
 ## Youtube
-
-Haz click [aquí](https://youtu.be/Uudn9gjECwk)para ver el vídeo en youtube.
+Haz click [aquí](https://youtu.be/Uudn9gjECwk) para ver el vídeo en youtube.

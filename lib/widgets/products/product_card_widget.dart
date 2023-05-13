@@ -41,7 +41,7 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
     final message = Message()
       ..from = Address(username, userName)
       // ..recipients.add('${currentUser?.email}')
-      ..recipients.add('jonathanpd280403@gmail.com')
+      ..recipients.add(currentUser!.email)
       ..subject = 'Reserva'
       ..html = '''
 <!DOCTYPE html>
@@ -61,7 +61,7 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
 </head>
 <body>
   <h1>Confirmación de reserva: $reservaId</h1>
-  <p>Estimado cliente,</p>
+  <p>Estimado $userName,</p>
   <p>Nos complace informarle que su reserva ha sido guardada con éxito. Para mantener su reserva activa, debe realizar un abono del 50% del precio total dentro de los próximos 3 días. De no realizar el abono en este plazo, su reserva será cancelada automáticamente.</p>
   <p>Por favor, realice el abono en la siguiente cuenta bancaria:</p>
   <p><strong>Número de cuenta:</strong> [Número de cuenta]</p>
@@ -86,8 +86,7 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
   final _formKey = GlobalKey<FormState>();
 
   Future<void> _showConfirmationDialog(BuildContext context) async {
-    int? quantityReserved =
-        0; // Variable para almacenar la cantidad a reservar
+    int? quantityReserved = 0; // Variable para almacenar la cantidad a reservar
 
     return showDialog<void>(
       context: context,
@@ -100,7 +99,8 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
-                const Text('¿Estás seguro de que deseas reservar este producto?'),
+                const Text(
+                    '¿Estás seguro de que deseas reservar este producto?'),
                 const SizedBox(height: 16.0),
                 TextFormField(
                   decoration: const InputDecoration(
@@ -166,8 +166,7 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
 
                     if (currentQuantity >= quantityReserved!) {
                       final newQuantity = currentQuantity - quantityReserved!;
-                      transaction.update(
-                          productRef, {'Cantidad': newQuantity});
+                      transaction.update(productRef, {'Cantidad': newQuantity});
                     } else {
                       throw 'No hay suficiente cantidad disponible';
                     }

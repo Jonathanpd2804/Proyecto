@@ -2,9 +2,14 @@
 
 import '../exports.dart';
 
-class ListBookings extends StatelessWidget {
+class ListBookings extends StatefulWidget {
   const ListBookings({Key? key}) : super(key: key);
 
+  @override
+  State<ListBookings> createState() => _ListBookingsState();
+}
+
+class _ListBookingsState extends State<ListBookings> {
   Future<DocumentSnapshot> getProductById(String productId) async {
     final doc = await FirebaseFirestore.instance
         .collection('productos')
@@ -209,137 +214,30 @@ class ListBookings extends StatelessWidget {
               return Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Card(
+                      color:
+                          dateBooking.difference(DateTime.now()).inDays < -3 &&
+                                  paid == false
+                              ? Colors.red[400]
+                              : Colors.white,
                       child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                        Padding(
-                          padding: const EdgeInsets.all(15.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text('Reserva: ${booking.id}'),
-                              ElevatedButton(
-                                onPressed: () {
-                                  showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return DeleteBookingDialog(
-                                          booking: booking);
-                                    },
-                                  );
-                                },
-                                style: ElevatedButton.styleFrom(
-                                  fixedSize: const Size(113, 25),
-                                  primary: Colors.white,
-                                  onPrimary: Colors.black,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(8),
-                                    side: const BorderSide(
-                                        color: myColor, width: 3),
-                                  ),
-                                ),
-                                child: const Text("Borrar"),
-                              )
-                            ],
-                          ),
-                        ),
-                        ListTile(
-                          title: Text('Reserva del $date'),
-                          subtitle: Text('Cliente: $clientEmail'),
-                          trailing: Text(paid ? 'Pagado' : 'Pendiente'),
-                        ),
-                        FutureBuilder<Map<String, dynamic>?>(
-                          future: getProductData(productId),
-                          builder: (context, snapshot) {
-                            Widget productInfo;
-                            bool productFound =
-                                !(snapshot.hasError || !snapshot.hasData);
-
-                            if (productFound) {
-                              productInfo = Padding(
-                                padding: const EdgeInsets.only(left: 18.0),
-                                child: Row(
-                                  children: [
-                                    Text("Producto: $productId"),
-                                    Padding(
-                                      padding:
-                                          const EdgeInsets.only(left: 20.0),
-                                      child: Text("Cantidad: $amount"),
-                                    )
-                                  ],
-                                ),
-                              );
-                            } else {
-                              productInfo = const Padding(
-                                padding: EdgeInsets.only(left: 18.0),
-                                child: Text('Producto no encontrado'),
-                              );
-                            }
-
-                            return Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                productInfo,
-                                Padding(
-                                  padding:
-                                      const EdgeInsets.only(top: 8.0, left: 20),
-                                  child: ElevatedButton(
-                                    onPressed: productFound
-                                        ? () {
-                                            getProductData(productId)
-                                                .then((product) {
-                                              _showFlipCardDialog(
-                                                  context, product!);
-                                            });
-                                          }
-                                        : null, // Desactiva el botón si el producto no se encuentra.
-                                    style: ButtonStyle(
-                                      backgroundColor:
-                                          MaterialStateProperty.all<Color>(
-                                              myColor),
-                                    ),
-                                    child: const Text('Ver producto'),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 20.0),
-                                  child: ElevatedButton(
-                                    onPressed: () async {
-                                      final confirm = await showDialog<bool>(
+                            Padding(
+                              padding: const EdgeInsets.all(15.0),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text('Reserva: ${booking.id}'),
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      showDialog(
                                         context: context,
                                         builder: (BuildContext context) {
-                                          return AlertDialog(
-                                            title: Text(paid
-                                                ? 'Confirmar no pagado'
-                                                : 'Confirmar pago'),
-                                            content: Text(paid
-                                                ? '¿Está seguro de que desea marcar esta reserva como no pagada?'
-                                                : '¿Está seguro de que desea marcar esta reserva como pagada?'),
-                                            actions: [
-                                              TextButton(
-                                                onPressed: () {
-                                                  Navigator.of(context)
-                                                      .pop(true);
-                                                },
-                                                child: const Text('Sí'),
-                                              ),
-                                              TextButton(
-                                                onPressed: () {
-                                                  Navigator.of(context)
-                                                      .pop(false);
-                                                },
-                                                child: const Text('No'),
-                                              ),
-                                            ],
-                                          );
+                                          return DeleteBookingDialog(
+                                              booking: booking);
                                         },
                                       );
-                                      if (confirm != null && confirm) {
-                                        await FirebaseFirestore.instance
-                                            .collection('reservas')
-                                            .doc(booking.id)
-                                            .update({'pagado': !paid});
-                                      }
                                     },
                                     style: ElevatedButton.styleFrom(
                                       fixedSize: const Size(113, 25),
@@ -351,70 +249,188 @@ class ListBookings extends StatelessWidget {
                                             color: myColor, width: 3),
                                       ),
                                     ),
-                                    child: Text(paid ? 'No pagado' : 'Pagado'),
-                                  ),
-                                ),
-                                if (paid)
-                                  Padding(
-                                    padding: const EdgeInsets.only(left: 20.0),
-                                    child: ElevatedButton(
-                                      onPressed: () async {
-                                        final confirm =
-                                            await showDialog<bool>(
-                                          context: context,
-                                          builder: (BuildContext context) {
-                                            return AlertDialog(
-                                              title: const Text(
-                                                  'Confirmar entrega'),
-                                              content: const Text(
-                                                '¿Está seguro de que desea marcar esta reserva como entregada y eliminarla?',
-                                              ),
-                                              actions: [
-                                                TextButton(
-                                                  onPressed: () {
-                                                    Navigator.of(context)
-                                                        .pop(true);
-                                                  },
-                                                  child: const Text('Sí'),
-                                                ),
-                                                TextButton(
-                                                  onPressed: () {
-                                                    Navigator.of(context)
-                                                        .pop(false);
-                                                  },
-                                                  child: const Text('No'),
-                                                ),
-                                              ],
+                                    child: const Text("Borrar"),
+                                  )
+                                ],
+                              ),
+                            ),
+                            ListTile(
+                              title: Text('Reserva del $date'),
+                              subtitle: Text('Cliente: $clientEmail'),
+                              trailing: Text(paid ? 'Pagado' : 'Pendiente'),
+                            ),
+                            FutureBuilder<Map<String, dynamic>?>(
+                              future: getProductData(productId),
+                              builder: (context, snapshot) {
+                                Widget productInfo;
+                                bool productFound =
+                                    !(snapshot.hasError || !snapshot.hasData);
+
+                                if (productFound) {
+                                  productInfo = Padding(
+                                    padding: const EdgeInsets.only(left: 18.0),
+                                    child: Row(
+                                      children: [
+                                        Text("Producto: $productId"),
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.only(left: 20.0),
+                                          child: Text("Cantidad: $amount"),
+                                        )
+                                      ],
+                                    ),
+                                  );
+                                } else {
+                                  productInfo = const Padding(
+                                    padding: EdgeInsets.only(left: 18.0),
+                                    child: Text('Producto no encontrado'),
+                                  );
+                                }
+
+                                return Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    productInfo,
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                          top: 8.0, left: 20),
+                                      child: ElevatedButton(
+                                        onPressed: productFound
+                                            ? () {
+                                                getProductData(productId)
+                                                    .then((product) {
+                                                  _showFlipCardDialog(
+                                                      context, product!);
+                                                });
+                                              }
+                                            : null, // Desactiva el botón si el producto no se encuentra.
+                                        style: ButtonStyle(
+                                          backgroundColor:
+                                              MaterialStateProperty.all<Color>(
+                                                  myColor),
+                                        ),
+                                        child: const Text('Ver producto'),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding:
+                                          const EdgeInsets.only(left: 20.0),
+                                      child: ElevatedButton(
+                                        onPressed: () async {
+                                          final confirm =
+                                              await showDialog<bool>(
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              return AlertDialog(
+                                                title: Text(paid
+                                                    ? 'Confirmar no pagado'
+                                                    : 'Confirmar pago'),
+                                                content: Text(paid
+                                                    ? '¿Está seguro de que desea marcar esta reserva como no pagada?'
+                                                    : '¿Está seguro de que desea marcar esta reserva como pagada?'),
+                                                actions: [
+                                                  TextButton(
+                                                    onPressed: () {
+                                                      Navigator.of(context)
+                                                          .pop(true);
+                                                    },
+                                                    child: const Text('Sí'),
+                                                  ),
+                                                  TextButton(
+                                                    onPressed: () {
+                                                      Navigator.of(context)
+                                                          .pop(false);
+                                                    },
+                                                    child: const Text('No'),
+                                                  ),
+                                                ],
+                                              );
+                                            },
+                                          );
+                                          if (confirm != null && confirm) {
+                                            await FirebaseFirestore.instance
+                                                .collection('reservas')
+                                                .doc(booking.id)
+                                                .update({'pagado': !paid});
+                                          }
+                                        },
+                                        style: ElevatedButton.styleFrom(
+                                          fixedSize: const Size(113, 25),
+                                          primary: Colors.white,
+                                          onPrimary: Colors.black,
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(8),
+                                            side: const BorderSide(
+                                                color: myColor, width: 3),
+                                          ),
+                                        ),
+                                        child:
+                                            Text(paid ? 'No pagado' : 'Pagado'),
+                                      ),
+                                    ),
+                                    if (paid)
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(left: 20.0),
+                                        child: ElevatedButton(
+                                          onPressed: () async {
+                                            final confirm =
+                                                await showDialog<bool>(
+                                              context: context,
+                                              builder: (BuildContext context) {
+                                                return AlertDialog(
+                                                  title: const Text(
+                                                      'Confirmar entrega'),
+                                                  content: const Text(
+                                                    '¿Está seguro de que desea marcar esta reserva como entregada y eliminarla?',
+                                                  ),
+                                                  actions: [
+                                                    TextButton(
+                                                      onPressed: () {
+                                                        Navigator.of(context)
+                                                            .pop(true);
+                                                      },
+                                                      child: const Text('Sí'),
+                                                    ),
+                                                    TextButton(
+                                                      onPressed: () {
+                                                        Navigator.of(context)
+                                                            .pop(false);
+                                                      },
+                                                      child: const Text('No'),
+                                                    ),
+                                                  ],
+                                                );
+                                              },
                                             );
+                                            if (confirm != null && confirm) {
+                                              await FirebaseFirestore.instance
+                                                  .collection('reservas')
+                                                  .doc(booking.id)
+                                                  .delete();
+                                            }
                                           },
-                                        );
-                                        if (confirm != null && confirm) {
-                                          await FirebaseFirestore.instance
-                                              .collection('reservas')
-                                              .doc(booking.id)
-                                              .delete();
-                                        }
-                                      },
-                                      style: ElevatedButton.styleFrom(
-                                        fixedSize: const Size(113, 25),
-                                        primary: Colors.white,
-                                        onPrimary: Colors.black,
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(8),
-                                          side: const BorderSide(
-                                              color: myColor, width: 3),
+                                          style: ElevatedButton.styleFrom(
+                                            fixedSize: const Size(113, 25),
+                                            primary: Colors.white,
+                                            onPrimary: Colors.black,
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(8),
+                                              side: const BorderSide(
+                                                  color: myColor, width: 3),
+                                            ),
+                                          ),
+                                          child: const Text('Entregado'),
                                         ),
                                       ),
-                                      child: const Text('Entregado'),
-                                    ),
-                                  ),
-                                const SizedBox(height: 16.0),
-                              ],
-                            );
-                          },
-                        ),
-                      ])));
+                                    const SizedBox(height: 16.0),
+                                  ],
+                                );
+                              },
+                            ),
+                          ])));
             },
           );
         },
